@@ -28,7 +28,7 @@ class DDeliveryWooCommerceSdkApi extends DDeliveryWooCommerceBase
      * @param $key string API-ключ для проверки
      * @return mixed
      */
-    private function checkApiKey($key)
+    private function _checkApiKey($key)
     {
         return ($key && $key === get_option(DDeliveryWooCommerce::API_KEY_OPTION));
     }
@@ -79,7 +79,7 @@ class DDeliveryWooCommerceSdkApi extends DDeliveryWooCommerceBase
                     'callback' => function($data) use ($route_params)
                     {
                         // Проверка API-ключа
-                        if (self::checkApiKey($data['k']))
+                        if (self::_checkApiKey($data['k']))
                             // Если ключ валиден, вызываем обработчик роута
                             return call_user_func_array(__CLASS__ . '::' . $route_params[0], [$data]);
 
