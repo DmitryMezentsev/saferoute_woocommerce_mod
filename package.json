@@ -1,7 +1,7 @@
 {
   "name": "ddelivery_woocommerce_mod",
   "version": "1.0.0",
-  "description": "DDelivery WordPress Plugin for WooCommerce",
+  "description": "DDelivery Plugin for WordPress WooCommerce",
   "main": "",
   "scripts": {},
   "author": "Dmitry Mezentsev",
@@ -12,7 +12,9 @@
   "license": "ISC",
   "devDependencies": {
     "gulp": "^3.9.1",
+    "gulp-clean": "^0.4.0",
     "gulp-watch": "^5.0.0",
-    "gulp-zip": "^4.1.0"
+    "gulp-zip": "^4.1.0",
+    "run-sequence": "^2.2.1"
   }
 }
