@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: DDelivery WooCommerce\n"
-"POT-Creation-Date: 2018-05-26 00:10+0500\n"
-"PO-Revision-Date: 2018-05-26 00:09+0500\n"
+"POT-Creation-Date: 2018-05-27 00:26+0500\n"
+"PO-Revision-Date: 2018-05-27 00:25+0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,8 +21,28 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: views/admin-settings-page.php:9
+#: includes/DDeliveryWooCommerceAdmin.php:22
+msgid "WooCommerce is required for DDelivery WooCommerce plugin."
+msgstr ""
+
+#: includes/DDeliveryWooCommerceAdmin.php:34
+msgid "Settings"
+msgstr ""
+
+#: includes/DDeliveryWooCommerceAdmin.php:58
+msgid "DDelivery"
+msgstr ""
+
+#: views/admin-settings-page.php:2
+msgid "DDelivery integration settings"
+msgstr ""
+
+#: views/admin-settings-page.php:10
 msgid "API-key"
+msgstr ""
+
+#: views/admin-settings-page.php:27
+msgid "API-key can be found on the shop page in DDelivery cabinet."
 msgstr ""
 
 #. Plugin Name of the plugin/theme

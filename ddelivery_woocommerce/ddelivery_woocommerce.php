@@ -11,29 +11,11 @@
  */
 
 
-
 // Exit if accessed directly
 if (!defined('ABSPATH')) exit;
 
 
-
-require_once 'includes/DDeliveryWooCommercePlugin.php';
-
+require_once 'includes/DDeliveryWooCommerce.php';
 
 
-register_activation_hook(__FILE__, ['DDeliveryWooCommercePlugin', 'activationHook']);
-register_uninstall_hook(__FILE__, ['DDeliveryWooCommercePlugin', 'uninstallHook']);
-
-
-
-// Проверяем, что WooCommerce установлен и активирован
-if (DDeliveryWooCommercePlugin::checkWooCommerce())
-{
-    add_action('admin_menu', 'DDeliveryWooCommercePlugin::createAdminSettingsPage');
-    add_action('init', 'DDeliveryWooCommercePlugin::init');
-}
-else
-{
-    // Вывод сообщения, что для плагина DDelivery WooCommerce необходим WooCommerce
-    add_action('admin_notices', 'DDeliveryWooCommercePlugin::wooCommerceNotFoundNotice');
-}
+DDeliveryWooCommerce::init(__FILE__);
