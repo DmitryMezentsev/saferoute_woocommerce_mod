@@ -26,7 +26,7 @@ class DDeliveryWooCommerceSdkApi extends DDeliveryWooCommerceBase
      * Проверяет, совпадает ли переданный API-ключ c API-ключом, указанным в настройках плагина
      *
      * @param $key string API-ключ для проверки
-     * @return mixed
+     * @return bool
      */
     private function _checkApiKey($key)
     {
