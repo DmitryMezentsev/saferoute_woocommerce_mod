@@ -65,7 +65,7 @@ class DDeliveryWooCommerceAdmin extends DDeliveryWooCommerceBase
     public static function init($plugin_basename)
     {
         // Проверяем, что WooCommerce установлен и активирован
-        if (DDeliveryWooCommerce::checkWooCommerce())
+        if (self::checkWooCommerce())
         {
             add_action('admin_menu', __CLASS__ . '::_createAdminSettingsPage');
             add_filter('plugin_action_links_' . $plugin_basename, [__CLASS__, '_addSettingsLink']);

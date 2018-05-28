@@ -30,7 +30,7 @@ class DDeliveryWooCommerceSdkApi extends DDeliveryWooCommerceBase
      */
     private function _checkApiKey($key)
     {
-        return ($key && $key === get_option(DDeliveryWooCommerce::API_KEY_OPTION));
+        return ($key && $key === get_option(self::API_KEY_OPTION));
     }
 
     /**
@@ -41,7 +41,7 @@ class DDeliveryWooCommerceSdkApi extends DDeliveryWooCommerceBase
      */
     public static function _statusesApi($data)
     {
-        return [];
+        return wc_get_order_statuses();
     }
 
     /**
@@ -52,7 +52,12 @@ class DDeliveryWooCommerceSdkApi extends DDeliveryWooCommerceBase
      */
     public static function _paymentMethodsApi($data)
     {
-        return [];
+        $methods = [];
+
+        foreach(WC()->payment_gateways->get_available_payment_gateways() as $gateway)
+            $methods[$gateway->id] = $gateway->title;
+
+        return $methods;
     }
 
     /**
@@ -63,12 +68,45 @@ class DDeliveryWooCommerceSdkApi extends DDeliveryWooCommerceBase
      */
     public static function _trafficOrdersApi($data)
     {
-        return [];
+        // Не передан обязательный параметр 'id'
+        if (!isset($data['id']) || !$data['id'])
+            return new WP_Error('id_is_required', 'Parameter \'id\' is required', ['status' => 400]);
+
+        // Находим заказ в БД по DDelivery ID
+        $query = new WP_Query([
+            'post_type'   => 'shop_order',
+            'meta_key'    => self::DDELIVERY_ID_META_KEY,
+            'meta_value'  => $data['id'],
+            'post_status' => self::getAllStatuses(),
+        ]);
+
+        // Заказ не найден
+        if (!$query->posts)
+        {
+            return new WP_Error('not_found', 'Order \'' . $data['id'] . '\'not found', ['status' => 404]);
+        }
+        else
+        {
+            $id = $query->posts[0]->ID;
+
+            // Сохранение трек-номера
+            if (isset($data['track_number']))
+                update_post_meta($id, self::TRACKING_NUMBER_META_KEY, $data['track_number']);
+
+            // Обновление статуса заказа
+            if (isset($data['status_cms']))
+                wp_update_post(['ID' => $id, 'post_status' => $data['status_cms']]);
+
+            return ['status' => 'ok'];
+        }
     }
 
 
     public static function init()
     {
+        // Проверяем, что WooCommerce установлен и активирован
+        if (!self::checkWooCommerce()) return;
+
         add_action('rest_api_init', function()
         {
             // Добавляет API в /wp-json/
@@ -89,5 +127,26 @@ class DDeliveryWooCommerceSdkApi extends DDeliveryWooCommerceBase
                 ]);
             }
         });
+    }
+
+    /**
+     * Обновляет данные заказа на сервере DDelivery
+     *
+     * @param array Параметры запроса
+     */
+    public static function updateOrderInDDelivery($data)
+    {
+        $api = 'https://ddelivery.ru/api/' . get_option(self::API_KEY_OPTION) . '/sdk/update-order.json';
+
+        $curl = curl_init($api);
+
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+
+        $response = json_decode(curl_exec($curl), true);
+        curl_close($curl);
+
+        return $response;
     }
 }
