@@ -4,7 +4,7 @@ require_once 'DDeliveryWooCommerceBase.php';
 require_once 'DDeliveryWidgetApi.php';
 
 /**
- * Класс, добавляющий в движок API для взаимодействия с корзинным виджетом
+ * Добавляет в движок API для взаимодействия с корзинным виджетом
  */
 class DDeliveryWooCommerceWidgetApi extends DDeliveryWooCommerceBase
 {
