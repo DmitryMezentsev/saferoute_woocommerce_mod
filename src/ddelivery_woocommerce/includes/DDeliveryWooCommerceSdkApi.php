@@ -3,7 +3,7 @@
 require_once 'DDeliveryWooCommerceBase.php';
 
 /**
- * Класс, добавляющий в движок API для взаимодействия с SDK DDelivery
+ * Добавляет в движок API для взаимодействия с SDK DDelivery
  */
 class DDeliveryWooCommerceSdkApi extends DDeliveryWooCommerceBase
 {

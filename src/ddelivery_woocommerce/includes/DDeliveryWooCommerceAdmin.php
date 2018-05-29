@@ -3,7 +3,7 @@
 require_once 'DDeliveryWooCommerceBase.php';
 
 /**
- * Класс, управляющий отображением плагина в админке
+ * Управляет отображением и работой плагина в админке
  */
 class DDeliveryWooCommerceAdmin extends DDeliveryWooCommerceBase
 {
