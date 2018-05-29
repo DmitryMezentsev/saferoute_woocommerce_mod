@@ -101,6 +101,27 @@ class DDeliveryWooCommerceSdkApi extends DDeliveryWooCommerceBase
         }
     }
 
+    /**
+     * Обработчик события изменения постов
+     *
+     * @param int $post_id ID изменяемого поста
+     */
+    public static function _onPostEdit($post_id)
+    {
+        $post = get_post($post_id);
+        $post_dd_id = get_post_meta($post_id, self::DDELIVERY_ID_META_KEY, true);
+
+        // Нужны только посты, являющиеся заказами WooCommerce, и имеющие DDelivery ID
+        if ($post->post_type === 'shop_order' && $post_dd_id)
+        {
+            self::updateOrderInDDelivery([
+                'id'     => $post_dd_id,
+                'status' => $post_id->post_status,
+                'cms_id' => $post_id,
+            ]);
+        }
+    }
+
 
     public static function init()
     {
@@ -127,6 +148,9 @@ class DDeliveryWooCommerceSdkApi extends DDeliveryWooCommerceBase
                 ]);
             }
         });
+
+        // Ловим событие изменения постов (заказов)
+        add_action('edit_post', __CLASS__ . '::_onPostEdit');
     }
 
     /**

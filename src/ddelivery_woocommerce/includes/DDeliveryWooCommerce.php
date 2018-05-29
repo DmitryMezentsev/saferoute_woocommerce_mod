@@ -47,8 +47,9 @@ final class DDeliveryWooCommerce extends DDeliveryWooCommerceBase
         }
         else
         {
-            DDeliveryWooCommerceSdkApi::init();
             DDeliveryWooCommerceWidgetApi::init();
         }
+
+        DDeliveryWooCommerceSdkApi::init();
     }
 }
