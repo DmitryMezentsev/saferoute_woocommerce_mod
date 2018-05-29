@@ -12,6 +12,8 @@ class DDeliveryWooCommerceSdkApi extends DDeliveryWooCommerceBase
 
     /**
      * Возвращает настройки роутов API
+     *
+     * @return array
      */
     private static function _getApiRoutes()
     {
@@ -109,16 +111,26 @@ class DDeliveryWooCommerceSdkApi extends DDeliveryWooCommerceBase
     public static function _onPostEdit($post_id)
     {
         $post = get_post($post_id);
-        $post_dd_id = get_post_meta($post_id, self::DDELIVERY_ID_META_KEY, true);
 
-        // Нужны только посты, являющиеся заказами WooCommerce, и имеющие DDelivery ID
-        if ($post->post_type === 'shop_order' && $post_dd_id)
+        $order_dd_id = get_post_meta($post_id, self::DDELIVERY_ID_META_KEY, true);
+        $order_in_dd_cabinet = get_post_meta($post_id, self::IN_DDELIVERY_CABINET_META_KEY, true);
+
+        // Только посты, являющиеся заказами WooCommerce, имеющие DDelivery ID, и ещё не перенесенные в ЛК
+        if ($post->post_type === 'shop_order' && $order_dd_id && !$order_in_dd_cabinet)
         {
-            self::updateOrderInDDelivery([
-                'id'     => $post_dd_id,
+            $response = self::updateOrderInDDelivery([
+                'id'     => $order_dd_id,
                 'status' => $post_id->post_status,
                 'cms_id' => $post_id,
             ]);
+
+            if ($response['status'] === 'ok')
+            {
+                // Если заказ был перенесен в ЛК
+                if (isset($response['data']['cabinet_id']))
+                    // Устанавливаем соответствующий флаг
+                    update_post_meta($post_id, self::IN_DDELIVERY_CABINET_META_KEY, 1);
+            }
         }
     }
 
