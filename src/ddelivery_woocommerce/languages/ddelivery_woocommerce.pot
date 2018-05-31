@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: DDelivery WooCommerce\n"
-"POT-Creation-Date: 2018-05-27 00:26+0500\n"
+"POT-Creation-Date: 2018-06-01 04:34+0500\n"
 "PO-Revision-Date: 2018-05-27 00:25+0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -16,8 +16,8 @@ msgstr ""
 "X-Poedit-WPHeader: ddelivery_woocommerce.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
@@ -30,7 +30,28 @@ msgid "Settings"
 msgstr ""
 
 #: includes/DDeliveryWooCommerceAdmin.php:58
+#: includes/DDeliveryWooCommerceShippingMethod.php:33
+#: includes/DDeliveryWooCommerceShippingMethod.php:47
 msgid "DDelivery"
+msgstr ""
+
+#: includes/DDeliveryWooCommercePaymentMethod.php:27
+#: includes/DDeliveryWooCommercePaymentMethod.php:34
+#: includes/DDeliveryWooCommercePaymentMethod.php:35
+msgid "Payment via DDelivery"
+msgstr ""
+
+#: includes/DDeliveryWooCommercePaymentMethod.php:28
+msgid "Payment via DDelivery Widget"
+msgstr ""
+
+#: includes/DDeliveryWooCommercePaymentMethod.php:48
+#: includes/DDeliveryWooCommerceShippingMethod.php:45
+msgid "Title"
+msgstr ""
+
+#: includes/DDeliveryWooCommerceShippingMethod.php:34
+msgid "DDelivery Shipping Services Aggregator"
 msgstr ""
 
 #: views/admin-settings-page.php:2
