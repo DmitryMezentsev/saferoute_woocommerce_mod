@@ -5,6 +5,8 @@
  */
 class DDeliveryWooCommerceBase
 {
+    const ID = 'ddelivery';
+
     // Директория плагина
     const PLUGIN_DIR = ABSPATH . 'wp-content/plugins/ddelivery_woocommerce/';
 

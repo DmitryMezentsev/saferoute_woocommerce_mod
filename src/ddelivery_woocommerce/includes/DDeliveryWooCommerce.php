@@ -2,6 +2,9 @@
 
 require_once 'DDeliveryWooCommerceBase.php';
 
+require_once 'DDeliveryWooCommerceShippingMethod.php';
+require_once 'DDeliveryWooCommercePaymentMethod.php';
+
 require_once 'DDeliveryWooCommerceAdmin.php';
 require_once 'DDeliveryWooCommerceSdkApi.php';
 require_once 'DDeliveryWooCommerceWidgetApi.php';
@@ -51,5 +54,8 @@ final class DDeliveryWooCommerce extends DDeliveryWooCommerceBase
         }
 
         DDeliveryWooCommerceSdkApi::init();
+
+        addDDeliveryShippingMethod();
+        addDDeliveryPaymentMethod();
     }
 }
