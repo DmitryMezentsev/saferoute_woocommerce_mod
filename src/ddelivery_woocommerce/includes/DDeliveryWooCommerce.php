@@ -51,15 +51,15 @@ final class DDeliveryWooCommerce extends DDeliveryWooCommerceBase
         else
         {
             DDeliveryWooCommerceWidgetApi::init();
-			
-			// Подключение JavaScript-файла с кодом инициализации виджета
-			wp_enqueue_script('ddelivery-widget-init', '/' . self::PLUGIN_DIR . 'assets/dd-widget-init.js', ['jquery']);
+
+            // Подключение JavaScript-файла с кодом инициализации виджета
+            wp_enqueue_script('ddelivery-widget-init', '/' . self::PLUGIN_DIR . 'assets/dd-widget-init.js', ['jquery']);
         }
-		
-		DDeliveryWooCommerceSdkApi::init();
-		
-		// Добавление в систему способа доставки и способа оплаты DDelivery
-		addDDeliveryShippingMethod();
-		addDDeliveryPaymentMethod();
+
+        DDeliveryWooCommerceSdkApi::init();
+
+        // Добавление в систему способа доставки и способа оплаты DDelivery
+        addDDeliveryShippingMethod();
+        addDDeliveryPaymentMethod();
     }
 }

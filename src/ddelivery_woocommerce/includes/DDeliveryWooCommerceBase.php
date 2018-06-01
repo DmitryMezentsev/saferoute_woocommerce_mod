@@ -5,11 +5,11 @@
  */
 class DDeliveryWooCommerceBase
 {
-	const ID = 'ddelivery';
-	
-	// Директория плагина
-	const PLUGIN_DIR = 'wp-content/plugins/ddelivery_woocommerce/';
-	
+    const ID = 'ddelivery';
+
+    // Директория плагина
+    const PLUGIN_DIR = 'wp-content/plugins/ddelivery_woocommerce/';
+
     // Абсолютный путь к директории плагина плагина
     const PLUGIN_DIR_ABS = ABSPATH . self::PLUGIN_DIR;
 
@@ -21,15 +21,15 @@ class DDeliveryWooCommerceBase
 
     // Имя мета-параметра трек-номера заказа
     const TRACKING_NUMBER_META_KEY = 'order_tracking_number';
-	
-	// Имя мета-параметра флага переноса заказа в ЛК
-	const IN_DDELIVERY_CABINET_META_KEY = '_order_in_ddelivery_cabinet';
-	
-	// Имя (слаг) атрибута "НДС" у товара
-	const PRODUCT_VAT_SLUG_NAME = 'pa_vat';
-	
-	// Имя мета-параметра штрих-кода у товара
-	const PRODUCT_BARCODE_META_KEY =  'barcode';
+
+    // Имя мета-параметра флага переноса заказа в ЛК
+    const IN_DDELIVERY_CABINET_META_KEY = '_order_in_ddelivery_cabinet';
+
+    // Имя (слаг) атрибута "НДС" у товара
+    const PRODUCT_VAT_SLUG_NAME = 'pa_vat';
+
+    // Имя мета-параметра штрих-кода у товара
+    const PRODUCT_BARCODE_META_KEY =  'barcode';
 
     // Text Domain плагина
     const TEXT_DOMAIN = 'ddelivery_woocommerce';
