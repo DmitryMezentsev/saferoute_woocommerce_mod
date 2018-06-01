@@ -39,7 +39,7 @@ final class DDeliveryWooCommerce extends DDeliveryWooCommerceBase
     public static function init($plugin_file)
     {
         // Загрузка перевода
-        load_plugin_textdomain(self::TEXT_DOMAIN, false, basename(self::PLUGIN_DIR) . '/languages/');
+        load_plugin_textdomain(self::TEXT_DOMAIN, false, basename(self::PLUGIN_DIR_ABS) . '/languages/');
 
         register_activation_hook($plugin_file, [__CLASS__, '_activationHook']);
         register_uninstall_hook($plugin_file, [__CLASS__, '_uninstallHook']);
@@ -51,11 +51,15 @@ final class DDeliveryWooCommerce extends DDeliveryWooCommerceBase
         else
         {
             DDeliveryWooCommerceWidgetApi::init();
+			
+			// Подключение JavaScript-файла с кодом инициализации виджета
+			wp_enqueue_script('ddelivery-widget-init', '/' . self::PLUGIN_DIR . 'assets/dd-widget-init.js', ['jquery']);
         }
-
-        DDeliveryWooCommerceSdkApi::init();
-
-        addDDeliveryShippingMethod();
-        addDDeliveryPaymentMethod();
+		
+		DDeliveryWooCommerceSdkApi::init();
+		
+		// Добавление в систему способа доставки и способа оплаты DDelivery
+		addDDeliveryShippingMethod();
+		addDDeliveryPaymentMethod();
     }
 }

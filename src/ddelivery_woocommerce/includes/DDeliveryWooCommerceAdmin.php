@@ -3,7 +3,7 @@
 require_once 'DDeliveryWooCommerceBase.php';
 
 /**
- * Управляет отображением и работой плагина в админке
+ * Класс, управляющий отображением плагина в админке
  */
 class DDeliveryWooCommerceAdmin extends DDeliveryWooCommerceBase
 {
@@ -47,7 +47,7 @@ class DDeliveryWooCommerceAdmin extends DDeliveryWooCommerceBase
         }
 
         // Подключение шаблона страницы
-        require self::PLUGIN_DIR . 'views/admin-settings-page.php';
+        require self::PLUGIN_DIR_ABS . 'views/admin-settings-page.php';
     }
 
     /**
