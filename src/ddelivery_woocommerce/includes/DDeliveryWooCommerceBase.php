@@ -25,9 +25,6 @@ class DDeliveryWooCommerceBase
     // Имя мета-параметра флага переноса заказа в ЛК
     const IN_DDELIVERY_CABINET_META_KEY = '_order_in_ddelivery_cabinet';
 
-    // Имя (слаг) атрибута "НДС" у товара
-    const PRODUCT_VAT_SLUG_NAME = 'pa_vat';
-
     // Имя мета-параметра штрих-кода у товара
     const PRODUCT_BARCODE_META_KEY =  'barcode';
 
