@@ -57,6 +57,30 @@ class DDeliveryWooCommerceAdmin extends DDeliveryWooCommerceBase
     {
         add_submenu_page(self::ADMIN_PARENT_SLUG, __('DDelivery'), __('DDelivery'), 8, self::ADMIN_MENU_SLUG, __CLASS__ . '::_adminSettingsPage');
     }
+    
+    /**
+     * Выводит на страницу заказа блок со ссылкой на связанный заказ в ЛК DDelivery
+     */
+    public static function _addOrderMetaBox()
+    {
+        add_action('add_meta_boxes', function () {
+            add_meta_box('shop_order_ddelivery_link', __('DDelivery', self::TEXT_DOMAIN), function ($post) {
+                $ddelivery_id = get_post_meta($post->ID, self::DDELIVERY_ID_META_KEY, true);
+                $in_ddelivery_cabinet = get_post_meta($post->ID, self::IN_DDELIVERY_CABINET_META_KEY, true);
+                
+                if ($in_ddelivery_cabinet)
+                {
+                    echo '<a href="' . self::DDELIVERY_CABINET_URL . 'orders/' . $ddelivery_id . '" target="_blank">';
+                    _e('Open order in the DDelivery Cabinet', self::TEXT_DOMAIN);
+                    echo '</a>';
+                }
+                else
+                {
+                    _e('Order is not in the DDelivery Cabinet', self::TEXT_DOMAIN);
+                }
+            }, 'shop_order');
+        });
+    }
 
 
     /**
@@ -69,6 +93,7 @@ class DDeliveryWooCommerceAdmin extends DDeliveryWooCommerceBase
         {
             add_action('admin_menu', __CLASS__ . '::_createAdminSettingsPage');
             add_filter('plugin_action_links_' . $plugin_basename, [__CLASS__, '_addSettingsLink']);
+            add_action('load-post.php', __CLASS__ . '::_addOrderMetaBox');
         }
         else
         {

@@ -120,16 +120,20 @@ class DDeliveryWooCommerceSdkApi extends DDeliveryWooCommerceBase
         {
             $response = self::updateOrderInDDelivery([
                 'id'     => $order_dd_id,
-                'status' => $post_id->post_status,
+                'status' => $post->post_status,
                 'cms_id' => $post_id,
             ]);
-
+            
             if ($response['status'] === 'ok')
             {
                 // Если заказ был перенесен в ЛК
                 if (isset($response['data']['cabinet_id']))
+                {
                     // Устанавливаем соответствующий флаг
                     update_post_meta($post_id, self::IN_DDELIVERY_CABINET_META_KEY, 1);
+                    // Сохраняем его новый DDelivery ID
+                    update_post_meta($post_id, self::DDELIVERY_ID_META_KEY, $response['data']['cabinet_id']);
+                }
             }
         }
     }

@@ -33,8 +33,11 @@ class DDeliveryWooCommerceBase
 
     // Text Domain плагина
     const TEXT_DOMAIN = 'ddelivery_woocommerce';
-
-
+    
+    // URL ЛК DDelivery
+    const DDELIVERY_CABINET_URL = 'https://ddelivery.ru/cabinet/';
+    
+    
     /**
      * Проверяет, активирован ли WooCommerce
      *

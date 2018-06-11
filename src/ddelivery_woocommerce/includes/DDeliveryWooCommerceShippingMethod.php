@@ -32,9 +32,9 @@ function addDDeliveryShippingMethod()
                 $this->supports           = ['shipping-zones', 'instance-settings', 'instance-settings-modal'];
                 $this->method_title       = __('DDelivery', DDeliveryWooCommerceBase::TEXT_DOMAIN);
                 $this->method_description = __('DDelivery Shipping Services Aggregator', DDeliveryWooCommerceBase::TEXT_DOMAIN);
-
+                
                 $this->init();
-
+                
                 add_action('woocommerce_update_options_shipping_' . $this->id, [$this, 'process_admin_options']);
             }
 
@@ -65,8 +65,22 @@ function addDDeliveryShippingMethod()
             }
         }
     }
-
-
+    
+    
+    add_filter('woocommerce_package_rates', function ($rates) {
+        if (!session_id()) session_start();
+        
+        foreach($rates as $rate_key => $rate_values)
+        {
+            // Назначение стоимости доставки DDelivery
+            if($rate_values->method_id === DDeliveryWooCommerceBase::ID)
+                $rates[$rate_values->id]->cost = $_SESSION['ddelivery_shipping_cost'];
+        }
+        
+        return $rates;
+    });
+    
+    
     add_filter('woocommerce_shipping_methods', '_addDDeliveryShippingMethod');
     add_action('woocommerce_shipping_init', '_initDDeliveryShippingMethod');
 }

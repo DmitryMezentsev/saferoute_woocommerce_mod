@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: DDelivery WooCommerce\n"
-"POT-Creation-Date: 2018-06-01 04:34+0500\n"
+"POT-Creation-Date: 2018-06-10 01:09+0500\n"
 "PO-Revision-Date: 2018-05-27 00:25+0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -21,6 +21,15 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
+#: includes/DDeliveryWooCommerce.php:112
+#: includes/DDeliveryWooCommerce.php:122
+msgid "Shipping type"
+msgstr ""
+
+#: includes/DDeliveryWooCommerce.php:123
+msgid "Select and confirm shipping type."
+msgstr ""
+
 #: includes/DDeliveryWooCommerceAdmin.php:22
 msgid "WooCommerce is required for DDelivery WooCommerce plugin."
 msgstr ""
@@ -30,9 +39,18 @@ msgid "Settings"
 msgstr ""
 
 #: includes/DDeliveryWooCommerceAdmin.php:58
+#: includes/DDeliveryWooCommerceAdmin.php:67
 #: includes/DDeliveryWooCommerceShippingMethod.php:33
 #: includes/DDeliveryWooCommerceShippingMethod.php:47
 msgid "DDelivery"
+msgstr ""
+
+#: includes/DDeliveryWooCommerceAdmin.php:74
+msgid "Open order in the DDelivery Cabinet"
+msgstr ""
+
+#: includes/DDeliveryWooCommerceAdmin.php:79
+msgid "Order is not in the DDelivery Cabinet"
 msgstr ""
 
 #: includes/DDeliveryWooCommercePaymentMethod.php:27
@@ -64,6 +82,14 @@ msgstr ""
 
 #: views/admin-settings-page.php:27
 msgid "API-key can be found on the shop page in DDelivery cabinet."
+msgstr ""
+
+#: views/checkout-widget-block.php:2
+msgid "Select Shipping Type"
+msgstr ""
+
+#: views/checkout-widget-block.php:5
+msgid "Copy widget data into billing details"
 msgstr ""
 
 #. Plugin Name of the plugin/theme

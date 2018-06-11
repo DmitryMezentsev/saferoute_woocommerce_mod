@@ -19,68 +19,58 @@ class DDeliveryWooCommerceWidgetApi extends DDeliveryWooCommerceBase
     private static function _getApiRoutes()
     {
         return [
-            'cart'     => ['_cartApi'     , 'GET'],
-            'settings' => ['_settingsApi' , 'GET'],
+            'sdk' => ['_sdkApi', 'GET, POST'],
+            'set-shipping-cost' => ['_setShippingCostApi', 'POST'],
         ];
     }
-
+    
+    
     /**
-     * Выводит содержимое корзины
-     *
+     * Назначает стоимость доставки DDelivery
+     * 
      * @param $data object
      * @return array
      */
-    public static function _cartApi($data)
+    private static function _setShippingCostApi($data)
     {
-        global $woocommerce;
-
-        $cart = [];
-
-        // Товары корзины
-        $cart['products'] = [];
-        // Общий вес товаров корзины
-        $cart['weight'] = $woocommerce->cart->get_cart_contents_weight();
-
-        foreach($woocommerce->cart->get_cart() as $woo_cart_item)
-        {
-            // Штрих-код
-            $barcode = get_post_meta($woo_cart_item['product_id'] , self::PRODUCT_BARCODE_META_KEY, true);
-            // НДС
-            $vat = wc_get_product_terms($woo_cart_item['product_id'], self::PRODUCT_VAT_SLUG_NAME)[0];
-
-            // Начальная цена
-            $regular_price = (float) $woo_cart_item['data']->regular_price;
-            // Размер скидки (начальная цена минус цена продажи)
-            $discount = $regular_price - $woo_cart_item['data']->price;
-
-            $cart['products'][] = [
-                'name'       => $woo_cart_item['data']->name,
-                'vendorCode' => $woo_cart_item['data']->sku,
-                'barcode'    => $barcode,
-                'nds'        => $vat ? (int) $vat : null,
-                'price'      => $regular_price,
-                'discount'   => $discount,
-                'count'      => $woo_cart_item['quantity'],
-            ];
-        }
-
-        return $cart;
+        if (!session_id()) session_start();
+        $_SESSION['ddelivery_shipping_cost'] = $data->get_param('cost');
+        
+        // Сброс кэшированного значения
+        WC()->session->set('shipping_for_package_0', null);
+        
+        return ['status' => 'ok'];
     }
-
+    
     /**
-     * Выводит настройки CMS, необходимые виджету
-     *
+     * Перенаправляет запрос к API SDK
+     * 
      * @param $data object
-     * @return array
+     * @return mixed
      */
-    public static function _settingsApi($data)
+    private static function _sdkApi($data)
     {
-        return [
-            'lang' => get_locale(),
-        ];
+        $params = $data->get_param('data');
+        if (!$params) $params = [];
+        
+        $widgetApi = new DDeliveryWidgetApi();
+        
+        $widgetApi->setApiKey(get_option(self::API_KEY_OPTION));
+        $widgetApi->setMethod($data->get_method());
+        $widgetApi->setData($params);
+        
+        $response = $widgetApi->submit($data->get_param('url'));
+        
+        // Для ответов API
+        if (json_decode($response))
+            return json_decode($response);
+        
+        // Небольшой костыль для загрузки iframe
+        header('Content-type: text/html');
+        exit($response);
     }
-
-
+    
+    
     public static function init()
     {
         // Проверяем, что WooCommerce установлен и активирован

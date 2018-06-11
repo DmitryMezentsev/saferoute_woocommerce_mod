@@ -3,7 +3,7 @@
 require_once 'DDeliveryWooCommerceBase.php';
 
 /**
- * Добавляет способ оплаты через виджет DDelivery в WooCommerce
+ * Добавляет способ оплаты "Оплата через DDelivery"
  */
 function addDDeliveryPaymentMethod()
 {
@@ -49,6 +49,22 @@ function addDDeliveryPaymentMethod()
                         'type' => 'text',
                     ],
                 ];
+            }
+            
+            public function process_payment($order_id)
+            {
+                $order = wc_get_order($order_id);
+                
+                return [
+                    'result' => 'success',
+                    'redirect' => $this->get_return_url($order),
+                ];
+            }
+            
+            public function thankyou_page()
+            {
+                if ($this->instructions)
+                    echo wpautop(wptexturize($this->instructions));
             }
         }
     }

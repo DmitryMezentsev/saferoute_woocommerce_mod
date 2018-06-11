@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: DDelivery WooCommerce\n"
-"POT-Creation-Date: 2018-06-01 04:34+0500\n"
-"PO-Revision-Date: 2018-06-01 04:35+0500\n"
+"POT-Creation-Date: 2018-06-10 01:09+0500\n"
+"PO-Revision-Date: 2018-06-10 01:19+0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -22,6 +22,14 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
+#: includes/DDeliveryWooCommerce.php:112 includes/DDeliveryWooCommerce.php:122
+msgid "Shipping type"
+msgstr "Cпособ доставки"
+
+#: includes/DDeliveryWooCommerce.php:123
+msgid "Select and confirm shipping type."
+msgstr "Выберите и подтвердите параметры доставки."
+
 #: includes/DDeliveryWooCommerceAdmin.php:22
 msgid "WooCommerce is required for DDelivery WooCommerce plugin."
 msgstr ""
@@ -33,10 +41,19 @@ msgid "Settings"
 msgstr "Настройки"
 
 #: includes/DDeliveryWooCommerceAdmin.php:58
+#: includes/DDeliveryWooCommerceAdmin.php:67
 #: includes/DDeliveryWooCommerceShippingMethod.php:33
 #: includes/DDeliveryWooCommerceShippingMethod.php:47
 msgid "DDelivery"
 msgstr "DDelivery"
+
+#: includes/DDeliveryWooCommerceAdmin.php:74
+msgid "Open order in the DDelivery Cabinet"
+msgstr "Открыть заказ в личном кабинете DDelivery"
+
+#: includes/DDeliveryWooCommerceAdmin.php:79
+msgid "Order is not in the DDelivery Cabinet"
+msgstr "Заказ ещё не передан в личный кабинет DDelivery"
 
 #: includes/DDeliveryWooCommercePaymentMethod.php:27
 #: includes/DDeliveryWooCommercePaymentMethod.php:34
@@ -69,6 +86,14 @@ msgstr "API-ключ"
 msgid "API-key can be found on the shop page in DDelivery cabinet."
 msgstr ""
 "API-ключ вы можете найти на странице магазина в Личном кабинете DDelivery."
+
+#: views/checkout-widget-block.php:2
+msgid "Select Shipping Type"
+msgstr "Выберите способ доставки"
+
+#: views/checkout-widget-block.php:5
+msgid "Copy widget data into billing details"
+msgstr "Использовать данные доставки в блоке деталей оплаты"
 
 #. Plugin Name of the plugin/theme
 msgid "DDelivery WooCommerce"
