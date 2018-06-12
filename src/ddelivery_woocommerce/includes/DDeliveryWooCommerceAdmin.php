@@ -64,6 +64,8 @@ class DDeliveryWooCommerceAdmin extends DDeliveryWooCommerceBase
         if (isset($_POST['ddelivery_api_key']))
         {
             update_option(self::API_KEY_OPTION, trim($_POST['ddelivery_api_key']));
+            // Перезагрузка страницы, чтобы исчезло уведомление об отсутствии API-ключа
+            wp_redirect($_SERVER['REQUEST_URI']);
         }
 
         // Подключение шаблона страницы
