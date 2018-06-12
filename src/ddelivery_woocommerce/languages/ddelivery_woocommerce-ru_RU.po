@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: DDelivery WooCommerce\n"
-"POT-Creation-Date: 2018-06-10 01:09+0500\n"
-"PO-Revision-Date: 2018-06-10 01:19+0500\n"
+"POT-Creation-Date: 2018-06-12 16:06+0500\n"
+"PO-Revision-Date: 2018-06-12 16:07+0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -30,30 +30,34 @@ msgstr "Cпособ доставки"
 msgid "Select and confirm shipping type."
 msgstr "Выберите и подтвердите параметры доставки."
 
-#: includes/DDeliveryWooCommerceAdmin.php:22
-msgid "WooCommerce is required for DDelivery WooCommerce plugin."
-msgstr ""
-"Для работы плагина DDelivery WooCommerce должен быть установлен и "
-"активирован сам WooCommerce."
-
-#: includes/DDeliveryWooCommerceAdmin.php:34
+#: includes/DDeliveryWooCommerceAdmin.php:35
 msgid "Settings"
 msgstr "Настройки"
 
-#: includes/DDeliveryWooCommerceAdmin.php:58
-#: includes/DDeliveryWooCommerceAdmin.php:67
+#: includes/DDeliveryWooCommerceAdmin.php:59
+#: includes/DDeliveryWooCommerceAdmin.php:68
 #: includes/DDeliveryWooCommerceShippingMethod.php:33
 #: includes/DDeliveryWooCommerceShippingMethod.php:47
 msgid "DDelivery"
 msgstr "DDelivery"
 
-#: includes/DDeliveryWooCommerceAdmin.php:74
+#: includes/DDeliveryWooCommerceAdmin.php:75
 msgid "Open order in the DDelivery Cabinet"
 msgstr "Открыть заказ в личном кабинете DDelivery"
 
-#: includes/DDeliveryWooCommerceAdmin.php:79
+#: includes/DDeliveryWooCommerceAdmin.php:80
 msgid "Order is not in the DDelivery Cabinet"
 msgstr "Заказ ещё не передан в личный кабинет DDelivery"
+
+#: includes/DDeliveryWooCommerceAdmin.php:102
+msgid "WooCommerce is required for DDelivery WooCommerce plugin."
+msgstr ""
+"Для работы плагина DDelivery WooCommerce должен быть установлен и "
+"активирован сам WooCommerce."
+
+#: includes/DDeliveryWooCommerceAdmin.php:107
+msgid "DDelivery API-key not set."
+msgstr "API-ключ DDelivery не задан."
 
 #: includes/DDeliveryWooCommercePaymentMethod.php:27
 #: includes/DDeliveryWooCommercePaymentMethod.php:34

@@ -13,14 +13,34 @@ class DDeliveryWooCommerceAdmin extends DDeliveryWooCommerceBase
     // Уникальное название страницы плагина в разделе настроек
     const ADMIN_MENU_SLUG = 'ddelivery-settings';
 
+    // Имя опции, в которой хранятся уведомления для админки
+    const ADMIN_NOTICES_OPTION_NAME = 'ddelivery_admin_notices';
+
 
     /**
-     * Выводит сообщение в админке, что WooCommerce должен быть установлен и активирован
+     * Выводит уведомления в админке
+     *
+     * @param $push string
+     * @param $echo bool
      */
-    public static function _wooCommerceNotFoundNotice()
+    public static function _notice($push = '', $echo = false)
     {
-        $msg = __('WooCommerce is required for DDelivery WooCommerce plugin.', self::TEXT_DOMAIN);
-        echo '<div class="notice notice-warning"><p>' . esc_html($msg) . '</p></div>';
+        if ($push)
+        {
+            $notices = get_option(self::ADMIN_NOTICES_OPTION_NAME, []);
+            $notices[] = $push;
+            update_option(self::ADMIN_NOTICES_OPTION_NAME, array_unique($notices));
+        }
+
+        if ($echo)
+        {
+            add_action('admin_init', function () {
+                foreach(get_option(self::ADMIN_NOTICES_OPTION_NAME, []) as $text)
+                    echo '<div class="notice notice-warning"><p>' . esc_html($text) . '</p></div>';
+
+                delete_option(self::ADMIN_NOTICES_OPTION_NAME);
+            });
+        }
     }
 
     /**
@@ -57,7 +77,7 @@ class DDeliveryWooCommerceAdmin extends DDeliveryWooCommerceBase
     {
         add_submenu_page(self::ADMIN_PARENT_SLUG, __('DDelivery'), __('DDelivery'), 8, self::ADMIN_MENU_SLUG, __CLASS__ . '::_adminSettingsPage');
     }
-    
+
     /**
      * Выводит на страницу заказа блок со ссылкой на связанный заказ в ЛК DDelivery
      */
@@ -67,7 +87,7 @@ class DDeliveryWooCommerceAdmin extends DDeliveryWooCommerceBase
             add_meta_box('shop_order_ddelivery_link', __('DDelivery', self::TEXT_DOMAIN), function ($post) {
                 $ddelivery_id = get_post_meta($post->ID, self::DDELIVERY_ID_META_KEY, true);
                 $in_ddelivery_cabinet = get_post_meta($post->ID, self::IN_DDELIVERY_CABINET_META_KEY, true);
-                
+
                 if ($in_ddelivery_cabinet)
                 {
                     echo '<a href="' . self::DDELIVERY_CABINET_URL . 'orders/' . $ddelivery_id . '" target="_blank">';
@@ -98,7 +118,11 @@ class DDeliveryWooCommerceAdmin extends DDeliveryWooCommerceBase
         else
         {
             // Вывод сообщения, что для плагина DDelivery WooCommerce необходим WooCommerce
-            add_action('admin_notices', __CLASS__ . '::_wooCommerceNotFoundNotice');
+            self::_notice(__('WooCommerce is required for DDelivery WooCommerce plugin.', self::TEXT_DOMAIN));
         }
+
+        // Вывод уведомления, если API-ключ DDelivery не задан в настройках плагина
+        if (!self::checkApiKey())
+            self::_notice(__('DDelivery API-key not set.', self::TEXT_DOMAIN), true);
     }
 }

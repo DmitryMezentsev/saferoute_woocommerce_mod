@@ -46,6 +46,16 @@ class DDeliveryWooCommerceBase
     }
 
     /**
+     * Проверяет, сохранен ли в настройках плагина API-ключ
+     *
+     * @return bool
+     */
+    public function checkApiKey()
+    {
+        return (bool) strlen(get_option(self::API_KEY_OPTION));
+    }
+
+    /**
      * Возвращает массив всех возможных статусов поста/заказа (статусы WP + статусы WC)
      *
      * @return array
