@@ -143,7 +143,7 @@ final class DDeliveryWooCommerce extends DDeliveryWooCommerceBase
             // Сохранение DDelivery ID заказа
             update_post_meta($order_id, self::DDELIVERY_ID_META_KEY, $posted['ddelivery_id']);
             
-            if (mb_strlen($posted['ddelivery_id'], 'utf-8') >= 16)
+            if (mb_strlen($posted['ddelivery_id'], 'utf-8') < 15)
                 update_post_meta($order_id, self::IN_DDELIVERY_CABINET_META_KEY, 1);
             
             // Отправка запроса к SDK
