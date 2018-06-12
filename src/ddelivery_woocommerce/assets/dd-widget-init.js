@@ -289,7 +289,8 @@
         if ($('form.woocommerce-cart-form').length) {
             // Отправка запроса для обновления блока со способами доставки
             $(document).ajaxSuccess(function (event, jqxhr, settings) {
-                if (settings.url.indexOf('wc-ajax=update_shipping_method') !== -1)
+                if (settings.url.indexOf('wc-ajax=update_shipping_method') !== -1 ||
+                    settings.url.indexOf('wc-ajax=get_refreshed_fragments') !== -1)
                     hideDDeliveryCostInCart();
             });
             
