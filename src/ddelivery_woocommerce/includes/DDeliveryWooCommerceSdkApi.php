@@ -106,7 +106,7 @@ class DDeliveryWooCommerceSdkApi extends DDeliveryWooCommerceBase
     /**
      * Обработчик события изменения постов
      *
-     * @param int $post_id ID изменяемого поста
+     * @param $post_id int ID изменяемого поста
      */
     public static function _onPostEdit($post_id)
     {
@@ -172,7 +172,7 @@ class DDeliveryWooCommerceSdkApi extends DDeliveryWooCommerceBase
     /**
      * Обновляет данные заказа на сервере DDelivery
      *
-     * @param array Параметры запроса
+     * @param $data array Параметры запроса
      */
     public static function updateOrderInDDelivery($data)
     {
