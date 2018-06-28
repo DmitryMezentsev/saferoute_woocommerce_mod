@@ -29,37 +29,40 @@ final class DDeliveryWooCommerce extends DDeliveryWooCommerceBase
     {
         delete_option(self::API_KEY_OPTION);
     }
-    
-    
+
+
     /**
      * Возвращает inline JS с параметрами, необходимыми для инициализации виджета
-     * 
+     *
      * @return string
      */
     private static function _getInlineJs()
     {
         global $woocommerce;
-        
+
+        $woocommerce->cart->calculate_totals();
+
         $widget_params = [
+            'LANG'     => get_locale(),
             'BASE_URL' => get_site_url(),
             'API_URL'  => get_site_url() . '/wp-json/' . DDeliveryWooCommerceWidgetApi::API_PATH . '/sdk',
             'PRODUCTS' => self::_getProducts(),
             'WEIGHT'   => $woocommerce->cart->get_cart_contents_weight(),
-            'LANG'     => get_locale(),
+            'DISCOUNT' => $woocommerce->cart->get_discount_total(),
         ];
-        
+
         return 'var DD_WIDGET = ' . json_encode($widget_params, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) . ';';
     }
-    
+
     /**
      * Возвращает содержимое корзины
-     * 
+     *
      * @return array
      */
     private static function _getProducts()
     {
         global $woocommerce;
-        
+
         $products = [];
 
         foreach($woocommerce->cart->get_cart() as $woo_cart_item)
@@ -68,7 +71,7 @@ final class DDeliveryWooCommerce extends DDeliveryWooCommerceBase
             $nds = ($woo_cart_item['line_total'] && $woo_cart_item['line_tax'])
                 ? round(100 / ($woo_cart_item['line_total'] / $woo_cart_item['line_tax']))
                 : null;
-            
+
             // Начальная цена
             $regular_price = (float) $woo_cart_item['data']->regular_price;
             // Размер скидки (начальная цена минус цена продажи)
@@ -84,10 +87,10 @@ final class DDeliveryWooCommerce extends DDeliveryWooCommerceBase
                 'count'      => $woo_cart_item['quantity'],
             ];
         }
-        
+
         return $products;
     }
-    
+
     /**
      * Добавляет виджет в форму чекаута
      */
@@ -100,12 +103,12 @@ final class DDeliveryWooCommerce extends DDeliveryWooCommerceBase
             wp_add_inline_script('ddelivery-widget-init', self::_getInlineJs(), 'before');
             // ...и CSS
             wp_enqueue_style('ddelivery-widget-css', '/' . self::PLUGIN_DIR . 'assets/common.css');
-            
+
             // Вывод HTML блока с виджетом
             add_action('woocommerce_checkout_before_customer_details', function () {
                 require self::PLUGIN_DIR_ABS . 'views/checkout-widget-block.php';
             });
-            
+
             // Добавление поля DDelivery ID заказа
             add_filter('woocommerce_checkout_fields', function ($fields) {
                 $fields['order']['ddelivery_id'] = [
@@ -113,23 +116,23 @@ final class DDeliveryWooCommerce extends DDeliveryWooCommerceBase
                     'type'     => 'text',
                     'required' => 1,
                 ];
-                
+
                 return $fields;
             });
-            
+
             // Изменение текста ошибки валидации поля DDelivery ID
             add_filter('woocommerce_add_error', function ($error) {
                 if (strpos($error, __('Shipping type', self::TEXT_DOMAIN)) !== false)
                     return __('Select and confirm shipping type.', self::TEXT_DOMAIN);
-                
+
                 return $error;
             });
         });
     }
-    
+
     /**
      * Вызывается после создания заказа на сайте
-     * 
+     *
      * @param $order_id int
      * @param $posted array
      */
@@ -139,13 +142,13 @@ final class DDeliveryWooCommerce extends DDeliveryWooCommerceBase
         if (isset($posted['ddelivery_id']) && $posted['ddelivery_id'] !== 'no')
         {
             $order = get_post($order_id);
-            
+
             // Сохранение DDelivery ID заказа
             update_post_meta($order_id, self::DDELIVERY_ID_META_KEY, $posted['ddelivery_id']);
-            
-            if (mb_strlen($posted['ddelivery_id'], 'utf-8') < 15)
+
+            if (mb_strlen($posted['ddelivery_id'], 'utf-8') >= 16)
                 update_post_meta($order_id, self::IN_DDELIVERY_CABINET_META_KEY, 1);
-            
+
             // Отправка запроса к SDK
             $response = DDeliveryWooCommerceSdkApi::updateOrderInDDelivery([
                 'id'             => $posted['ddelivery_id'],
@@ -153,7 +156,7 @@ final class DDeliveryWooCommerce extends DDeliveryWooCommerceBase
                 'status'         => $order->post_status,
                 'payment_method' => $posted['payment_method'],
             ]);
-            
+
             // Если заказ был перенесен в ЛК
             if ($response['status'] === 'ok' && isset($response['data']['cabinet_id']))
             {
@@ -190,7 +193,7 @@ final class DDeliveryWooCommerce extends DDeliveryWooCommerceBase
         }
 
         DDeliveryWooCommerceSdkApi::init();
-        
+
         // Добавление в систему способа доставки и способа оплаты DDelivery
         addDDeliveryShippingMethod();
         addDDeliveryPaymentMethod();
