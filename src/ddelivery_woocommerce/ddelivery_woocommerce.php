@@ -2,7 +2,7 @@
 /**
  * Plugin name: DDelivery WooCommerce
  * Description: DDelivery Widget for WooCommerce
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Dmitry Mezentsev
  * Plugin URI: https://ddelivery.ru/integration
  * Text Domain: ddelivery_woocommerce
