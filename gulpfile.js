@@ -9,6 +9,7 @@ const path = require('path');
 const buildDir  = './build';
 const moduleDir = './src';
 const docDir    = './doc';
+const svnDir    = './wp_svn_repo/trunk';
 
 const moduleFiles = path.join(moduleDir, '**/*.*');
 const docFiles    = path.join(docDir, '*.*');
@@ -29,8 +30,8 @@ const $ = {
 
 
 // Удаление старых файлов сборки
-$.gulp.task('_clean', () =>
-    $.gulp.src(path.join(buildDir, '*.*'), { read: false })
+$.gulp.task('_cleanBuild', () =>
+    $.gulp.src(path.join(buildDir, '**/*.*'), { read: false })
         .pipe($.clean())
 );
 
@@ -59,12 +60,24 @@ $.gulp.task('_createArchive', () => {
 // Мониторинг изменений и пересборка
 $.gulp.task('_watch', () =>
     $.watch([moduleFiles, docFiles], () =>
-        $.sequence('_clean', '_buildModule', '_createArchive')
+        $.sequence('_cleanBuild', '_buildModule', '_createArchive', '_cleanSvn', '_copyToSvn')
     )
+);
+
+// Удаление старых файлов из SVN-репозитория
+$.gulp.task('_cleanSvn', () =>
+    $.gulp.src(path.join(svnDir, '**/*.*'), { read: false })
+        .pipe($.clean())
+);
+
+// Копирование файлов для SVN-репозитория
+$.gulp.task('_copyToSvn', () =>
+    $.gulp.src(path.join(moduleDir, 'ddelivery-woocommerce/**/*.*'))
+        .pipe($.gulp.dest(svnDir))
 );
 
 
 
 $.gulp.task('default', () =>
-    $.sequence('_clean', '_buildModule', '_createArchive', '_watch')
+    $.sequence('_cleanBuild', '_buildModule', '_createArchive', '_cleanSvn', '_copyToSvn', '_watch')
 );

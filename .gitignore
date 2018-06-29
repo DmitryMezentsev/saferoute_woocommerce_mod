@@ -2,3 +2,4 @@ node_modules
 .idea
 doc/~*
 doc/*.tmp
+wp_svn_repo

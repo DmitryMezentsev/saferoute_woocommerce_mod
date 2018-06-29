@@ -18,29 +18,29 @@ class DDeliveryWooCommerceAdmin extends DDeliveryWooCommerceBase
 
 
     /**
-     * Выводит уведомления в админке
+     * Добавляет уведомление в стэк уведомлений
      *
-     * @param $push string
-     * @param $echo bool
+     * @param $text string Текст уведомления
      */
-    public static function _notice($push = '', $echo = false)
+    public static function _pushNotice($text)
     {
-        if ($push)
-        {
-            $notices = get_option(self::ADMIN_NOTICES_OPTION_NAME, []);
-            $notices[] = $push;
-            update_option(self::ADMIN_NOTICES_OPTION_NAME, array_unique($notices));
-        }
+        $notices = get_option(self::ADMIN_NOTICES_OPTION_NAME, []);
+        $notices[] = $text;
 
-        if ($echo)
-        {
-            add_action('admin_init', function () {
-                foreach(get_option(self::ADMIN_NOTICES_OPTION_NAME, []) as $text)
-                    echo '<div class="notice notice-warning"><p>' . esc_html($text) . '</p></div>';
+        update_option(self::ADMIN_NOTICES_OPTION_NAME, array_unique($notices));
+    }
 
-                delete_option(self::ADMIN_NOTICES_OPTION_NAME);
-            });
-        }
+    /**
+     * Выводит все уведомления из стэка
+     */
+    public static function _echoNotices()
+    {
+        add_action('admin_init', function () {
+            foreach(get_option(self::ADMIN_NOTICES_OPTION_NAME, []) as $text)
+                echo '<div class="notice notice-warning"><p>' . esc_html($text) . '</p></div>';
+
+            delete_option(self::ADMIN_NOTICES_OPTION_NAME);
+        });
     }
 
     /**
@@ -119,12 +119,14 @@ class DDeliveryWooCommerceAdmin extends DDeliveryWooCommerceBase
         }
         else
         {
-            // Вывод сообщения, что для плагина DDelivery WooCommerce необходим WooCommerce
-            self::_notice(__('WooCommerce is required for DDelivery WooCommerce plugin.', self::TEXT_DOMAIN));
+            // Сообщение, что для плагина DDelivery WooCommerce необходим WooCommerce
+            self::_pushNotice(__('WooCommerce is required for DDelivery WooCommerce plugin.', self::TEXT_DOMAIN));
         }
 
-        // Вывод уведомления, если API-ключ DDelivery не задан в настройках плагина
+        // Сообщение, что API-ключ DDelivery не задан в настройках плагина
         if (!self::checkApiKey())
-            self::_notice(__('DDelivery API-key not set.', self::TEXT_DOMAIN), true);
+            self::_pushNotice(__('DDelivery API-key not set.', self::TEXT_DOMAIN));
+
+        self::_echoNotices();
     }
 }

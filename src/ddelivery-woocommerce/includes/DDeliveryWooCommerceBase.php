@@ -8,7 +8,7 @@ class DDeliveryWooCommerceBase
     const ID = 'ddelivery';
 
     // Директория плагина
-    const PLUGIN_DIR = 'wp-content/plugins/ddelivery_woocommerce/';
+    const PLUGIN_DIR = 'wp-content/plugins/ddelivery-woocommerce/';
 
     // Абсолютный путь к директории плагина плагина
     const PLUGIN_DIR_ABS = ABSPATH . self::PLUGIN_DIR;
