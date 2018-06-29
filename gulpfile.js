@@ -31,7 +31,7 @@ const $ = {
 
 // Удаление старых файлов сборки
 $.gulp.task('_cleanBuild', () =>
-    $.gulp.src(path.join(buildDir, '**/*.*'), { read: false })
+    $.gulp.src(path.join(buildDir, '*.*'), { read: false })
         .pipe($.clean())
 );
 
