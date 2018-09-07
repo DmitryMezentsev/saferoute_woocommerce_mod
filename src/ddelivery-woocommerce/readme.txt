@@ -3,7 +3,7 @@ Contributors: Dmitry Mezentsev
 Tags: ddelivery, shipping, woocommerce, shop, доставка, агрегатор, дделивери
 Requires at least: 4.9
 Tested up to: 4.9
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,6 +20,8 @@ https://github.com/DmitryMezentsev/ddelivery_woocommerce_mod/raw/master/build/dd
 
 == Changelog ==
 
+= 1.0.4 =
+* Исправлена ошибка с флагом переноса заказа в ЛК DD
 = 1.0.3 =
 * Исправлена ошибка с выводом уведомлений в амдинке.
 = 1.0.2 =
@@ -31,6 +33,8 @@ https://github.com/DmitryMezentsev/ddelivery_woocommerce_mod/raw/master/build/dd
 
 == Upgrade Notice ==
 
+= 1.0.4 =
+* Исправлена ошибка с флагом переноса заказа в ЛК DD
 = 1.0.3 =
 Исправлена ошибка с выводом уведомлений в амдинке.
 = 1.0.2 =
