@@ -231,7 +231,7 @@
 
                     this._.on('afterSubmit', function (response) {
                         if (response.status === 'ok') {
-                            $('input#ddelivery_id').val(response.id);
+                            $('input#ddelivery_id').val(response.id || 'no');
 
                             $('.ddelivery_widget_block').addClass('submitted');
                             hideOtherShippings();
