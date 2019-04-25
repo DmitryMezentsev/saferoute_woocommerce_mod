@@ -1,38 +1,38 @@
 <?php
 
-require_once 'DDeliveryWooCommerceBase.php';
+require_once 'SafeRouteWooCommerceBase.php';
 
 /**
- * Добавляет способ оплаты "Оплата через DDelivery"
+ * Добавляет способ оплаты "Оплата через SafeRoute"
  */
-function addDDeliveryPaymentMethod()
+function addSafeRoutePaymentMethod()
 {
-    if (!DDeliveryWooCommerceBase::checkWooCommerce()) return;
+    if (!SafeRouteWooCommerceBase::checkWooCommerce()) return;
 
 
-    function _addDDeliveryPaymentMethod($methods)
+    function _addSafeRoutePaymentMethod($methods)
     {
-        $methods[DDeliveryWooCommerceBase::ID] = 'DDeliveryWooCommercePaymentMethod';
+        $methods[SafeRouteWooCommerceBase::ID] = 'SafeRouteWooCommercePaymentMethod';
         return $methods;
     }
 
 
-    function _initDDeliveryPaymentMethod()
+    function _initSafeRoutePaymentMethod()
     {
-        class DDeliveryWooCommercePaymentMethod extends WC_Payment_Gateway
+        class SafeRouteWooCommercePaymentMethod extends WC_Payment_Gateway
         {
             public function __construct()
             {
-                $this->id                 = DDeliveryWooCommerceBase::ID;
-                $this->method_title       = __('Payment via DDelivery', DDeliveryWooCommerceBase::TEXT_DOMAIN);
-                $this->method_description = __('Payment via DDelivery Widget', DDeliveryWooCommerceBase::TEXT_DOMAIN);
+                $this->id                 = SafeRouteWooCommerceBase::ID;
+                $this->method_title       = __('Payment via SafeRoute', SafeRouteWooCommerceBase::TEXT_DOMAIN);
+                $this->method_description = __('Payment via SafeRoute Widget', SafeRouteWooCommerceBase::TEXT_DOMAIN);
                 $this->title              = $this->get_option('title');
                 $this->has_fields         = false;
 
                 if (!$this->title)
                 {
-                    $this->update_option('title', __('Payment via DDelivery', DDeliveryWooCommerceBase::TEXT_DOMAIN));
-                    $this->title = __('Payment via DDelivery', DDeliveryWooCommerceBase::TEXT_DOMAIN);
+                    $this->update_option('title', __('Payment via SafeRoute', SafeRouteWooCommerceBase::TEXT_DOMAIN));
+                    $this->title = __('Payment via SafeRoute', SafeRouteWooCommerceBase::TEXT_DOMAIN);
                 }
 
                 $this->init_form_fields();
@@ -70,6 +70,6 @@ function addDDeliveryPaymentMethod()
     }
 
 
-    add_filter('woocommerce_payment_gateways', '_addDDeliveryPaymentMethod');
-    add_action('plugins_loaded', '_initDDeliveryPaymentMethod');
+    add_filter('woocommerce_payment_gateways', '_addSafeRoutePaymentMethod');
+    add_action('plugins_loaded', '_initSafeRoutePaymentMethod');
 }

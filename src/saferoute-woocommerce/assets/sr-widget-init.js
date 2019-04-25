@@ -1,7 +1,7 @@
 (function($) {
     $(function () {
         var lang = (function () {
-            switch (DD_WIDGET.LANG) {
+            switch (SR_WIDGET.LANG) {
                 case 'en_US': return 'en';
                 case 'zh_CN': return 'zh';
             }
@@ -10,26 +10,26 @@
 
 
         // Переключает отображаемые способы оплаты
-        function paymentMethodsToggle (useDDelivery) {
-            var $paymentMethodDDelivery = $('.wc_payment_method.payment_method_ddelivery'),
-                $otherPaymentMethods = $('.wc_payment_method:not(.payment_method_ddelivery)');
+        function paymentMethodsToggle (useSafeRoute) {
+            var $paymentMethodSafeRoute = $('.wc_payment_method.payment_method_saferoute'),
+                $otherPaymentMethods = $('.wc_payment_method:not(.payment_method_saferoute)');
 
             function selectAnyVisiblePaymentMethod () {
                 $('.wc_payment_method:visible').find('label').trigger('click');
             }
 
-            if (useDDelivery) {
-                if ($paymentMethodDDelivery.length) {
-                    // Отображение способа оплаты "Оплата через DDelivery"
-                    $paymentMethodDDelivery.show();
+            if (useSafeRoute) {
+                if ($paymentMethodSafeRoute.length) {
+                    // Отображение способа оплаты "Оплата через SafeRoute"
+                    $paymentMethodSafeRoute.show();
                     // Скрытие остальных способов оплаты
                     $otherPaymentMethods.hide();
 
                     selectAnyVisiblePaymentMethod();
                 }
             } else {
-                // Скрытие способа оплаты "Оплата через DDelivery"
-                $paymentMethodDDelivery.hide();
+                // Скрытие способа оплаты "Оплата через SafeRoute"
+                $paymentMethodSafeRoute.hide();
                 // Отображение остальных способов оплаты, если они были скрыты
                 $otherPaymentMethods.show();
 
@@ -37,16 +37,16 @@
             }
         }
 
-        // Скрывает все варианты доставки кроме DDelivery
+        // Скрывает все варианты доставки кроме SafeRoute
         function hideOtherShippings () {
             $('.shipping ul input.shipping_method').each(function () {
-                if ($(this).val() !== 'ddelivery')
+                if ($(this).val() !== 'saferoute')
                     $(this).closest('li').hide();
             });
         }
 
         // Проверяет текущий выбранный способ доставки и отображает блок с виджетом в случае,
-        // если выбрана доставка DDelivery
+        // если выбрана доставка SafeRoute
         function checkSelectedShippingMethod () {
             var $inputs = $('input.shipping_method');
 
@@ -54,11 +54,11 @@
                 ? $inputs.filter(':checked').val()
                 : $inputs.val();
 
-            if (shippingMethod === 'ddelivery') {
+            if (shippingMethod === 'saferoute') {
                 widget.init();
                 paymentMethodsToggle(true);
 
-                if ($('.ddelivery_widget_block').hasClass('submitted'))
+                if ($('.saferoute_widget_block').hasClass('submitted'))
                     hideOtherShippings();
             } else {
                 widget.destroy();
@@ -146,7 +146,7 @@
 
         // Передает в WooCommerce стоимость доставки, обновляет стоимость на странице
         function setShippingCost (cost, end) {
-            $.post(DD_WIDGET.BASE_URL + '/wp-json/ddelivery-widget-api/set-shipping-cost', {
+            $.post(SR_WIDGET.BASE_URL + '/wp-json/saferoute-widget-api/set-shipping-cost', {
                 cost: cost
             }, function (response) {
                 if (response && response.status === 'ok' && end) {
@@ -183,22 +183,22 @@
 
             message += ', ' + (data.delivery.point ? data.delivery.point.delivery_date : data.delivery.delivery_date);
 
-            $('.ddelivery_widget_block').html('<h3>' + t[lang].delivery + '</h3>' + message + '.');
+            $('.saferoute_widget_block').html('<h3>' + t[lang].delivery + '</h3>' + message + '.');
         }
 
-        // Скрывает стоимость доставки DDelivery в корзине в блоке "Сумма заказов"
-        function hideDDeliveryCostInCart () {
+        // Скрывает стоимость доставки SafeRoute в корзине в блоке "Сумма заказов"
+        function hideSafeRouteCostInCart () {
             $('.cart_totals').each(function () {
                 $(this)
-                    .find('ul#shipping_method li input.shipping_method[value=ddelivery]')
+                    .find('ul#shipping_method li input.shipping_method[value=saferoute]')
                     .closest('li')
-                    .addClass('ddelivery_shipping');
+                    .addClass('saferoute_shipping');
 
                 if ($(this).find('.shipping input.shipping_method').length === 1) {
                     $(this)
-                        .find('.shipping input.shipping_method[value=ddelivery]')
+                        .find('.shipping input.shipping_method[value=saferoute]')
                         .closest('td')
-                        .addClass('ddelivery_shipping');
+                        .addClass('saferoute_shipping');
                 }
             });
         }
@@ -209,14 +209,12 @@
             data: null,
             init: function () {
                 if (!this._) {
-                    setShippingCost(0, 'update_checkout');
-
-                    this._ = new DDeliveryWidgetCart('dd_widget', {
+                    this._ = new SafeRouteCartWidget('sr_widget', {
                         lang: lang,
-                        apiScript: DD_WIDGET.API_URL,
-                        products: DD_WIDGET.PRODUCTS,
-                        weight: DD_WIDGET.WEIGHT,
-                        discount: DD_WIDGET.DISCOUNT,
+                        apiScript: SR_WIDGET.API_URL,
+                        products: SR_WIDGET.PRODUCTS,
+                        weight: SR_WIDGET.WEIGHT,
+                        discount: SR_WIDGET.DISCOUNT,
                         mod: 'woocommerce'
                     });
 
@@ -231,9 +229,9 @@
 
                     this._.on('afterSubmit', function (response) {
                         if (response.status === 'ok') {
-                            $('input#ddelivery_id').val(response.id || 'no');
+                            $('input#saferoute_id').val(response.id || 'no');
 
-                            $('.ddelivery_widget_block').addClass('submitted');
+                            $('.saferoute_widget_block').addClass('submitted');
                             hideOtherShippings();
 
                             setShippingCost(
@@ -245,12 +243,12 @@
                         }
                     });
 
-                    $('input#ddelivery_id').val('');
+                    $('input#saferoute_id').val('');
                     // Активация блока "Доставка по другому адресу"
                     $('input[name=ship_to_different_address]').prop('checked', true).trigger('change');
                 }
 
-                $('.woocommerce-checkout').addClass('ddelivery_shipping_selected');
+                $('.woocommerce-checkout').addClass('saferoute_shipping_selected');
             },
             destroy: function () {
                 if (this._) {
@@ -260,14 +258,17 @@
                     this._ = null;
                 }
 
-                $('input#ddelivery_id').val('no');
-                $('.woocommerce-checkout').removeClass('ddelivery_shipping_selected');
+                $('input#saferoute_id').val('no');
+                $('.woocommerce-checkout').removeClass('saferoute_shipping_selected');
             }
         };
 
 
         // Для страницы чекаута
         if ($('form.woocommerce-checkout').length) {
+            // Обнуление стоимости ранее выбранной доставки
+            setShippingCost(0, 'update_checkout');
+
             // Отправка запроса для обновления блоков
             $(document).ajaxSuccess(function (event, jqxhr, settings) {
                 if (settings.url.indexOf('wc-ajax=update_order_review') !== -1)
@@ -291,10 +292,10 @@
             // Отправка запроса для обновления блока со способами доставки
             $(document).ajaxSuccess(function (event, jqxhr, settings) {
                 if (settings.url.indexOf('wc-ajax=update_shipping_method') !== -1)
-                    hideDDeliveryCostInCart();
+                    hideSafeRouteCostInCart();
             });
 
-            hideDDeliveryCostInCart();
+            hideSafeRouteCostInCart();
 
             // Обнуление стоимости ранее выбранной доставки
             setShippingCost(0, function () {

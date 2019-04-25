@@ -1,14 +1,14 @@
 <?php
 
-require_once 'DDeliveryWooCommerceBase.php';
-require_once 'DDeliveryWidgetApi.php';
+require_once 'SafeRouteWooCommerceBase.php';
+require_once 'SafeRouteWidgetApi.php';
 
 /**
  * Добавляет в движок API для взаимодействия с корзинным виджетом
  */
-class DDeliveryWooCommerceWidgetApi extends DDeliveryWooCommerceBase
+class SafeRouteWooCommerceWidgetApi extends SafeRouteWooCommerceBase
 {
-    const API_PATH = 'ddelivery-widget-api';
+    const API_PATH = 'saferoute-widget-api';
 
 
     /**
@@ -26,7 +26,7 @@ class DDeliveryWooCommerceWidgetApi extends DDeliveryWooCommerceBase
     
     
     /**
-     * Назначает стоимость доставки DDelivery
+     * Назначает стоимость доставки SafeRoute
      * 
      * @param $data object
      * @return array
@@ -34,11 +34,8 @@ class DDeliveryWooCommerceWidgetApi extends DDeliveryWooCommerceBase
     private static function _setShippingCostApi($data)
     {
         if (!session_id()) session_start();
-        $_SESSION['ddelivery_shipping_cost'] = $data->get_param('cost');
-        
-        // Сброс кэшированного значения
-        WC()->session->set('shipping_for_package_0', null);
-        
+        $_SESSION['saferoute_shipping_cost'] = $data->get_param('cost');
+
         return ['status' => 'ok'];
     }
     
@@ -53,7 +50,7 @@ class DDeliveryWooCommerceWidgetApi extends DDeliveryWooCommerceBase
         $params = $data->get_param('data');
         if (!$params) $params = [];
         
-        $widgetApi = new DDeliveryWidgetApi();
+        $widgetApi = new SafeRouteWidgetApi();
         
         $widgetApi->setApiKey(get_option(self::API_KEY_OPTION));
         $widgetApi->setMethod($data->get_method());

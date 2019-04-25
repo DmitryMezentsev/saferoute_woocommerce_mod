@@ -3,36 +3,36 @@
 /**
  * Функции и константы, общие для всех остальных классов плагина
  */
-class DDeliveryWooCommerceBase
+class SafeRouteWooCommerceBase
 {
-    const ID = 'ddelivery';
+    const ID = 'saferoute';
 
     // Директория плагина
-    const PLUGIN_DIR = 'wp-content/plugins/ddelivery-woocommerce/';
+    const PLUGIN_DIR = 'wp-content/plugins/saferoute-woocommerce/';
 
     // Абсолютный путь к директории плагина плагина
     const PLUGIN_DIR_ABS = ABSPATH . self::PLUGIN_DIR;
 
     // Имя параметра 'API-ключ' в БД WordPress
-    const API_KEY_OPTION = 'ddelivery_api_key';
+    const API_KEY_OPTION = 'saferoute_api_key';
 
-    // Имя мета-параметра DDelivery ID заказа
-    const DDELIVERY_ID_META_KEY = '_order_ddelivery_id';
+    // Имя мета-параметра SafeRoute ID заказа
+    const SAFEROUTE_ID_META_KEY = '_order_saferoute_id';
 
     // Имя мета-параметра трек-номера заказа
     const TRACKING_NUMBER_META_KEY = 'order_tracking_number';
 
     // Имя мета-параметра флага переноса заказа в ЛК
-    const IN_DDELIVERY_CABINET_META_KEY = '_order_in_ddelivery_cabinet';
+    const IN_SAFEROUTE_CABINET_META_KEY = '_order_in_saferoute_cabinet';
 
-    // Имя мета-параметра штрих-кода у товара
-    const PRODUCT_BARCODE_META_KEY =  'barcode';
+    // Имя атрибута со штрих-кодом товара
+    const PRODUCT_BARCODE_ATTR_NAME =  'barcode';
 
     // Text Domain плагина
-    const TEXT_DOMAIN = 'ddelivery_woocommerce';
+    const TEXT_DOMAIN = 'saferoute_woocommerce';
     
-    // URL ЛК DDelivery
-    const DDELIVERY_CABINET_URL = 'https://ddelivery.ru/cabinet/';
+    // URL ЛК SafeRoute
+    const SAFEROUTE_CABINET_URL = 'https://cabinet.saferoute.ru/';
     
     
     /**
@@ -50,7 +50,7 @@ class DDeliveryWooCommerceBase
      *
      * @return bool
      */
-    public function checkApiKey()
+    public static function checkApiKey()
     {
         return (bool) strlen(get_option(self::API_KEY_OPTION));
     }

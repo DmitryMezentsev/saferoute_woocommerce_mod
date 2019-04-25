@@ -14,8 +14,8 @@ const svnDir    = './wp_svn_repo/trunk';
 const moduleFiles = path.join(moduleDir, '**/*.*');
 const docFiles    = path.join(docDir, '*.*');
 
-const moduleFileName  = 'ddelivery_woocommerce_install.zip';
-const archiveFileName = 'ddelivery_woocommerce.zip';
+const moduleFileName  = 'saferoute_woocommerce_install.zip';
+const archiveFileName = 'saferoute_woocommerce.zip';
 
 
 
@@ -72,7 +72,7 @@ $.gulp.task('_cleanSvn', () =>
 
 // Копирование файлов для SVN-репозитория
 $.gulp.task('_copyToSvn', () =>
-    $.gulp.src(path.join(moduleDir, 'ddelivery-woocommerce/**/*.*'))
+    $.gulp.src(path.join(moduleDir, 'saferoute-woocommerce/**/*.*'))
         .pipe($.gulp.dest(svnDir))
 );
 

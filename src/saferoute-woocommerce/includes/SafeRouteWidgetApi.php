@@ -3,7 +3,7 @@
 /**
  * API-скрипт виджета
  */
-class DDeliveryWidgetApi
+class SafeRouteWidgetApi
 {
     /**
      * @var string API-ключ магазина
@@ -23,7 +23,6 @@ class DDeliveryWidgetApi
 
 
     /**
-     * HelperDDWidget constructor.
      * @param string $apiKey API-ключ магазина
      */
     public function __construct($apiKey = '')

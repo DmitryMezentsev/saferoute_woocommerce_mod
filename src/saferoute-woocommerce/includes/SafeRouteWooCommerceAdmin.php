@@ -1,20 +1,20 @@
 <?php
 
-require_once 'DDeliveryWooCommerceBase.php';
+require_once 'SafeRouteWooCommerceBase.php';
 
 /**
  * Класс, управляющий отображением плагина в админке
  */
-class DDeliveryWooCommerceAdmin extends DDeliveryWooCommerceBase
+class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
 {
     // Раздел админки, куда будет добавлена страница настроек плагина
     const ADMIN_PARENT_SLUG = 'options-general.php';
 
     // Уникальное название страницы плагина в разделе настроек
-    const ADMIN_MENU_SLUG = 'ddelivery-settings';
+    const ADMIN_MENU_SLUG = 'saferoute-settings';
 
     // Имя опции, в которой хранятся уведомления для админки
-    const ADMIN_NOTICES_OPTION_NAME = 'ddelivery_admin_notices';
+    const ADMIN_NOTICES_OPTION_NAME = 'saferoute_admin_notices';
 
 
     /**
@@ -61,9 +61,9 @@ class DDeliveryWooCommerceAdmin extends DDeliveryWooCommerceBase
     public static function _adminSettingsPage()
     {
         // Сохранение изменений
-        if (isset($_POST['ddelivery_api_key']))
+        if (isset($_POST['saferoute_api_key']))
         {
-            update_option(self::API_KEY_OPTION, trim($_POST['ddelivery_api_key']));
+            update_option(self::API_KEY_OPTION, trim($_POST['saferoute_api_key']));
             // Перезагрузка страницы, чтобы исчезло уведомление об отсутствии API-ключа
             wp_redirect($_SERVER['REQUEST_URI']);
         }
@@ -77,28 +77,28 @@ class DDeliveryWooCommerceAdmin extends DDeliveryWooCommerceBase
      */
     public static function _createAdminSettingsPage()
     {
-        add_submenu_page(self::ADMIN_PARENT_SLUG, __('DDelivery'), __('DDelivery'), 8, self::ADMIN_MENU_SLUG, __CLASS__ . '::_adminSettingsPage');
+        add_submenu_page(self::ADMIN_PARENT_SLUG, __('SafeRoute'), __('SafeRoute'), 'administrator', self::ADMIN_MENU_SLUG, __CLASS__ . '::_adminSettingsPage');
     }
 
     /**
-     * Выводит на страницу заказа блок со ссылкой на связанный заказ в ЛК DDelivery
+     * Выводит на страницу заказа блок со ссылкой на связанный заказ в ЛК SafeRoute
      */
     public static function _addOrderMetaBox()
     {
         add_action('add_meta_boxes', function () {
-            add_meta_box('shop_order_ddelivery_link', __('DDelivery', self::TEXT_DOMAIN), function ($post) {
-                $ddelivery_id = get_post_meta($post->ID, self::DDELIVERY_ID_META_KEY, true);
-                $in_ddelivery_cabinet = get_post_meta($post->ID, self::IN_DDELIVERY_CABINET_META_KEY, true);
+            add_meta_box('shop_order_saferoute_link', __('SafeRoute', self::TEXT_DOMAIN), function ($post) {
+                $saferoute_id = get_post_meta($post->ID, self::SAFEROUTE_ID_META_KEY, true);
+                $in_saferoute_cabinet = get_post_meta($post->ID, self::IN_SAFEROUTE_CABINET_META_KEY, true);
 
-                if ($in_ddelivery_cabinet)
+                if ($in_saferoute_cabinet)
                 {
-                    echo '<a href="' . self::DDELIVERY_CABINET_URL . 'orders/' . $ddelivery_id . '" target="_blank">';
-                    _e('Open order in the DDelivery Cabinet', self::TEXT_DOMAIN);
+                    echo '<a href="' . self::SAFEROUTE_CABINET_URL . 'orders/' . $saferoute_id . '" target="_blank">';
+                    _e('Open order in the SafeRoute Cabinet', self::TEXT_DOMAIN);
                     echo '</a>';
                 }
                 else
                 {
-                    _e('Order is not in the DDelivery Cabinet', self::TEXT_DOMAIN);
+                    _e('Order is not in the SafeRoute Cabinet', self::TEXT_DOMAIN);
                 }
             }, 'shop_order');
         });
@@ -119,13 +119,13 @@ class DDeliveryWooCommerceAdmin extends DDeliveryWooCommerceBase
         }
         else
         {
-            // Сообщение, что для плагина DDelivery WooCommerce необходим WooCommerce
-            self::_pushNotice(__('WooCommerce is required for DDelivery WooCommerce plugin.', self::TEXT_DOMAIN));
+            // Сообщение, что для плагина SafeRoute WooCommerce необходим WooCommerce
+            self::_pushNotice(__('WooCommerce is required for SafeRoute WooCommerce plugin.', self::TEXT_DOMAIN));
         }
 
-        // Сообщение, что API-ключ DDelivery не задан в настройках плагина
+        // Сообщение, что API-ключ SafeRoute не задан в настройках плагина
         if (!self::checkApiKey())
-            self::_pushNotice(__('DDelivery API-key not set.', self::TEXT_DOMAIN));
+            self::_pushNotice(__('SafeRoute API-key not set.', self::TEXT_DOMAIN));
 
         self::_echoNotices();
     }

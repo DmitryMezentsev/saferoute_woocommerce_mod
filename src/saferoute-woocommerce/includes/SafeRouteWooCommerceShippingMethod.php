@@ -1,37 +1,37 @@
 <?php
 
-require_once 'DDeliveryWooCommerceBase.php';
+require_once 'SafeRouteWooCommerceBase.php';
 
 /**
- * Добавляет способ доставки DDelivery в WooCommerce
+ * Добавляет способ доставки SafeRoute в WooCommerce
  */
-function addDDeliveryShippingMethod()
+function addSafeRouteShippingMethod()
 {
-    if (!DDeliveryWooCommerceBase::checkWooCommerce()) return;
+    if (!SafeRouteWooCommerceBase::checkWooCommerce()) return;
 
 
-    function _addDDeliveryShippingMethod($methods)
+    function _addSafeRouteShippingMethod($methods)
     {
-        $methods[DDeliveryWooCommerceBase::ID] = 'DDeliveryWooCommerceShippingMethod';
+        $methods[SafeRouteWooCommerceBase::ID] = 'SafeRouteWooCommerceShippingMethod';
         return $methods;
     }
 
 
-    function _initDDeliveryShippingMethod()
+    function _initSafeRouteShippingMethod()
     {
-        class DDeliveryWooCommerceShippingMethod extends WC_Shipping_Method
+        class SafeRouteWooCommerceShippingMethod extends WC_Shipping_Method
         {
             /**
              * @param int $instance_id
              */
             public function __construct($instance_id = 0)
             {
-                $this->id                = DDeliveryWooCommerceBase::ID;
+                $this->id                = SafeRouteWooCommerceBase::ID;
                 $this->instance_id       = absint($instance_id);
                 $this->enabled            = 'yes';
                 $this->supports           = ['shipping-zones', 'instance-settings', 'instance-settings-modal'];
-                $this->method_title       = __('DDelivery', DDeliveryWooCommerceBase::TEXT_DOMAIN);
-                $this->method_description = __('DDelivery Shipping Services Aggregator', DDeliveryWooCommerceBase::TEXT_DOMAIN);
+                $this->method_title       = __('SafeRoute', SafeRouteWooCommerceBase::TEXT_DOMAIN);
+                $this->method_description = __('SafeRoute Shipping Services Aggregator', SafeRouteWooCommerceBase::TEXT_DOMAIN);
                 
                 $this->init();
                 
@@ -44,7 +44,7 @@ function addDDeliveryShippingMethod()
                     'title' => [
                         'title'   => __('Title', 'woocommerce'),
                         'type'    => 'text',
-                        'default' => __('DDelivery', DDeliveryWooCommerceBase::TEXT_DOMAIN),
+                        'default' => __('SafeRoute', SafeRouteWooCommerceBase::TEXT_DOMAIN),
                     ],
                 ];
 
@@ -72,15 +72,15 @@ function addDDeliveryShippingMethod()
         
         foreach($rates as $rate_key => $rate_values)
         {
-            // Назначение стоимости доставки DDelivery
-            if($rate_values->method_id === DDeliveryWooCommerceBase::ID)
-                $rates[$rate_values->id]->cost = $_SESSION['ddelivery_shipping_cost'];
+            // Назначение стоимости доставки SafeRoute
+            if($rate_values->method_id === SafeRouteWooCommerceBase::ID)
+                $rates[$rate_values->id]->cost = isset($_SESSION['saferoute_shipping_cost']) ? $_SESSION['saferoute_shipping_cost'] : null;
         }
         
         return $rates;
     });
     
     
-    add_filter('woocommerce_shipping_methods', '_addDDeliveryShippingMethod');
-    add_action('woocommerce_shipping_init', '_initDDeliveryShippingMethod');
+    add_filter('woocommerce_shipping_methods', '_addSafeRouteShippingMethod');
+    add_action('woocommerce_shipping_init', '_initSafeRouteShippingMethod');
 }

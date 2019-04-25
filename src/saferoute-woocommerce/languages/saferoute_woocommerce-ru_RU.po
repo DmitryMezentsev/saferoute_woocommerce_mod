@@ -1,0 +1,106 @@
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Project-Id-Version: SafeRoute WooCommerce\n"
+"POT-Creation-Date: 2019-04-25 01:11+0500\n"
+"PO-Revision-Date: 2019-04-25 01:13+0500\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.7\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: saferoute_woocommerce.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Last-Translator: \n"
+"Language: ru_RU\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: includes/SafeRouteWooCommerce.php:115 includes/SafeRouteWooCommerce.php:125
+msgid "Shipping type"
+msgstr "Cпособ доставки"
+
+#: includes/SafeRouteWooCommerce.php:126
+msgid "Select and confirm shipping type."
+msgstr " Выберите и подтвердите параметры доставки."
+
+#: includes/SafeRouteWooCommerceAdmin.php:54
+msgid "Settings"
+msgstr "Настройки"
+
+#: includes/SafeRouteWooCommerceAdmin.php:80
+#: includes/SafeRouteWooCommerceAdmin.php:89
+#: includes/SafeRouteWooCommerceShippingMethod.php:33
+#: includes/SafeRouteWooCommerceShippingMethod.php:47
+msgid "SafeRoute"
+msgstr "SafeRoute"
+
+#: includes/SafeRouteWooCommerceAdmin.php:96
+msgid "Open order in the SafeRoute Cabinet"
+msgstr "Открыть заказ в личном кабинете SafeRoute"
+
+#: includes/SafeRouteWooCommerceAdmin.php:101
+msgid "Order is not in the SafeRoute Cabinet"
+msgstr "Заказ ещё не передан в личный кабинет SafeRoute"
+
+#: includes/SafeRouteWooCommerceAdmin.php:123
+msgid "WooCommerce is required for SafeRoute WooCommerce plugin."
+msgstr "Для работы плагина SafeRoute WooCommerce должен быть установлен и активирован сам WooCommerce."
+
+#: includes/SafeRouteWooCommerceAdmin.php:128
+msgid "SafeRoute API-key not set."
+msgstr "API-ключ SafeRoute не задан."
+
+#: includes/SafeRouteWooCommercePaymentMethod.php:27
+#: includes/SafeRouteWooCommercePaymentMethod.php:34
+#: includes/SafeRouteWooCommercePaymentMethod.php:35
+msgid "Payment via SafeRoute"
+msgstr "Оплата через SafeRoute"
+
+#: includes/SafeRouteWooCommercePaymentMethod.php:28
+msgid "Payment via SafeRoute Widget"
+msgstr "Оплата через виджет SafeRoute"
+
+#: includes/SafeRouteWooCommercePaymentMethod.php:48
+#: includes/SafeRouteWooCommerceShippingMethod.php:45
+msgid "Title"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceShippingMethod.php:34
+msgid "SafeRoute Shipping Services Aggregator"
+msgstr "Агрегатор служб доставки SafeRoute"
+
+#: views/admin-settings-page.php:2
+msgid "SafeRoute integration settings"
+msgstr "Настройки интеграции с SafeRoute"
+
+#: views/admin-settings-page.php:10
+msgid "API-key"
+msgstr "API-ключ"
+
+#: views/admin-settings-page.php:27
+msgid "API-key can be found on the shop page in SafeRoute cabinet."
+msgstr "API-ключ вы можете найти на странице магазина в Личном кабинете SafeRoute."
+
+#: views/checkout-widget-block.php:2
+msgid "Select Shipping Type"
+msgstr "Выберите способ доставки"
+
+#: views/checkout-widget-block.php:5
+msgid "Copy widget data into billing details"
+msgstr "Использовать данные доставки в блоке деталей оплаты"
+
+#. Plugin Name of the plugin/theme
+msgid "SafeRoute WooCommerce"
+msgstr "SafeRoute WooCommerce"
+
+#. Description of the plugin/theme
+msgid "SafeRoute Widget for WooCommerce"
+msgstr "Плагин виджета SafeRoute для WooCommerce"
+
+#. Author of the plugin/theme
+msgid "Dmitry Mezentsev"
+msgstr "Dmitry Mezentsev"

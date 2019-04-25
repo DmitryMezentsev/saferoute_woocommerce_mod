@@ -1,13 +1,13 @@
 <?php
 
-require_once 'DDeliveryWooCommerceBase.php';
+require_once 'SafeRouteWooCommerceBase.php';
 
 /**
- * Добавляет в движок API для взаимодействия с SDK DDelivery
+ * Добавляет в движок API для взаимодействия с SDK SafeRoute
  */
-class DDeliveryWooCommerceSdkApi extends DDeliveryWooCommerceBase
+class SafeRouteWooCommerceSdkApi extends SafeRouteWooCommerceBase
 {
-    const API_PATH = 'ddelivery-api';
+    const API_PATH = 'saferoute-api';
 
 
     /**
@@ -30,7 +30,7 @@ class DDeliveryWooCommerceSdkApi extends DDeliveryWooCommerceBase
      * @param $key string API-ключ для проверки
      * @return bool
      */
-    private function _checkApiKey($key)
+    private static function _checkApiKey($key)
     {
         return ($key && $key === get_option(self::API_KEY_OPTION));
     }
@@ -63,7 +63,7 @@ class DDeliveryWooCommerceSdkApi extends DDeliveryWooCommerceBase
     }
 
     /**
-     * API синхронизации статусов заказов WP со статусами в ЛК DDelivery
+     * API синхронизации статусов заказов WP со статусами в ЛК SafeRoute
      *
      * @param $data object
      * @return array
@@ -74,10 +74,10 @@ class DDeliveryWooCommerceSdkApi extends DDeliveryWooCommerceBase
         if (!isset($data['id']) || !$data['id'])
             return new WP_Error('id_is_required', 'Parameter \'id\' is required', ['status' => 400]);
 
-        // Находим заказ в БД по DDelivery ID
+        // Находим заказ в БД по SafeRoute ID
         $query = new WP_Query([
             'post_type'   => 'shop_order',
-            'meta_key'    => self::DDELIVERY_ID_META_KEY,
+            'meta_key'    => self::SAFEROUTE_ID_META_KEY,
             'meta_value'  => $data['id'],
             'post_status' => self::getAllStatuses(),
         ]);
@@ -112,14 +112,14 @@ class DDeliveryWooCommerceSdkApi extends DDeliveryWooCommerceBase
     {
         $post = get_post($post_id);
 
-        $order_dd_id = get_post_meta($post_id, self::DDELIVERY_ID_META_KEY, true);
-        $order_in_dd_cabinet = get_post_meta($post_id, self::IN_DDELIVERY_CABINET_META_KEY, true);
+        $order_sr_id = get_post_meta($post_id, self::SAFEROUTE_ID_META_KEY, true);
+        $order_in_sr_cabinet = get_post_meta($post_id, self::IN_SAFEROUTE_CABINET_META_KEY, true);
 
-        // Только посты, являющиеся заказами WooCommerce, имеющие DDelivery ID, и ещё не перенесенные в ЛК
-        if ($post->post_type === 'shop_order' && $order_dd_id && !$order_in_dd_cabinet)
+        // Только посты, являющиеся заказами WooCommerce, имеющие SafeRoute ID, и ещё не перенесенные в ЛК
+        if ($post->post_type === 'shop_order' && $order_sr_id && !$order_in_sr_cabinet)
         {
-            $response = self::updateOrderInDDelivery([
-                'id'     => $order_dd_id,
+            $response = self::updateOrderInSafeRoute([
+                'id'     => $order_sr_id,
                 'status' => $post->post_status,
                 'cms_id' => $post_id,
             ]);
@@ -130,9 +130,9 @@ class DDeliveryWooCommerceSdkApi extends DDeliveryWooCommerceBase
                 if (isset($response['data']['cabinet_id']))
                 {
                     // Устанавливаем соответствующий флаг
-                    update_post_meta($post_id, self::IN_DDELIVERY_CABINET_META_KEY, 1);
-                    // Сохраняем его новый DDelivery ID
-                    update_post_meta($post_id, self::DDELIVERY_ID_META_KEY, $response['data']['cabinet_id']);
+                    update_post_meta($post_id, self::IN_SAFEROUTE_CABINET_META_KEY, 1);
+                    // Сохраняем его новый SafeRoute ID
+                    update_post_meta($post_id, self::SAFEROUTE_ID_META_KEY, $response['data']['cabinet_id']);
                 }
             }
         }
@@ -170,13 +170,13 @@ class DDeliveryWooCommerceSdkApi extends DDeliveryWooCommerceBase
     }
 
     /**
-     * Обновляет данные заказа на сервере DDelivery
+     * Обновляет данные заказа на сервере SafeRoute
      *
      * @param $data array Параметры запроса
      */
-    public static function updateOrderInDDelivery($data)
+    public static function updateOrderInSafeRoute($data)
     {
-        $api = 'https://ddelivery.ru/api/' . get_option(self::API_KEY_OPTION) . '/sdk/update-order.json';
+        $api = 'https://api.saferoute.ru/api/' . get_option(self::API_KEY_OPTION) . '/sdk/update-order.json';
 
         $curl = curl_init($api);
 
