@@ -61,15 +61,15 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
     public static function _adminSettingsPage()
     {
         // Сохранение изменений
-        if (isset($_POST['saferoute_api_key']))
+        if (isset($_POST['saferoute_api_key']) && wp_verify_nonce($_POST['_nonce'], 'sr_settings_save'))
         {
-            update_option(self::API_KEY_OPTION, trim($_POST['saferoute_api_key']));
+            update_option(self::API_KEY_OPTION, sanitize_key($_POST['saferoute_api_key']));
             // Перезагрузка страницы, чтобы исчезло уведомление об отсутствии API-ключа
             wp_redirect($_SERVER['REQUEST_URI']);
         }
 
         // Подключение шаблона страницы
-        require self::PLUGIN_DIR_ABS . 'views/admin-settings-page.php';
+        require self::getPluginDir() . '/views/admin-settings-page.php';
     }
 
     /**

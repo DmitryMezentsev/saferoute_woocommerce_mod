@@ -1,7 +1,7 @@
 <div class="wrap">
     <h1><?php _e('SafeRoute integration settings', SafeRouteWooCommerce::TEXT_DOMAIN); ?></h1>
 
-    <form action="<?php echo SafeRouteWooCommerceAdmin::ADMIN_PARENT_SLUG; ?>?page=<?php echo SafeRouteWooCommerceAdmin::ADMIN_MENU_SLUG; ?>" method="post">
+    <form action="<?= SafeRouteWooCommerceAdmin::ADMIN_PARENT_SLUG; ?>?page=<?= SafeRouteWooCommerceAdmin::ADMIN_MENU_SLUG; ?>" method="post">
         <table class="form-table">
             <tbody>
             <tr>
@@ -26,6 +26,7 @@
 
         <p><?php _e('API-key can be found on the shop page in SafeRoute cabinet.', SafeRouteWooCommerce::TEXT_DOMAIN); ?></p>
 
+        <input type="hidden" name="_nonce" value="<?= wp_create_nonce('sr_settings_save'); ?>">
         <?php submit_button(); ?>
     </form>
 

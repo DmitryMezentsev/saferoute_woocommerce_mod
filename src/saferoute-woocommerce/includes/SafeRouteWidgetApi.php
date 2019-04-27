@@ -64,30 +64,21 @@ class SafeRouteWidgetApi
      * Отправляет запрос.
      *
      * @param string $url URL
-     * @param array $headers Дополнительные заголовки запроса
      * @return string
      */
-    public function submit($url, $headers = [])
+    public function submit($url)
     {
         $url = preg_replace('/:key/', $this->apiKey, $url);
-        
+
         if ($this->method === 'GET')
-            $url .= '?' . http_build_query($this->data);
-        
-        $curl = curl_init($url);
-        
-        curl_setopt($curl, CURLOPT_HEADER, false);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $this->method);
-        
-        if ($this->method === 'POST' || $this->method === 'PUT')
-            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($this->data));
-        
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array_merge(['Content-Type:application/json'], $headers));
-        
-        $response = curl_exec($curl);
-        curl_close($curl);
-        
-        return $response;
+        {
+            $res = wp_remote_get($url . '?' . http_build_query($this->data));
+        }
+        else
+        {
+            $res = wp_remote_post($url, ['body' => $this->data]);
+        }
+
+        return $res['body'];
     }
 }

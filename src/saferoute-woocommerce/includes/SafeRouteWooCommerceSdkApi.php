@@ -66,7 +66,7 @@ class SafeRouteWooCommerceSdkApi extends SafeRouteWooCommerceBase
      * API синхронизации статусов заказов WP со статусами в ЛК SafeRoute
      *
      * @param $data object
-     * @return array
+     * @return mixed
      */
     public static function _trafficOrdersApi($data)
     {
@@ -173,20 +173,14 @@ class SafeRouteWooCommerceSdkApi extends SafeRouteWooCommerceBase
      * Обновляет данные заказа на сервере SafeRoute
      *
      * @param $data array Параметры запроса
+     * @return mixed
      */
-    public static function updateOrderInSafeRoute($data)
+    public static function updateOrderInSafeRoute(array $data)
     {
-        $api = 'https://api.saferoute.ru/api/' . get_option(self::API_KEY_OPTION) . '/sdk/update-order.json';
+        $api = self::SAFEROUTE_API_URL . get_option(self::API_KEY_OPTION) . '/sdk/update-order.json';
 
-        $curl = curl_init($api);
+        $res = wp_remote_post($api, ['body' => $data]);
 
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
-
-        $response = json_decode(curl_exec($curl), true);
-        curl_close($curl);
-
-        return $response;
+        return json_decode($res['body'], true);
     }
 }

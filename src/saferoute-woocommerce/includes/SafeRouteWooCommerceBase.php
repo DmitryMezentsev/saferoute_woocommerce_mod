@@ -7,12 +7,6 @@ class SafeRouteWooCommerceBase
 {
     const ID = 'saferoute';
 
-    // Директория плагина
-    const PLUGIN_DIR = 'wp-content/plugins/saferoute-woocommerce/';
-
-    // Абсолютный путь к директории плагина плагина
-    const PLUGIN_DIR_ABS = ABSPATH . self::PLUGIN_DIR;
-
     // Имя параметра 'API-ключ' в БД WordPress
     const API_KEY_OPTION = 'saferoute_api_key';
 
@@ -33,8 +27,21 @@ class SafeRouteWooCommerceBase
     
     // URL ЛК SafeRoute
     const SAFEROUTE_CABINET_URL = 'https://cabinet.saferoute.ru/';
-    
-    
+
+    // URL API SafeRoute
+    const SAFEROUTE_API_URL = 'https://api.saferoute.ru/api/';
+
+
+    /**
+     * Ворзвращает путь к директории плагина
+     *
+     * @return string
+     */
+    public static function getPluginDir()
+    {
+        return dirname(dirname(__FILE__));
+    }
+
     /**
      * Проверяет, активирован ли WooCommerce
      *

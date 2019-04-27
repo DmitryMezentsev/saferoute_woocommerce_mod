@@ -1,11 +1,12 @@
 === SafeRoute WooCommerce ===
-Contributors: Dmitry Mezentsev
+Contributors: dmitrymezentsev
 Tags: saferoute, shipping, woocommerce, shop, доставка, агрегатор
 Requires at least: 4.9
 Tested up to: 4.9
+Requires PHP: 5.4
 Stable tag: 1.0.0
-License: GPLv2
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Модуль для быстрой интеграции виджета SafeRoute в магазин на основе WooCommerce.
 https://saferoute.ru/

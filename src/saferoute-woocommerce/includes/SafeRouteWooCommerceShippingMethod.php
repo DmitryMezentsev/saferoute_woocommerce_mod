@@ -73,7 +73,7 @@ function addSafeRouteShippingMethod()
         foreach($rates as $rate_key => $rate_values)
         {
             // Назначение стоимости доставки SafeRoute
-            if($rate_values->method_id === SafeRouteWooCommerceBase::ID)
+            if ($rate_values->method_id === SafeRouteWooCommerceBase::ID)
                 $rates[$rate_values->id]->cost = isset($_SESSION['saferoute_shipping_cost']) ? $_SESSION['saferoute_shipping_cost'] : null;
         }
         

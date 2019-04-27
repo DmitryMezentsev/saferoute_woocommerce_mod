@@ -110,14 +110,14 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
             add_action('wp_loaded', function () {
                 // Подключение JS...
                 wp_enqueue_script('saferoute-widget-api', 'https://widgets.saferoute.ru/cart/api.js');
-                wp_enqueue_script('saferoute-widget-init', '/' . self::PLUGIN_DIR . 'assets/sr-widget-init.js', ['jquery']);
+                wp_enqueue_script('saferoute-widget-init', plugins_url('assets/sr-widget-init.js', dirname(__FILE__)), ['jquery']);
                 wp_add_inline_script('saferoute-widget-init', self::_getInlineJs(), 'before');
                 // ...и CSS
-                wp_enqueue_style('saferoute-widget-css', '/' . self::PLUGIN_DIR . 'assets/common.css');
+                wp_enqueue_style('saferoute-widget-css', plugins_url('assets/common.css', dirname(__FILE__)));
 
                 // Вывод HTML блока с виджетом
                 add_action('woocommerce_checkout_before_customer_details', function () {
-                    require self::PLUGIN_DIR_ABS . 'views/checkout-widget-block.php';
+                    require self::getPluginDir() . '/views/checkout-widget-block.php';
                 });
 
                 // Добавление поля SafeRoute ID заказа
@@ -188,7 +188,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
     public static function init($plugin_file)
     {
         // Загрузка перевода
-        load_plugin_textdomain(self::TEXT_DOMAIN, false, basename(self::PLUGIN_DIR_ABS) . '/languages/');
+        load_plugin_textdomain(self::TEXT_DOMAIN, false, basename(self::getPluginDir()) . '/languages/');
 
         register_activation_hook($plugin_file, [__CLASS__, '_activationHook']);
         register_uninstall_hook($plugin_file, [__CLASS__, '_uninstallHook']);
