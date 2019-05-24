@@ -4,7 +4,7 @@ Tags: saferoute, shipping, woocommerce, shop, доставка, агрегато
 Requires at least: 4.9
 Tested up to: 4.9
 Requires PHP: 5.4
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,6 +21,8 @@ https://github.com/DmitryMezentsev/saferoute_woocommerce_mod/raw/master/build/sa
 
 == Changelog ==
 
+= 1.0.1 =
+* Увеличен timeout для запросов к серверу SafeRoute
 = 1.0.0 =
 * Первая версия плагина
 
@@ -28,5 +30,7 @@ https://github.com/DmitryMezentsev/saferoute_woocommerce_mod/raw/master/build/sa
 
 == Upgrade Notice ==
 
+= 1.0.1 =
+* Увеличен timeout для запросов к серверу SafeRoute
 = 1.0.0 =
 * Первая версия плагина
