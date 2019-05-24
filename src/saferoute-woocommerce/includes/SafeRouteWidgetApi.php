@@ -72,11 +72,16 @@ class SafeRouteWidgetApi
 
         if ($this->method === 'GET')
         {
-            $res = wp_remote_get($url . '?' . http_build_query($this->data));
+            $res = wp_remote_get($url . '?' . http_build_query($this->data), [
+                'timeout' => 30,
+            ]);
         }
         else
         {
-            $res = wp_remote_post($url, ['body' => $this->data]);
+            $res = wp_remote_post($url, [
+                'body' => $this->data,
+                'timeout' => 30,
+            ]);
         }
 
         return $res['body'];

@@ -179,7 +179,10 @@ class SafeRouteWooCommerceSdkApi extends SafeRouteWooCommerceBase
     {
         $api = self::SAFEROUTE_API_URL . get_option(self::API_KEY_OPTION) . '/sdk/update-order.json';
 
-        $res = wp_remote_post($api, ['body' => $data]);
+        $res = wp_remote_post($api, [
+            'body' => $data,
+            'timeout' => 30,
+        ]);
 
         return json_decode($res['body'], true);
     }
