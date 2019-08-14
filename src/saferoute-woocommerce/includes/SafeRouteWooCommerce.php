@@ -69,6 +69,10 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
 
         foreach($woocommerce->cart->get_cart() as $woo_cart_item)
         {
+			// Пропуск виртуальных и скачиваемых товаров, т.к. доставка для них не нужна
+			if($woo_cart_item['data']->is_virtual() || $woo_cart_item['data']->is_downloadable())
+				continue;
+			
             // Вычисление НДС
             $nds = ($woo_cart_item['line_total'] && $woo_cart_item['line_tax'])
                 ? round(100 / ($woo_cart_item['line_total'] / $woo_cart_item['line_tax']))

@@ -37,7 +37,7 @@
             }
         }
 
-        // Скрывает все варианты доставки кроме SafeRoute
+        // Скрывает все варианты доставки, кроме SafeRoute
         function hideOtherShippings () {
             $('.shipping ul input.shipping_method').each(function () {
                 if ($(this).val() !== 'saferoute')
@@ -45,8 +45,7 @@
             });
         }
 
-        // Проверяет текущий выбранный способ доставки и отображает блок с виджетом в случае,
-        // если выбрана доставка SafeRoute
+        // Вернет true, если выбрана доставка SafeRoute
         function checkSelectedShippingMethod () {
             var $inputs = $('input.shipping_method');
 
@@ -54,7 +53,11 @@
                 ? $inputs.filter(':checked').val()
                 : $inputs.val();
 
-            if (shippingMethod === 'saferoute') {
+            return shippingMethod === 'saferoute';
+        }
+        // Отображает блок с виджетом в случае, если выбрана доставка SafeRoute
+        function renderWidget () {
+            if (checkSelectedShippingMethod()) {
                 widget.init();
                 paymentMethodsToggle(true);
 
@@ -273,13 +276,13 @@
             $(document).ajaxSuccess(function (event, jqxhr, settings) {
                 if (settings.url.indexOf('wc-ajax=update_order_review') !== -1)
                     // Проверка выбранного способа доставки после загрузки блоков
-                    checkSelectedShippingMethod();
+                    renderWidget();
             });
 
             // Переключение выбранного способа доставки
-            $(document).on('change', '.shipping input.shipping_method', checkSelectedShippingMethod);
+            $(document).on('change', '.shipping input.shipping_method', renderWidget);
             // Проверка изначально выбранного способа доставки
-            checkSelectedShippingMethod();
+            renderWidget();
 
             // Изменение состояния чекбокса "Использовать данные доставки в блоке деталей оплаты"
             $('input#copy-widget-data-into-bill').on('change', function () {
@@ -303,5 +306,14 @@
                 $('.shipping input.shipping_method').first().trigger('change');
             });
         }
+		
+		// Костыль для отмены отправки формы в случае, если доставка в виджете не была выбрана
+		// (т.к. при использовании для этих целей валидации самого WooCommerce возникают проблемы с назначением стоимости доставки)
+		$('form.checkout.woocommerce-checkout').on('checkout_place_order', function () {
+			if (checkSelectedShippingMethod() && !$('input#saferoute_id').val()) {
+				alert(SR_WIDGET.LANG === 'en_US' ? 'Select and confirm delivery method in the widget' : 'Выберите и подтвердите способ доставки в виджете');
+				return false;
+			}
+		});
     });
 })(jQuery || $);
