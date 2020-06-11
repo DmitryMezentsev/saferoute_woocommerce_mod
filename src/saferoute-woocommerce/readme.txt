@@ -1,10 +1,10 @@
 === SafeRoute WooCommerce ===
 Contributors: dmitrymezentsev
-Tags: saferoute, shipping, woocommerce, shop, доставка, агрегатор
+Tags: saferoute, shipping, woocommerce, shop, доставка, delivery, агрегатор, ecommerce, checkout, чекаут
 Requires at least: 4.9
 Tested up to: 4.9
 Requires PHP: 5.4
-Stable tag: 1.0.2
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,13 +14,15 @@ https://saferoute.ru/
 
 
 == Installation ==
-PDF с инструкциями по установке можно найти в архиве по ссылке:
-https://github.com/DmitryMezentsev/saferoute_woocommerce_mod/raw/master/build/saferoute_woocommerce.zip
+Инструкция по установке:
+https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 
 
 == Changelog ==
 
+= 2.0.0 =
+* Версия с новым виджетом. Добавлена поддержка товарных габаритов и валют. Исправлены некоторые ошибки.
 = 1.0.2 =
 * Виртуальные и скачиваемые товары теперь не передаются в виджет.
 * Исправлен баг, когда при оформлении заказа стоимость доставки не сохранялась.
@@ -33,6 +35,8 @@ https://github.com/DmitryMezentsev/saferoute_woocommerce_mod/raw/master/build/sa
 
 == Upgrade Notice ==
 
+= 2.0.0 =
+* Версия с новым виджетом. Добавлена поддержка товарных габаритов и валют. Исправлены некоторые ошибки.
 = 1.0.2 =
 * Виртуальные и скачиваемые товары теперь не передаются в виджет.
 * Исправлен баг, когда при оформлении заказа стоимость доставки не сохранялась.

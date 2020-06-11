@@ -19,7 +19,7 @@ class SafeRouteWooCommerceWidgetApi extends SafeRouteWooCommerceBase
     private static function _getApiRoutes()
     {
         return [
-            'sdk' => ['_sdkApi', 'GET, POST'],
+            'saferoute' => ['_srApi', 'GET, POST'],
             'set-shipping-cost' => ['_setShippingCostApi', 'POST'],
         ];
     }
@@ -40,19 +40,18 @@ class SafeRouteWooCommerceWidgetApi extends SafeRouteWooCommerceBase
     }
     
     /**
-     * Перенаправляет запрос к API SDK
+     * Перенаправляет запрос к серверу SafeRoute
      * 
      * @param $data object
      * @return mixed
      */
-    private static function _sdkApi($data)
+    private static function _srApi($data)
     {
         $params = $data->get_param('data');
         if (!$params) $params = [];
         
-        $widgetApi = new SafeRouteWidgetApi();
+        $widgetApi = new SafeRouteWidgetApi(get_option(self::SR_TOKEN_OPTION), get_option(self::SR_SHOP_ID_OPTION));
         
-        $widgetApi->setApiKey(get_option(self::API_KEY_OPTION));
         $widgetApi->setMethod($data->get_method());
         $widgetApi->setData($params);
         

@@ -1,14 +1,21 @@
 <?php
 
 /**
- * API-скрипт виджета
+ * API-скрипт виджетов SafeRoute для WordPress
+ *
+ * @version 2.0
  */
 class SafeRouteWidgetApi
 {
     /**
-     * @var string API-ключ магазина
+     * @var string Токен авторизации
      */
-    private $apiKey;
+    private $token;
+
+    /**
+     * @var string|int ID магазина
+     */
+    private $shopId;
 
     /**
      * @var array Данные запроса
@@ -20,28 +27,65 @@ class SafeRouteWidgetApi
      */
     private $method = 'POST';
 
-
-
     /**
-     * @param string $apiKey API-ключ магазина
-     */
-    public function __construct($apiKey = '')
-    {
-        if ($apiKey) $this->setApiKey($apiKey);
-    }
-
-    /**
-     * Сеттер API-ключа.
+     * Возвращает IP-адрес пользователя
      *
-     * @param string $apiKey API-ключ магазина
+     * @return string IP-адрес
      */
-    public function setApiKey($apiKey)
+    private function getClientIP()
     {
-        $this->apiKey = $apiKey;
+        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+            return $_SERVER['HTTP_X_FORWARDED_FOR'];
+
+        if (!empty($_SERVER['HTTP_CLIENT_IP']))
+            return $_SERVER['HTTP_CLIENT_IP'];
+
+        return $_SERVER['REMOTE_ADDR'];
     }
 
     /**
-     * Сеттер данных запроса.
+     * @param string $url URL запроса
+     * @return bool
+     */
+    private function isHtmlRequest($url)
+    {
+        preg_match("/\.html$/", $url, $m);
+        return (bool) $m;
+    }
+
+
+    /**
+     * @param string $token Токен авторизации
+     * @param string|int $shopId ID магазина
+     */
+    public function __construct($token = null, $shopId = null)
+    {
+        $this->setToken($token);
+        $this->setShopId($shopId);
+    }
+
+    /**
+     * Сеттер токена авторизации
+     *
+     * @param string $token Токен авторизации
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+    }
+
+    /**
+     * Сеттер ID магазина
+     *
+     * @param string|int $shopId ID магазина
+     */
+    public function setShopId($shopId)
+    {
+        $this->shopId = $shopId;
+    }
+
+    /**
+     * Сеттер данных запроса
      *
      * @param array $data Данные запроса
      */
@@ -51,7 +95,7 @@ class SafeRouteWidgetApi
     }
 
     /**
-     * Сеттер метода запроса.
+     * Сеттер метода запроса
      *
      * @param string $method Метод запроса
      */
@@ -61,29 +105,56 @@ class SafeRouteWidgetApi
     }
 
     /**
-     * Отправляет запрос.
+     * Отправляет запрос
      *
      * @param string $url URL
      * @return string
      */
     public function submit($url)
     {
-        $url = preg_replace('/:key/', $this->apiKey, $url);
-
-        if ($this->method === 'GET')
+        // Загрузка кода виджета
+        if ($this->isHtmlRequest($url))
         {
-            $res = wp_remote_get($url . '?' . http_build_query($this->data), [
-                'timeout' => 30,
-            ]);
+            return wp_remote_get($url, ['timeout' => 30])['body'];
         }
+        // Запрос к API
         else
         {
-            $res = wp_remote_post($url, [
-                'body' => $this->data,
-                'timeout' => 30,
+            $headers = [
+                'Authorization' => "Bearer $this->token",
+                'Shop-Id' => $this->shopId,
+            ];
+
+            if (isset($this->data['ip']) && !$this->data['ip']) {
+                $ip = $this->getClientIP();
+                if ($ip !== '::1' && $ip !== '127.0.0.1') $this->data['ip'] = $ip;
+            }
+
+            if ($this->method === 'GET')
+            {
+                $res = wp_remote_get($url . '?' . http_build_query($this->data), [
+                    'timeout' => 30,
+                    'headers' => $headers,
+                ]);
+            }
+            else
+            {
+                $res = wp_remote_post($url, [
+                    'body' => $this->data,
+                    'timeout' => 30,
+                    'headers' => $headers,
+                ]);
+            }
+
+            $data = json_decode($res['body']);
+
+            if ($res['response']['code'] === 200)
+                return json_encode(['status' => 200, 'data' => $data]);
+
+            return json_encode([
+                'status' => $res['response']['code'],
+                'code' => isset($data->code) ? $data->code : null,
             ]);
         }
-
-        return $res['body'];
     }
 }

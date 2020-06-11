@@ -6,7 +6,7 @@ require_once 'SafeRouteWooCommerceShippingMethod.php';
 require_once 'SafeRouteWooCommercePaymentMethod.php';
 
 require_once 'SafeRouteWooCommerceAdmin.php';
-require_once 'SafeRouteWooCommerceSdkApi.php';
+require_once 'SafeRouteWooCommerceBackendApi.php';
 require_once 'SafeRouteWooCommerceWidgetApi.php';
 
 /**
@@ -19,7 +19,8 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
      */
     public static function _activationHook()
     {
-        add_option(self::API_KEY_OPTION, '', '', 'no');
+        add_option(self::SR_SHOP_ID_OPTION, '', '', 'no');
+        add_option(self::SR_TOKEN_OPTION, '', '', 'no');
     }
 
     /**
@@ -27,7 +28,8 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
      */
     public static function _uninstallHook()
     {
-        delete_option(self::API_KEY_OPTION);
+        delete_option(self::SR_SHOP_ID_OPTION);
+        delete_option(self::SR_TOKEN_OPTION);
     }
 
 
@@ -47,10 +49,11 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
         $widget_params = [
             'LANG'     => get_locale(),
             'BASE_URL' => get_site_url(),
-            'API_URL'  => get_site_url() . '/wp-json/' . SafeRouteWooCommerceWidgetApi::API_PATH . '/sdk',
+            'API_URL'  => get_site_url() . '/wp-json/' . SafeRouteWooCommerceWidgetApi::API_PATH . '/saferoute',
             'PRODUCTS' => self::_getProducts(),
-            'WEIGHT'   => $woocommerce->cart->get_cart_contents_weight(),
+            'WEIGHT'   => wc_get_weight($woocommerce->cart->get_cart_contents_weight(), 'kg'),
             'DISCOUNT' => $woocommerce->cart->get_discount_total(),
+            'CURRENCY' => get_woocommerce_currency(),
         ];
 
         return 'var SR_WIDGET = ' . json_encode($widget_params, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) . ';';
@@ -74,7 +77,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
 				continue;
 			
             // Вычисление НДС
-            $nds = ($woo_cart_item['line_total'] && $woo_cart_item['line_tax'])
+            $vat = ($woo_cart_item['line_total'] && $woo_cart_item['line_tax'])
                 ? round(100 / ($woo_cart_item['line_total'] / $woo_cart_item['line_tax']))
                 : null;
 
@@ -95,10 +98,13 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
                 'name'       => $woo_cart_item['data']->get_name(),
                 'vendorCode' => $woo_cart_item['data']->get_sku(),
                 'barcode'    => $barcode,
-                'nds'        => $nds,
+                'vat'        => $vat,
                 'price'      => $regular_price,
                 'discount'   => $discount,
                 'count'      => $woo_cart_item['quantity'],
+                'width'      => wc_get_dimension($woo_cart_item['data']->get_width(), 'cm'),
+                'height'     => wc_get_dimension($woo_cart_item['data']->get_height(), 'cm'),
+                'length'     => wc_get_dimension($woo_cart_item['data']->get_length(), 'cm'),
             ];
         }
 
@@ -113,7 +119,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
         add_action('woocommerce_init', function () {
             add_action('wp_loaded', function () {
                 // Подключение JS...
-                wp_enqueue_script('saferoute-widget-api', 'https://widgets.saferoute.ru/cart/api.js');
+                wp_enqueue_script('saferoute-widget-api', 'https://widgets.saferoute.ru/cart/api.js?new');
                 wp_enqueue_script('saferoute-widget-init', plugins_url('assets/sr-widget-init.js', dirname(__FILE__)), ['jquery']);
                 wp_add_inline_script('saferoute-widget-init', self::_getInlineJs(), 'before');
                 // ...и CSS
@@ -165,19 +171,19 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
             if (mb_strlen($posted['saferoute_id'], 'utf-8') < 15)
                 update_post_meta($order_id, self::IN_SAFEROUTE_CABINET_META_KEY, 1);
 
-            // Отправка запроса к SDK
-            $response = SafeRouteWooCommerceSdkApi::updateOrderInSafeRoute([
-                'id'             => $posted['saferoute_id'],
-                'cms_id'         => $order_id,
-                'status'         => $order->post_status,
-                'payment_method' => $posted['payment_method'],
+            // Отправка запроса к бэку SafeRoute
+            $response = SafeRouteWooCommerceBackendApi::updateOrderInSafeRoute([
+                'id'            => $posted['saferoute_id'],
+                'cmsId'         => $order_id,
+                'status'        => $order->post_status,
+                'paymentMethod' => $posted['payment_method'],
             ]);
 
             // Если заказ был перенесен в ЛК
-            if ($response['status'] === 'ok' && isset($response['data']['cabinet_id']))
+            if ($response && $response['cabinetId'])
             {
                 // Обновляем его SafeRoute ID и устанавливаем флаг, что заказ находится в ЛК
-                update_post_meta($order_id, self::SAFEROUTE_ID_META_KEY, $response['data']['cabinet_id']);
+                update_post_meta($order_id, self::SAFEROUTE_ID_META_KEY, $response['cabinetId']);
                 update_post_meta($order_id, self::IN_SAFEROUTE_CABINET_META_KEY, 1);
             }
         }
@@ -208,7 +214,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
             add_action('woocommerce_checkout_update_order_meta', __CLASS__ . '::_onAfterOrderCreate', 10, 2);
         }
 
-        SafeRouteWooCommerceSdkApi::init();
+        SafeRouteWooCommerceBackendApi::init();
 
         // Добавление в систему способа доставки и способа оплаты SafeRoute
         addSafeRouteShippingMethod();

@@ -1,12 +1,14 @@
 (function($) {
     $(function () {
-        var lang = (function () {
-            switch (SR_WIDGET.LANG) {
-                case 'en_US': return 'en';
-                case 'zh_CN': return 'zh';
-            }
-            return 'ru';
-        })();
+        // Если в корзине только скачиваемые/виртуальные товары
+        if (!SR_WIDGET.PRODUCTS.length) return;
+
+
+        var availableLangs = { en_US: 'en', ru_RU: 'ru' };
+        var availableCurrencies = { RUB: 'rub', USD: 'usd', EUR: 'euro' };
+
+        var lang = availableLangs[SR_WIDGET.LANG] || 'ru';
+        var currency = availableCurrencies[SR_WIDGET.CURRENCY];
 
 
         // Переключает отображаемые способы оплаты
@@ -97,13 +99,16 @@
             };
         }
 
-        // Объединяет улицу и дом в единую строку адреса
+        // Объединяет улицу и дом с корпусом в единую строку адреса
         function buildAddress (address) {
             var result = '';
 
             if (address.street) result += address.street;
-            if (address.street && address.house) result += ', ';
-            if (address.house) result += address.house;
+            if (address.street && address.building) result += ', ';
+            if (address.building) {
+                result += address.building;
+                if (address.bulk) result += ' (' + address.bulk + ')'
+            }
 
             return result;
         }
@@ -117,33 +122,44 @@
             $('input#billing_first_name').val(fullName.firstName);
             $('input#billing_last_name').val(fullName.lastName);
             $('input#billing_address_1').val(buildAddress(data.contacts.address));
-            $('input#billing_address_2').val(data.contacts.address.flat);
-            $('input#billing_city').val(data.city.name);
-            $('input#billing_state').val(data.city.name);
-            $('input#billing_postcode').val(data.contacts.address.index);
+            $('input#billing_address_2').val(data.contacts.address.apartment);
+            if (data.city) {
+                $('input#billing_city').val(data.city.name);
+                $('input#billing_state').val(data.city.name);
+            }
+            $('input#billing_postcode').val(data.contacts.address.zipCode);
+            $('input#billing_company').val(data.contacts.companyName);
             $('input#billing_phone').val(data.contacts.phone);
+            if (data.contacts.email) {
+                $('input#billing_email').val(data.contacts.email);
+            }
         }
 
         // Копирует данные виджета в блок с адресом доставки
         function copyWidgetDataIntoShippingDetails (data) {
-            var defaultIndex = '000000';
+            var defaultZipCode = '000000';
 
             var fullName = splitFullName(data.contacts.fullName);
 
             $('input#shipping_first_name').val(fullName.firstName);
             $('input#shipping_last_name').val(fullName.lastName || '-');
-            $('input#shipping_city').val(data.city.name);
-            $('input#shipping_state').val(data.city.name);
+            if (data.city) {
+                $('input#shipping_city').val(data.city.name);
+                $('input#shipping_state').val(data.city.name);
+            }
+            if (data.contacts.email) {
+                $('input#shipping_email').val(data.contacts.email);
+            }
 
             // Только для самовывоза
-            if (Number(data.delivery.type) === 1) {
+            if (data.delivery && data.delivery.type === 1) {
                 $('input#shipping_address_1').val(data.delivery.point.address); // Адрес точки самовывоза
                 $('input#shipping_address_2').val('-');
-                $('input#shipping_postcode').val(defaultIndex); // Поскольку индекса все равно нет
+                $('input#shipping_postcode').val(defaultZipCode); // Поскольку индекса все равно нет
             } else {
                 $('input#shipping_address_1').val(buildAddress(data.contacts.address));
-                $('input#shipping_address_2').val(data.contacts.address.flat);
-                $('input#shipping_postcode').val(data.contacts.address.index || defaultIndex);
+                $('input#shipping_address_2').val(data.contacts.address.apartment);
+                $('input#shipping_postcode').val(data.contacts.address.zipCode || defaultZipCode);
             }
         }
 
@@ -164,29 +180,13 @@
         // Отображает вместо виджета сообщение с информацией о выбранной доставке
         function showSuccessMessage (data) {
             var t = {
-                ru: { delivery: 'Доставка', deliveryAndPay: 'Доставка и оплата', selectedShipping: 'Выбрана доставка',
-                    courier: 'Курьерская', pickup: 'Самовывоз', post: 'Почта России' },
-                en: { delivery: 'Shipping', deliveryAndPay: 'Shipping and payment', selectedShipping: 'Selected Shipping',
-                    courier: 'Courier', pickup: 'Pickup', post: 'Post of Russia' },
-                zh: { delivery: '', deliveryAndPay: '', selectedShipping: '', courier: '', pickup: '', post: '' }
+                ru: { delivery: 'Выбранная доставка', deliveryAndPay: 'Выбранная доставка и оплата' },
+                en: { delivery: 'Selected delivery method', deliveryAndPay: 'Selected delivery method and payment' }
             };
 
-            var type = Number(data.delivery.type);
-            var message = t[lang].selectedShipping + ': ';
-
-            message += (function () {
-                if (type === 1) return t[lang].pickup + ' (' + data.delivery.point.address + ')';
-                if (type === 2) return t[lang].courier;
-                return t[lang].post;
-            })();
-
-            if (type !== 3) {
-                message += ', ' + (data.delivery.point ? data.delivery.point.delivery_company_abbr : data.delivery.delivery_company_abbr);
-            }
-
-            message += ', ' + (data.delivery.point ? data.delivery.point.delivery_date : data.delivery.delivery_date);
-
-            $('.saferoute_widget_block').html('<h3>' + t[lang].delivery + '</h3>' + message + '.');
+            $('.saferoute_widget_block').html(
+              '<h3>' + t[lang].delivery + '</h3><div>' + data._meta.commonDeliveryData + '</div>'
+            );
         }
 
         // Скрывает стоимость доставки SafeRoute в корзине в блоке "Сумма заказов"
@@ -206,6 +206,13 @@
             });
         }
 
+        // Скроллит страницу до блока с виджетом
+        function scrollToWidget () {
+            $('html, body').animate({
+                scrollTop: $('#sr_widget').offset().top - 120
+            }, 500);
+        }
+
 
         var widget = {
             _: null,
@@ -214,6 +221,7 @@
                 if (!this._) {
                     this._ = new SafeRouteCartWidget('sr_widget', {
                         lang: lang,
+                        currency: currency,
                         apiScript: SR_WIDGET.API_URL,
                         products: SR_WIDGET.PRODUCTS,
                         weight: SR_WIDGET.WEIGHT,
@@ -221,7 +229,7 @@
                         mod: 'woocommerce'
                     });
 
-                    this._.on('error', function (errors) { console.error(errors); });
+                    this._.on('start', scrollToWidget);
 
                     this._.on('change', function (data) {
                         widget.data = data;
@@ -230,21 +238,21 @@
                         copyWidgetDataIntoShippingDetails(data);
                     });
 
-                    this._.on('afterSubmit', function (response) {
-                        if (response.status === 'ok') {
-                            $('input#saferoute_id').val(response.id || 'no');
+                    this._.on('done', function (response) {
+                        $('input#saferoute_id').val(response.id || 'no');
 
-                            $('.saferoute_widget_block').addClass('submitted');
-                            hideOtherShippings();
+                        $('.saferoute_widget_block').addClass('submitted');
+                        hideOtherShippings();
 
-                            setShippingCost(
-                                widget.data.delivery.point ? widget.data.delivery.point.price_delivery : widget.data.delivery.total_price,
-                                'update_checkout'
-                            );
+                        setShippingCost(
+                          widget.data.delivery.totalPrice + (widget.data.payTypeCommission || 0),
+                          'update_checkout'
+                        );
 
-                            showSuccessMessage(widget.data);
-                        }
+                        showSuccessMessage(widget.data);
                     });
+
+                    this._.on('error', function (errors) { console.error(errors); });
 
                     $('input#saferoute_id').val('');
                     // Активация блока "Доставка по другому адресу"
@@ -306,14 +314,14 @@
                 $('.shipping input.shipping_method').first().trigger('change');
             });
         }
-		
-		// Костыль для отмены отправки формы в случае, если доставка в виджете не была выбрана
-		// (т.к. при использовании для этих целей валидации самого WooCommerce возникают проблемы с назначением стоимости доставки)
-		$('form.checkout.woocommerce-checkout').on('checkout_place_order', function () {
-			if (checkSelectedShippingMethod() && !$('input#saferoute_id').val()) {
-				alert(SR_WIDGET.LANG === 'en_US' ? 'Select and confirm delivery method in the widget' : 'Выберите и подтвердите способ доставки в виджете');
-				return false;
-			}
-		});
+
+        // Костыль для отмены отправки формы в случае, если доставка в виджете не была выбрана
+        // (т.к. при использовании для этих целей валидации самого WooCommerce возникают проблемы с назначением стоимости доставки)
+        $('form.checkout.woocommerce-checkout').on('checkout_place_order', function () {
+            if (checkSelectedShippingMethod() && !$('input#saferoute_id').val()) {
+                alert(SR_WIDGET.LANG === 'en_US' ? 'Select and confirm delivery method in the widget' : 'Выберите и подтвердите способ доставки в виджете');
+                return false;
+            }
+        });
     });
 })(jQuery || $);

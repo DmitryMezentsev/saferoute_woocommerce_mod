@@ -3,9 +3,9 @@
 require_once 'SafeRouteWooCommerceBase.php';
 
 /**
- * Добавляет в движок API для взаимодействия с SDK SafeRoute
+ * Добавляет в движок API для взаимодействия с бэком SafeRoute
  */
-class SafeRouteWooCommerceSdkApi extends SafeRouteWooCommerceBase
+class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
 {
     const API_PATH = 'saferoute-api';
 
@@ -18,30 +18,30 @@ class SafeRouteWooCommerceSdkApi extends SafeRouteWooCommerceBase
     private static function _getApiRoutes()
     {
         return [
-            'statuses.json'        => ['_statusesApi'       , 'GET'],
-            'payment-methods.json' => ['_paymentMethodsApi' , 'GET'],
-            'traffic-orders.json'  => ['_trafficOrdersApi'  , 'POST'],
+            'statuses.json'        => ['_statusesApi'          , 'GET'],
+            'payment-methods.json' => ['_paymentMethodsApi'    , 'GET'],
+            'order-status-update'  => ['_orderStatusUpdateApi' , 'POST'],
         ];
     }
 
     /**
-     * Проверяет, совпадает ли переданный API-ключ c API-ключом, указанным в настройках плагина
+     * Проверяет, совпадает ли переданный токен c токеном, указанным в настройках плагина
      *
-     * @param $key string API-ключ для проверки
+     * @param $token string Токен для проверки
      * @return bool
      */
-    private static function _checkApiKey($key)
+    private static function _checkToken($token)
     {
-        return ($key && $key === get_option(self::API_KEY_OPTION));
+        return ($token && $token === get_option(self::SR_TOKEN_OPTION));
     }
 
     /**
      * Выводит список статусов заказов
      *
-     * @param $data object
+     * @param $data WP_REST_Request
      * @return array
      */
-    public static function _statusesApi($data)
+    public static function _statusesApi(WP_REST_Request $data)
     {
         return wc_get_order_statuses();
     }
@@ -49,10 +49,10 @@ class SafeRouteWooCommerceSdkApi extends SafeRouteWooCommerceBase
     /**
      * Выводит список способов оплаты
      *
-     * @param $data object
+     * @param $data WP_REST_Request
      * @return array
      */
-    public static function _paymentMethodsApi($data)
+    public static function _paymentMethodsApi(WP_REST_Request $data)
     {
         $methods = [];
 
@@ -65,13 +65,13 @@ class SafeRouteWooCommerceSdkApi extends SafeRouteWooCommerceBase
     /**
      * API синхронизации статусов заказов WP со статусами в ЛК SafeRoute
      *
-     * @param $data object
+     * @param $data WP_REST_Request
      * @return mixed
      */
-    public static function _trafficOrdersApi($data)
+    public static function _orderStatusUpdateApi(WP_REST_Request $data)
     {
         // Не передан обязательный параметр 'id'
-        if (!isset($data['id']) || !$data['id'])
+        if (empty($data['id']))
             return new WP_Error('id_is_required', 'Parameter \'id\' is required', ['status' => 400]);
 
         // Находим заказ в БД по SafeRoute ID
@@ -92,12 +92,12 @@ class SafeRouteWooCommerceSdkApi extends SafeRouteWooCommerceBase
             $id = $query->posts[0]->ID;
 
             // Сохранение трек-номера
-            if (isset($data['track_number']))
-                update_post_meta($id, self::TRACKING_NUMBER_META_KEY, $data['track_number']);
+            if (isset($data['trackNumber']))
+                update_post_meta($id, self::TRACKING_NUMBER_META_KEY, $data['trackNumber']);
 
             // Обновление статуса заказа
-            if (isset($data['status_cms']))
-                wp_update_post(['ID' => $id, 'post_status' => $data['status_cms']]);
+            if (isset($data['statusCMS']))
+                wp_update_post(['ID' => $id, 'post_status' => $data['statusCMS']]);
 
             return ['status' => 'ok'];
         }
@@ -121,19 +121,16 @@ class SafeRouteWooCommerceSdkApi extends SafeRouteWooCommerceBase
             $response = self::updateOrderInSafeRoute([
                 'id'     => $order_sr_id,
                 'status' => $post->post_status,
-                'cms_id' => $post_id,
+                'cmsId'  => $post_id,
             ]);
-            
-            if ($response['status'] === 'ok')
+
+            // Если заказ был перенесен в ЛК
+            if (!empty($response['cabinetId']))
             {
-                // Если заказ был перенесен в ЛК
-                if (isset($response['data']['cabinet_id']))
-                {
-                    // Устанавливаем соответствующий флаг
-                    update_post_meta($post_id, self::IN_SAFEROUTE_CABINET_META_KEY, 1);
-                    // Сохраняем его новый SafeRoute ID
-                    update_post_meta($post_id, self::SAFEROUTE_ID_META_KEY, $response['data']['cabinet_id']);
-                }
+                // Устанавливаем соответствующий флаг
+                update_post_meta($post_id, self::IN_SAFEROUTE_CABINET_META_KEY, 1);
+                // Сохраняем его новый SafeRoute ID
+                update_post_meta($post_id, self::SAFEROUTE_ID_META_KEY, $response['cabinetId']);
             }
         }
     }
@@ -151,15 +148,15 @@ class SafeRouteWooCommerceSdkApi extends SafeRouteWooCommerceBase
             {
                 register_rest_route(self::API_PATH, $route, [
                     'methods' => $route_params[1],
-                    'callback' => function($data) use ($route_params)
+                    'callback' => function($request) use ($route_params)
                     {
-                        // Проверка API-ключа
-                        if (self::_checkApiKey($data['k']))
-                            // Если ключ валиден, вызываем обработчик роута
-                            return call_user_func_array(__CLASS__ . '::' . $route_params[0], [$data]);
+                        // Проверка токена
+                        if (self::_checkToken($request->get_header('token')))
+                            // Если токен валиден, вызываем обработчик роута
+                            return call_user_func_array(__CLASS__ . '::' . $route_params[0], [$request]);
 
-                        // Вывод ошибки при невалидном API-ключе
-                        return new WP_Error('invalid_api_key', 'Invalid API-key', ['status' => 401]);
+                        // Вывод ошибки при невалидном токене
+                        return new WP_Error('invalid_token', 'Invalid token', ['status' => 401]);
                     },
                 ]);
             }
@@ -177,13 +174,19 @@ class SafeRouteWooCommerceSdkApi extends SafeRouteWooCommerceBase
      */
     public static function updateOrderInSafeRoute(array $data)
     {
-        $api = self::SAFEROUTE_API_URL . get_option(self::API_KEY_OPTION) . '/sdk/update-order.json';
+        $api = self::SAFEROUTE_API_URL . 'widgets/update-order';
 
         $res = wp_remote_post($api, [
             'body' => $data,
             'timeout' => 30,
+            'headers' => [
+                'Authorization' => 'Bearer ' . get_option(self::SR_TOKEN_OPTION),
+                'Shop-Id' => get_option(self::SR_SHOP_ID_OPTION),
+            ],
         ]);
 
-        return json_decode($res['body'], true);
+        return ($res['response']['code'] === 200)
+            ? json_decode($res['body'], true)
+            : null;
     }
 }

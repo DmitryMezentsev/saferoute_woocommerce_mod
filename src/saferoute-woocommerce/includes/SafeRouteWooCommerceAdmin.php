@@ -18,6 +18,18 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
 
 
     /**
+     * Удаляет из строки настроек лишние символы
+     *
+     * @param $value string
+     * @return string
+     */
+    private static function clearOptionValue($value)
+    {
+        return sanitize_text_field(preg_replace('/["\'\\\<>]/', '', $value));
+    }
+
+
+    /**
      * Добавляет уведомление в стэк уведомлений
      *
      * @param $text string Текст уведомления
@@ -46,10 +58,10 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
     /**
      * Добавляет ссылку на страницу настроек плагина
      *
-     * @param array
+     * @param $links array
      * @return array
      */
-    public static function _addSettingsLink($links)
+    public static function _addSettingsLink(array $links)
     {
         $links[] = '<a href="' . self::ADMIN_PARENT_SLUG . '?page=' . self::ADMIN_MENU_SLUG . '">' . __('Settings') . '</a>';
         return $links;
@@ -61,10 +73,11 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
     public static function _adminSettingsPage()
     {
         // Сохранение изменений
-        if (isset($_POST['saferoute_api_key']) && wp_verify_nonce($_POST['_nonce'], 'sr_settings_save'))
+        if (isset($_POST[self::SR_TOKEN_OPTION]) && isset($_POST[self::SR_SHOP_ID_OPTION]) && wp_verify_nonce($_POST['_nonce'], 'sr_settings_save'))
         {
-            update_option(self::API_KEY_OPTION, sanitize_key($_POST['saferoute_api_key']));
-            // Перезагрузка страницы, чтобы исчезло уведомление об отсутствии API-ключа
+            update_option(self::SR_TOKEN_OPTION, self::clearOptionValue($_POST[self::SR_TOKEN_OPTION]));
+            update_option(self::SR_SHOP_ID_OPTION, self::clearOptionValue($_POST[self::SR_SHOP_ID_OPTION]));
+            // Перезагрузка страницы, чтобы исчезло уведомление об отсутствии настроек
             wp_redirect($_SERVER['REQUEST_URI']);
         }
 
@@ -104,13 +117,12 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
         });
     }
 
-
     /**
      * @param $plugin_basename string
      */
     public static function init($plugin_basename)
     {
-        // Проверяем, что WooCommerce установлен и активирован
+        // Проверка, что WooCommerce установлен и активирован
         if (self::checkWooCommerce())
         {
             add_action('admin_menu', __CLASS__ . '::_createAdminSettingsPage');
@@ -123,9 +135,9 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
             self::_pushNotice(__('WooCommerce is required for SafeRoute WooCommerce plugin.', self::TEXT_DOMAIN));
         }
 
-        // Сообщение, что API-ключ SafeRoute не задан в настройках плагина
-        if (!self::checkApiKey())
-            self::_pushNotice(__('SafeRoute API-key not set.', self::TEXT_DOMAIN));
+        // Сообщение, параметры SafeRoute (токен и ID магазина) не заданы в настройках плагина
+        if (!self::checkSettings())
+            self::_pushNotice(__('SafeRoute settings not set.', self::TEXT_DOMAIN));
 
         self::_echoNotices();
     }

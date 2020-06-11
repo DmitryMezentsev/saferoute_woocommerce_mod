@@ -1,6 +1,6 @@
-/*
-Для скрытия стоимости доставки SafeRoute в корзине в блоке "Сумма заказов"
-*/
+/**
+ * Для скрытия стоимости доставки SafeRoute в корзине в блоке "Сумма заказов"
+ */
 .cart_totals ul#shipping_method li.saferoute_shipping .amount,
 .cart_totals .shipping td.saferoute_shipping .amount { display: none; }
 
@@ -8,16 +8,16 @@
 .cart_totals .shipping td.saferoute_shipping::after { content: '—'; }
 
 
-/*
-Форма чекаута, когда выбрана доставка SafeRoute
-*/
+/**
+ * Форма чекаута, когда выбрана доставка SafeRoute
+ */
 .woocommerce-checkout.saferoute_shipping_selected #customer_details #ship-to-different-address,
 .woocommerce-checkout.saferoute_shipping_selected #customer_details .shipping_address { display: none !important; }
 
 
-/*
-Форма чекаута, когда выбрана доставка не SafeRoute
-*/
+/**
+ * Форма чекаута, когда выбрана доставка не SafeRoute
+ */
 .woocommerce-checkout:not(.saferoute_shipping_selected) .saferoute_widget_block { display: none; }
 
 

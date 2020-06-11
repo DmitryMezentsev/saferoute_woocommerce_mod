@@ -7,8 +7,11 @@ class SafeRouteWooCommerceBase
 {
     const ID = 'saferoute';
 
-    // Имя параметра 'API-ключ' в БД WordPress
-    const API_KEY_OPTION = 'saferoute_api_key';
+    // Имя параметра 'Токен аккаунта SafeRoute' в БД WordPress
+    const SR_TOKEN_OPTION = 'saferoute_token';
+
+    // Имя параметра 'ID магазина SafeRoute' в БД WordPress
+    const SR_SHOP_ID_OPTION = 'saferoute_shop_id';
 
     // Имя мета-параметра SafeRoute ID заказа
     const SAFEROUTE_ID_META_KEY = '_order_saferoute_id';
@@ -29,7 +32,7 @@ class SafeRouteWooCommerceBase
     const SAFEROUTE_CABINET_URL = 'https://cabinet.saferoute.ru/';
 
     // URL API SafeRoute
-    const SAFEROUTE_API_URL = 'https://api.saferoute.ru/api/';
+    const SAFEROUTE_API_URL = 'https://api.saferoute.ru/v2/';
 
 
     /**
@@ -53,13 +56,13 @@ class SafeRouteWooCommerceBase
     }
 
     /**
-     * Проверяет, сохранен ли в настройках плагина API-ключ
+     * Проверяет, сохранены ли в настройках плагина токен и ID магазина
      *
      * @return bool
      */
-    public static function checkApiKey()
+    public static function checkSettings()
     {
-        return (bool) strlen(get_option(self::API_KEY_OPTION));
+        return strlen(get_option(self::SR_TOKEN_OPTION)) && strlen(get_option(self::SR_SHOP_ID_OPTION));
     }
 
     /**
