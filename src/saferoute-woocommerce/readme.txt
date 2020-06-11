@@ -4,7 +4,7 @@ Tags: saferoute, shipping, woocommerce, shop, доставка, delivery, агр
 Requires at least: 4.9
 Tested up to: 4.9
 Requires PHP: 5.4
-Stable tag: 2.0.0
+Stable tag: trunk
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,7 +21,7 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Changelog ==
 
-= 2.0.0 =
+= 2.0.1 =
 * Версия с новым виджетом. Добавлена поддержка товарных габаритов и валют. Исправлены некоторые ошибки.
 = 1.0.2 =
 * Виртуальные и скачиваемые товары теперь не передаются в виджет.
@@ -35,7 +35,7 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Upgrade Notice ==
 
-= 2.0.0 =
+= 2.0.1 =
 * Версия с новым виджетом. Добавлена поддержка товарных габаритов и валют. Исправлены некоторые ошибки.
 = 1.0.2 =
 * Виртуальные и скачиваемые товары теперь не передаются в виджет.
