@@ -11,12 +11,12 @@ const $ = {
 
 
 const buildDir  = './build';
-const moduleDir = './src';
+const srcDir = './src';
 const svnDir    = './wp_svn_repo/trunk';
 
 const moduleFileName  = 'saferoute_woocommerce_install.zip';
 
-const moduleFiles = join(moduleDir, '**/*.*');
+const moduleFiles = join(srcDir, '**/*.*');
 
 
 // Удаление старых файлов сборки
@@ -27,7 +27,7 @@ $.gulp.task('_cleanBuild', () =>
 
 // Сборка модуля
 $.gulp.task('_buildModule', () =>
-  $.gulp.src(moduleFiles, { base: moduleDir })
+  $.gulp.src(moduleFiles, { base: srcDir })
     .pipe($.zip(moduleFileName))
     .pipe($.gulp.dest(buildDir))
 );
@@ -48,7 +48,7 @@ $.gulp.task('_cleanSvn', () =>
 
 // Копирование файлов для SVN-репозитория
 $.gulp.task('_copyToSvn', () =>
-  $.gulp.src(join(moduleDir, 'saferoute-woocommerce/**/*.*'))
+  $.gulp.src(join(srcDir, 'saferoute-woocommerce/**/*.*'), { base: join(srcDir, 'saferoute-woocommerce') })
     .pipe($.gulp.dest(svnDir))
 );
 
