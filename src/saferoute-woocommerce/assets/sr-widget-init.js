@@ -213,12 +213,31 @@
             }, 500);
         }
 
+        // Проверяет, был ли выбран способ оплаты с наложенным платежом
+        function checkCODPaymentSelected() {
+            return $('.payment_methods input[name=payment_method]:checked').val() === widget.data._meta.widgetSettings.payMethodWithCOD;
+        }
+
+        // Возвращает полную текущую стоимость доставки
+        function getCurrentShippingCost() {
+            var cost = widget.data.delivery.totalPrice + (widget.data.payTypeCommission || 0);
+
+            // Прибавление комиссии за НП
+            if (checkCODPaymentSelected() && widget.data.delivery.priceCommissionCod)
+                cost += widget.data.delivery.priceCommissionCod;
+
+            return cost;
+        }
+
 
         var widget = {
             _: null,
             data: null,
+            finalized: false,
             init: function () {
                 if (!this._) {
+                    widget.finalized = false;
+
                     this._ = new SafeRouteCartWidget('sr_widget', {
                         lang: lang,
                         currency: currency,
@@ -239,15 +258,14 @@
                     });
 
                     this._.on('done', function (response) {
+                        widget.finalized = true;
+
                         $('input#saferoute_id').val(response.id || 'no');
 
                         $('.saferoute_widget_block').addClass('submitted');
                         hideOtherShippings();
 
-                        setShippingCost(
-                          widget.data.delivery.totalPrice + (widget.data.payTypeCommission || 0),
-                          'update_checkout'
-                        );
+                        setShippingCost(getCurrentShippingCost(), 'update_checkout');
 
                         showSuccessMessage(widget.data);
                     });
@@ -295,6 +313,12 @@
             // Изменение состояния чекбокса "Использовать данные доставки в блоке деталей оплаты"
             $('input#copy-widget-data-into-bill').on('change', function () {
                 copyWidgetDataIntoBillingDetails(widget.data);
+            });
+
+            // Переключение выбранного способа оплаты
+            $(document).on('change', '.payment_methods input[name=payment_method]', function () {
+                if (checkSelectedShippingMethod() && widget.finalized)
+                    setShippingCost(getCurrentShippingCost(), 'update_checkout');
             });
         }
 
