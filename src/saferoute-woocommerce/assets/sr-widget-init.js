@@ -213,6 +213,11 @@
             }, 500);
         }
 
+        // Проверяет, был ли выбран способ оплаты с наложенным платежом
+        function checkCODPaymentSelected () {
+            return widget.data && $('.payment_methods input[name=payment_method]:checked').val() === widget.data._meta.widgetSettings.payMethodWithCOD;
+        }
+
 
         var widget = {
             _: null,
@@ -320,6 +325,11 @@
         $('form.checkout.woocommerce-checkout').on('checkout_place_order', function () {
             if (checkSelectedShippingMethod() && !$('input#saferoute_id').val()) {
                 alert(SR_WIDGET.LANG === 'en_US' ? 'Select and confirm delivery method in the widget' : 'Выберите и подтвердите способ доставки в виджете');
+                return false;
+            }
+
+            if (checkSelectedShippingMethod() && checkCODPaymentSelected() && widget.data.delivery.nppDisabled) {
+                alert(SR_WIDGET.LANG === 'en_US' ? 'The selected payment method is not available' : 'Выбранный способ оплаты недоступен');
                 return false;
             }
         });
