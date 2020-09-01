@@ -65,8 +65,15 @@ function addSafeRouteShippingMethod()
             }
         }
     }
-    
-    
+
+    // Чтобы стоимость доставки нормально пересчитывалась
+    function disableShippingRatesCache($packages)
+    {
+        $packages[0][rand()] = rand();
+        return $packages;
+    }
+
+
     add_filter('woocommerce_package_rates', function ($rates) {
         if (!session_id()) session_start();
         
@@ -83,4 +90,5 @@ function addSafeRouteShippingMethod()
     
     add_filter('woocommerce_shipping_methods', '_addSafeRouteShippingMethod');
     add_action('woocommerce_shipping_init', '_initSafeRouteShippingMethod');
+    add_filter('woocommerce_cart_shipping_packages', 'disableShippingRatesCache', 10, 2);
 }
