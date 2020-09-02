@@ -1,4 +1,4 @@
-(function($) {
+(function ($) {
     $(function () {
         // Если в корзине только скачиваемые/виртуальные товары
         if (!SR_WIDGET.PRODUCTS.length) return;
@@ -352,5 +352,17 @@
                 return false;
             }
         });
+
+        // Костыль, потому что событие 'applied_coupon' не срабатывает
+        var couponRemoveBtnSelector = '.woocommerce-checkout-review-order .woocommerce-remove-coupon';
+        var appliedCouponsCount = $(couponRemoveBtnSelector).length;
+        new MutationObserver(function () {
+            if (appliedCouponsCount !== $(couponRemoveBtnSelector).length) location.reload();
+        })
+          .observe($('.woocommerce-checkout-review-order').get(0), {
+              attributes: false,
+              childList: true,
+              subtree: false
+          });
     });
 })(jQuery || $);
