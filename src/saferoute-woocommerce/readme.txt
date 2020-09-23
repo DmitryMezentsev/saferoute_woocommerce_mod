@@ -21,6 +21,8 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Changelog ==
 
+= 2.0.4 =
+* fix MutationObserver error
 = 2.0.3 =
 * Обновление страницы чекаута для передачи скидки в виджет при применении купона.
 = 2.0.2 =
@@ -41,6 +43,8 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Upgrade Notice ==
 
+= 2.0.4 =
+* fix MutationObserver error
 = 2.0.3 =
 * Обновление страницы чекаута для передачи скидки в виджет при применении купона.
 = 2.0.2 =
