@@ -215,16 +215,25 @@
 
         // Проверяет, был ли выбран способ оплаты с наложенным платежом
         function checkCODPaymentSelected() {
-            return widget.data && $('.payment_methods input[name=payment_method]:checked').val() === widget.data._meta.widgetSettings.payMethodWithCOD;
+            var selected = $('.payment_methods input[name=payment_method]:checked').val();
+
+            return widget.data && selected && (
+              selected === widget.data._meta.widgetSettings.payMethodWithCOD || selected === widget.data._meta.widgetSettings.cardPayMethodWithCOD
+            );
         }
 
         // Возвращает полную текущую стоимость доставки
         function getCurrentShippingCost() {
+            if (!widget.data) return 0;
+
+            var paySelected = $('.payment_methods input[name=payment_method]:checked').val();
+
             var cost = widget.data.delivery.totalPrice + (widget.data.payTypeCommission || 0);
 
-            // Прибавление комиссии за НП
-            if (checkCODPaymentSelected() && widget.data.delivery.priceCommissionCod)
-                cost += widget.data.delivery.priceCommissionCod;
+            if (paySelected && paySelected === widget.data._meta.widgetSettings.payMethodWithCOD)
+                cost += widget.data.delivery.priceCommissionCod || 0;
+            else if (paySelected && paySelected === widget.data._meta.widgetSettings.cardPayMethodWithCOD)
+                cost += widget.data.delivery.priceCommissionCodCard || 0;
 
             return cost;
         }

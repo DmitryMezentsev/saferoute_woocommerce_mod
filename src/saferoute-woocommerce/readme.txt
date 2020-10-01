@@ -21,6 +21,8 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Changelog ==
 
+= 2.0.5 =
+* Теперь поддерживается отдельная комиссия для оплаты НП картой.
 = 2.0.4 =
 * fix MutationObserver error
 = 2.0.3 =
@@ -43,6 +45,8 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Upgrade Notice ==
 
+= 2.0.5 =
+* Теперь поддерживается отдельная комиссия для оплаты НП картой.
 = 2.0.4 =
 * fix MutationObserver error
 = 2.0.3 =
