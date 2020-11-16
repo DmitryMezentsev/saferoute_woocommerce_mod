@@ -180,12 +180,12 @@
         // Отображает вместо виджета сообщение с информацией о выбранной доставке
         function showSuccessMessage (data) {
             var t = {
-                ru: { delivery: 'Выбранная доставка', deliveryAndPay: 'Выбранная доставка и оплата' },
-                en: { delivery: 'Selected delivery method', deliveryAndPay: 'Selected delivery method and payment' }
+                ru: { delivery: 'Выбранная доставка', deliveryAndPay: 'Выбранная доставка и оплата', changeDelivery: 'Изменить параметры доставки' },
+                en: { delivery: 'Selected delivery method', deliveryAndPay: 'Selected delivery method and payment', changeDelivery: 'Change delivery' }
             };
 
-            $('.saferoute_widget_block').html(
-              '<h3>' + t[lang].delivery + '</h3><div>' + data._meta.commonDeliveryData + '</div>'
+            $('.saferoute_delivery_info').show().html(
+              '<h3>' + t[lang].delivery + '</h3><div>' + data._meta.commonDeliveryData + '</div><a class="saferoute_change_delivery">' + t[lang].changeDelivery + '</div>'
             );
         }
 
@@ -271,7 +271,7 @@
 
                         $('input#saferoute_id').val(response.id || 'no');
 
-                        $('.saferoute_widget_block').addClass('submitted');
+                        $('.saferoute_widget_block').addClass('submitted').hide();
                         hideOtherShippings();
 
                         setShippingCost(getCurrentShippingCost(), 'update_checkout');
@@ -372,6 +372,22 @@
                 alert(SR_WIDGET.LANG === 'en_US' ? 'The selected payment method is not available' : 'Выбранный способ оплаты недоступен');
                 return false;
             }
+        });
+
+        // Повторное открытие виджета кликом по "Изменить параметры доставки"
+        $(document).on('click', '.saferoute_change_delivery', function () {
+            widget.finalized = false;
+            $('input#saferoute_id').val('');
+            $('.saferoute_widget_block').removeClass('submitted').show();
+
+            setShippingCost(0, 'update_checkout');
+
+            $('.saferoute_delivery_info').hide().empty();
+
+            widget._.destruct();
+            widget._ = null;
+
+            widget.init();
         });
     });
 })(jQuery || $);

@@ -5,3 +5,4 @@
         <input id="copy-widget-data-into-bill" class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox" type="checkbox" autocomplete="off" checked><?php _e('Copy widget data into billing details', self::TEXT_DOMAIN); ?>
     </label>
 </div>
+<div class="saferoute_delivery_info"></div>

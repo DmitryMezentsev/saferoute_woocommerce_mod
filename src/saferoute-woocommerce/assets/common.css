@@ -24,3 +24,8 @@
 .saferoute_widget_block { margin-bottom: 1.6em; }
 .saferoute_widget_block label { display: inline-block; }
 #saferoute_id_field { display: none; }
+
+.saferoute_change_delivery {
+  cursor: pointer;
+  user-select: none;
+}
