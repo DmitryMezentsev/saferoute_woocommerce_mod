@@ -135,7 +135,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
                     $fields['order']['saferoute_id'] = [
                         'label'    => __('Shipping type', self::TEXT_DOMAIN),
                         'type'     => 'text',
-                        'required' => 1,
+                        'required' => self::_getProducts() ? 1 : 0,
                     ];
 
                     return $fields;

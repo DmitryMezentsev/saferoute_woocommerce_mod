@@ -21,6 +21,8 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Changelog ==
 
+= 2.1.1 =
+* fix
 = 2.1.0 =
 * Возможность изменить выбранную доставку в чекауте.
 = 2.0.5 =
@@ -47,6 +49,8 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Upgrade Notice ==
 
+= 2.1.1 =
+* fix
 = 2.1.0 =
 * Возможность изменить выбранную доставку в чекауте.
 = 2.0.5 =
