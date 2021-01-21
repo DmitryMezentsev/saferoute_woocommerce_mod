@@ -6,6 +6,7 @@ require_once 'SafeRouteWooCommerceShippingMethod.php';
 require_once 'SafeRouteWooCommercePaymentMethod.php';
 
 require_once 'SafeRouteWooCommerceAdmin.php';
+require_once 'SafeRouteWooCommerceAdminApi.php';
 require_once 'SafeRouteWooCommerceBackendApi.php';
 require_once 'SafeRouteWooCommerceWidgetApi.php';
 
@@ -21,6 +22,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
     {
         add_option(self::SR_SHOP_ID_OPTION, '', '', 'no');
         add_option(self::SR_TOKEN_OPTION, '', '', 'no');
+        add_option(self::ENABLE_SAFEROUTE_CABINET_WIDGET_OPTION, '', '', 'no');
     }
 
     /**
@@ -30,6 +32,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
     {
         delete_option(self::SR_SHOP_ID_OPTION);
         delete_option(self::SR_TOKEN_OPTION);
+        delete_option(self::ENABLE_SAFEROUTE_CABINET_WIDGET_OPTION);
     }
 
 
@@ -72,10 +75,10 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
 
         foreach($woocommerce->cart->get_cart() as $woo_cart_item)
         {
-			// Пропуск виртуальных и скачиваемых товаров, т.к. доставка для них не нужна
-			if($woo_cart_item['data']->is_virtual() || $woo_cart_item['data']->is_downloadable())
-				continue;
-			
+            // Пропуск виртуальных и скачиваемых товаров, т.к. доставка для них не нужна
+            if($woo_cart_item['data']->is_virtual() || $woo_cart_item['data']->is_downloadable())
+                continue;
+
             // Вычисление НДС
             $vat = ($woo_cart_item['line_total'] && $woo_cart_item['line_tax'])
                 ? round(100 / ($woo_cart_item['line_total'] / $woo_cart_item['line_tax']))
@@ -130,13 +133,17 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
                     require self::getPluginDir() . '/views/checkout-widget-block.php';
                 });
 
-                // Добавление поля SafeRoute ID заказа
+                // Добавление доп. полей для заказа
                 add_filter('woocommerce_checkout_fields', function ($fields) {
                     $fields['order']['saferoute_id'] = [
                         'label'    => __('Shipping type', self::TEXT_DOMAIN),
                         'type'     => 'text',
                         'required' => self::_getProducts() ? 1 : 0,
                     ];
+                    $fields['order']['saferoute_type']       = ['type' => 'hidden'];
+                    $fields['order']['saferoute_company']    = ['type' => 'hidden'];
+                    $fields['order']['saferoute_days']       = ['type' => 'hidden'];
+                    $fields['order']['saferoute_in_cabinet'] = ['type' => 'hidden'];
 
                     return $fields;
                 });
@@ -165,11 +172,16 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
         {
             $order = get_post($order_id);
 
+            self::setDeliveryMetaData($order_id, [
+                'type'    => $posted['saferoute_type'],
+                'days'    => $posted['saferoute_days'],
+                'company' => $posted['saferoute_company'],
+            ]);
+
             // Сохранение SafeRoute ID заказа
             update_post_meta($order_id, self::SAFEROUTE_ID_META_KEY, $posted['saferoute_id']);
 
-            if (mb_strlen($posted['saferoute_id'], 'utf-8') < 15)
-                update_post_meta($order_id, self::IN_SAFEROUTE_CABINET_META_KEY, 1);
+            if ($posted['saferoute_in_cabinet']) update_post_meta($order_id, self::IN_SAFEROUTE_CABINET_META_KEY, 1);
 
             // Отправка запроса к бэку SafeRoute
             $response = SafeRouteWooCommerceBackendApi::updateOrderInSafeRoute([
@@ -206,6 +218,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
         if (is_admin())
         {
             SafeRouteWooCommerceAdmin::init(plugin_basename($plugin_file));
+            SafeRouteWooCommerceAdminApi::init();
         }
         else
         {

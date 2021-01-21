@@ -3,7 +3,7 @@ Contributors: dmitrymezentsev
 Tags: saferoute, shipping, woocommerce, shop, доставка, delivery, агрегатор, ecommerce, checkout, чекаут
 Requires at least: 4.9
 Tested up to: 4.9
-Requires PHP: 5.4
+Requires PHP: 7.0
 Stable tag: trunk
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -21,6 +21,8 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Changelog ==
 
+= 2.2.0 =
+* Редактирование доставки SafeRoute прямо со страницы заказа в админке WordPress
 = 2.1.1 =
 * fix
 = 2.1.0 =
@@ -49,6 +51,8 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Upgrade Notice ==
 
+= 2.2.0 =
+* Редактирование доставки SafeRoute прямо со страницы заказа в админке WordPress
 = 2.1.1 =
 * fix
 = 2.1.0 =

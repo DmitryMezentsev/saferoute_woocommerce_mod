@@ -38,6 +38,23 @@
                            required>
                 </td>
             </tr>
+            <tr>
+                <th scope="row">
+                    <label for="<?php echo SafeRouteWooCommerce::ENABLE_SAFEROUTE_CABINET_WIDGET_OPTION; ?>">
+                        <?php _e('Enable order editing in SafeRoute from your WordPress admin', SafeRouteWooCommerce::TEXT_DOMAIN); ?>
+                    </label>
+                </th>
+                <td>
+                    <input name="<?php echo SafeRouteWooCommerce::ENABLE_SAFEROUTE_CABINET_WIDGET_OPTION; ?>"
+                           id="<?php echo SafeRouteWooCommerce::ENABLE_SAFEROUTE_CABINET_WIDGET_OPTION; ?>"
+                           value="1"
+                           class="regular-text"
+                           type="checkbox"
+                           autocomplete="off"
+                        <?= get_option(SafeRouteWooCommerce::ENABLE_SAFEROUTE_CABINET_WIDGET_OPTION) ? 'checked' : ''; ?>
+                    >
+                </td>
+            </tr>
             </tbody>
         </table>
 

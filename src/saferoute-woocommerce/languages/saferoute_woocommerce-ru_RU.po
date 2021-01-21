@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SafeRoute WooCommerce\n"
-"POT-Creation-Date: 2020-06-10 19:40+0500\n"
-"PO-Revision-Date: 2020-06-10 19:48+0500\n"
+"POT-Creation-Date: 2021-01-21 17:48+0500\n"
+"PO-Revision-Date: 2021-01-21 17:49+0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -22,40 +22,36 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: includes/SafeRouteWooCommerce.php:132 includes/SafeRouteWooCommerce.php:142
+#: includes/SafeRouteWooCommerce.php:139 includes/SafeRouteWooCommerce.php:153
 msgid "Shipping type"
 msgstr "Способ доставки"
 
-#: includes/SafeRouteWooCommerce.php:143
+#: includes/SafeRouteWooCommerce.php:154
 msgid "Select and confirm shipping type."
 msgstr "Выберите и подтвердите параметры доставки."
 
-#: includes/SafeRouteWooCommerceAdmin.php:54
+#: includes/SafeRouteWooCommerceAdmin.php:90
 msgid "Settings"
 msgstr "Настройки"
 
-#: includes/SafeRouteWooCommerceAdmin.php:81
-#: includes/SafeRouteWooCommerceAdmin.php:90
+#: includes/SafeRouteWooCommerceAdmin.php:118
+#: includes/SafeRouteWooCommerceAdmin.php:127
 #: includes/SafeRouteWooCommerceShippingMethod.php:33
 #: includes/SafeRouteWooCommerceShippingMethod.php:47
 msgid "SafeRoute"
 msgstr "SafeRoute"
 
-#: includes/SafeRouteWooCommerceAdmin.php:97
-msgid "Open order in the SafeRoute Cabinet"
-msgstr "Открыть заказ в личном кабинете SafeRoute"
+#: includes/SafeRouteWooCommerceAdmin.php:131
+msgid "Order Tracking"
+msgstr "Трекинг заказа"
 
-#: includes/SafeRouteWooCommerceAdmin.php:102
-msgid "Order is not in the SafeRoute Cabinet"
-msgstr "Заказ ещё не передан в личный кабинет SafeRoute"
-
-#: includes/SafeRouteWooCommerceAdmin.php:123
+#: includes/SafeRouteWooCommerceAdmin.php:152
 msgid "WooCommerce is required for SafeRoute WooCommerce plugin."
 msgstr ""
 "Для работы плагина SafeRoute WooCommerce должен быть установлен и "
 "активирован сам WooCommerce."
 
-#: includes/SafeRouteWooCommerceAdmin.php:128
+#: includes/SafeRouteWooCommerceAdmin.php:159
 msgid "SafeRoute settings not set."
 msgstr "Настройки плагина SafeRoute не заданы."
 
@@ -91,6 +87,10 @@ msgid "SafeRoute shop ID"
 msgstr "ID магазина"
 
 #: views/admin-settings-page.php:44
+msgid "Enable order editing in SafeRoute from your WordPress admin"
+msgstr "Активировать редактирование заказа в SafeRoute через админку WordPress"
+
+#: views/admin-settings-page.php:61
 msgid ""
 "Token and shop ID can be found on in the SafeRoute cabinet. See installation "
 "instructions for details."
@@ -117,3 +117,9 @@ msgstr "Плагин виджета SafeRoute для WooCommerce"
 #. Author of the plugin/theme
 msgid "Dmitry Mezentsev"
 msgstr "Dmitry Mezentsev"
+
+#~ msgid "Open order in the SafeRoute Cabinet"
+#~ msgstr "Открыть заказ в личном кабинете SafeRoute"
+
+#~ msgid "Order is not in the SafeRoute Cabinet"
+#~ msgstr "Заказ ещё не передан в личный кабинет SafeRoute"

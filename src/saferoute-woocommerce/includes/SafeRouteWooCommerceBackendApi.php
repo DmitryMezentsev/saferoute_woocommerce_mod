@@ -21,6 +21,7 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
             'statuses.json'        => ['_statusesApi'          , 'GET'],
             'payment-methods.json' => ['_paymentMethodsApi'    , 'GET'],
             'order-status-update'  => ['_orderStatusUpdateApi' , 'POST'],
+            'products'             => ['_productsApi'          , 'GET'],
         ];
     }
 
@@ -104,6 +105,49 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
     }
 
     /**
+     * Выводит товары для автокомплита на странице заказа в ЛК
+     *
+     * @param $data WP_REST_Request
+     * @return array
+     */
+    public static function _productsApi(WP_REST_Request $data)
+    {
+        // Для поиска по частичному совпадению названия товара
+        add_filter('woocommerce_product_data_store_cpt_get_products_query', function ($query, $query_vars) {
+            if (!empty($query_vars['like_title']))
+                $query['s'] = esc_attr($query_vars['like_title']);
+            return $query;
+        }, 10, 2);
+
+        $products = wc_get_products([
+            'virtual'      => false,
+            'downloadable' => false,
+            'limit'        => 50,
+            'visibility'   => 'visible',
+            'like_title'   => $data['name'],
+            'sku'          => $data['vendorCode'],
+        ]);
+
+        return array_map(function ($product) {
+            // Вычисление НДС
+            $price_including_tax = wc_get_price_including_tax($product);
+            $diff = abs($price_including_tax - $product->price);
+            $vat = ($diff) ? round(100 / ($product->price / $diff)) : null;
+
+            return [
+                'name'       => $product->name,
+                'vendorCode' => $product->sku,
+                'vat'        => $vat,
+                'price'      => (float) $product->price,
+                'weight'     => wc_get_weight($product->get_weight(), 'kg'),
+                'width'      => (float) wc_get_dimension($product->get_width(), 'cm') ?: null,
+                'height'     => (float) wc_get_dimension($product->get_height(), 'cm') ?: null,
+                'length'     => (float) wc_get_dimension($product->get_length(), 'cm') ?: null,
+            ];
+        }, $products);
+    }
+
+    /**
      * Обработчик события изменения постов
      *
      * @param $post_id int ID изменяемого поста
@@ -158,6 +202,7 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
                         // Вывод ошибки при невалидном токене
                         return new WP_Error('invalid_token', 'Invalid token', ['status' => 401]);
                     },
+                    'permission_callback' => '__return_true',
                 ]);
             }
         });
