@@ -19,7 +19,7 @@
     const widget = new SafeRouteCabinetWidget(SR_TOKEN);
 
     const $editAddress = $('#order_data .order_data_column:nth-child(3) .edit_address');
-    const itemsEditBtns = '.woocommerce_order_items .item .edit-order-item, .woocommerce_order_items .item .delete-order-item';
+    const itemsEditBtns = '.woocommerce_order_items .edit-order-item, .woocommerce_order_items .delete-order-item';
     const addItemBtns = '#woocommerce-order-items .add-order-item, #woocommerce-order-items .add-order-fee, #woocommerce-order-items .add-order-shipping, #woocommerce-order-items .add-order-tax';
 
 

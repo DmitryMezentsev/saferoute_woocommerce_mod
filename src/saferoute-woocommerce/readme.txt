@@ -21,6 +21,8 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Changelog ==
 
+= 2.2.1 =
+* Детали доставки в названии способа доставки
 = 2.2.0 =
 * Редактирование доставки SafeRoute прямо со страницы заказа в админке WordPress
 = 2.1.1 =
@@ -51,6 +53,8 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Upgrade Notice ==
 
+= 2.2.1 =
+* Детали доставки в названии способа доставки
 = 2.2.0 =
 * Редактирование доставки SafeRoute прямо со страницы заказа в админке WordPress
 = 2.1.1 =
