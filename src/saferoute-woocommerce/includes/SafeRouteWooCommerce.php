@@ -168,35 +168,50 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
     public static function _onAfterOrderCreate($order_id, $posted)
     {
         // Только для заказов, для которых была выбрана доставка SafeRoute
-        if (isset($posted['saferoute_id']) && $posted['saferoute_id'] !== 'no')
+        if (!empty($posted['saferoute_id']))
         {
-            $order = get_post($order_id);
-
-            self::setDeliveryMetaData($order_id, [
-                'type'    => $posted['saferoute_type'],
-                'days'    => $posted['saferoute_days'],
-                'company' => $posted['saferoute_company'],
-            ]);
-
-            // Сохранение SafeRoute ID заказа
-            update_post_meta($order_id, self::SAFEROUTE_ID_META_KEY, $posted['saferoute_id']);
-
-            if ($posted['saferoute_in_cabinet']) update_post_meta($order_id, self::IN_SAFEROUTE_CABINET_META_KEY, 1);
-
-            // Отправка запроса к бэку SafeRoute
-            $response = SafeRouteWooCommerceBackendApi::updateOrderInSafeRoute([
-                'id'            => $posted['saferoute_id'],
-                'cmsId'         => $order_id,
-                'status'        => $order->post_status,
-                'paymentMethod' => $posted['payment_method'],
-            ]);
-
-            // Если заказ был перенесен в ЛК
-            if ($response && $response['cabinetId'])
+            // Только если не была выбрана собственная компания доставки
+            if ($posted['saferoute_id'] !== 'no')
             {
-                // Обновляем его SafeRoute ID и устанавливаем флаг, что заказ находится в ЛК
-                update_post_meta($order_id, self::SAFEROUTE_ID_META_KEY, $response['cabinetId']);
-                update_post_meta($order_id, self::IN_SAFEROUTE_CABINET_META_KEY, 1);
+                $order = get_post($order_id);
+
+                self::setDeliveryMetaData($order_id, [
+                    'type'    => $posted['saferoute_type'],
+                    'days'    => $posted['saferoute_days'],
+                    'company' => $posted['saferoute_company'],
+                ]);
+
+                // Сохранение SafeRoute ID заказа
+                update_post_meta($order_id, self::SAFEROUTE_ID_META_KEY, $posted['saferoute_id']);
+
+                if ($posted['saferoute_in_cabinet']) update_post_meta($order_id, self::IN_SAFEROUTE_CABINET_META_KEY, 1);
+
+                // Отправка запроса к бэку SafeRoute
+                $response = SafeRouteWooCommerceBackendApi::updateOrderInSafeRoute([
+                    'id'            => $posted['saferoute_id'],
+                    'cmsId'         => $order_id,
+                    'status'        => $order->post_status,
+                    'paymentMethod' => $posted['payment_method'],
+                ]);
+
+                // Если заказ был перенесен в ЛК
+                if ($response && $response['cabinetId'])
+                {
+                    // Обновляем его SafeRoute ID и устанавливаем флаг, что заказ находится в ЛК
+                    update_post_meta($order_id, self::SAFEROUTE_ID_META_KEY, $response['cabinetId']);
+                    update_post_meta($order_id, self::IN_SAFEROUTE_CABINET_META_KEY, 1);
+                }
+            }
+
+            // Если используется эквайринг виджета
+            if ($posted['payment_method'] === 'saferoute')
+            {
+                // Подтверждение завершения оформления заказа в CMS
+                if (SafeRouteWooCommerceBackendApi::confirmOrder($_COOKIE['SR_checkoutSessId']))
+                {
+                    // Установка для заказа статуса "Обработка"
+                    wp_update_post(['ID' => $order_id, 'post_status' => 'wc-processing']);
+                }
             }
         }
     }

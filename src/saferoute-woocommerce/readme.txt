@@ -21,6 +21,8 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Changelog ==
 
+= 2.3.0 =
+* Добавлена поддержка эквайринга через виджет SafeRoute
 = 2.2.1 =
 * Детали доставки в названии способа доставки
 = 2.2.0 =
@@ -53,6 +55,8 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Upgrade Notice ==
 
+= 2.3.0 =
+* Добавлена поддержка эквайринга через виджет SafeRoute
 = 2.2.1 =
 * Детали доставки в названии способа доставки
 = 2.2.0 =

@@ -50,17 +50,17 @@ function addSafeRoutePaymentMethod()
                     ],
                 ];
             }
-            
+
             public function process_payment($order_id)
             {
                 $order = wc_get_order($order_id);
-                
+
                 return [
                     'result' => 'success',
                     'redirect' => $this->get_return_url($order),
                 ];
             }
-            
+
             public function thankyou_page()
             {
                 if ($this->instructions)

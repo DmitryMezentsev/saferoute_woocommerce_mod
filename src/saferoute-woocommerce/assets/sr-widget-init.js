@@ -14,31 +14,27 @@
 
 
     // Переключает отображаемые способы оплаты
-    function paymentMethodsToggle (useSafeRoute) {
-      const $paymentMethodSafeRoute = $('.wc_payment_method.payment_method_saferoute'),
-        $otherPaymentMethods = $('.wc_payment_method:not(.payment_method_saferoute)');
+    function togglePaymentMethods (type) {
+      const $paymentMethodSafeRoute = $('.wc_payment_method.payment_method_saferoute');
 
-      function selectAnyVisiblePaymentMethod () {
-        $('.wc_payment_method:visible').find('label').trigger('click');
-      }
+      const $paymentMethodCOD = widget.data && widget.data._meta.widgetSettings.payMethodWithCOD
+        ? $('.wc_payment_method.payment_method_' + widget.data._meta.widgetSettings.payMethodWithCOD)
+        : null;
 
-      if (useSafeRoute) {
-        if ($paymentMethodSafeRoute.length) {
-          // Отображение способа оплаты "Оплата через SafeRoute"
-          $paymentMethodSafeRoute.show();
-          // Скрытие остальных способов оплаты
-          $otherPaymentMethods.hide();
-
-          selectAnyVisiblePaymentMethod();
+      if (checkSelectedShippingMethod() && type) {
+        if (type === 1) {
+          // Отображение только способа "Оплата при получении"
+          if ($paymentMethodCOD) $paymentMethodCOD.show().siblings().hide();
+        } else if (type === 2) {
+          // Отображение только способа "Оплата через SafeRoute"
+          $paymentMethodSafeRoute.show().siblings().hide();
         }
       } else {
         // Скрытие способа оплаты "Оплата через SafeRoute"
-        $paymentMethodSafeRoute.hide();
-        // Отображение остальных способов оплаты, если они были скрыты
-        $otherPaymentMethods.show();
-
-        selectAnyVisiblePaymentMethod();
+        $paymentMethodSafeRoute.hide().siblings().show();
       }
+
+      $('.wc_payment_method:visible input').first().trigger('click');
     }
 
     // Скрывает все варианты доставки, кроме SafeRoute
@@ -63,13 +59,11 @@
     function renderWidget () {
       if (checkSelectedShippingMethod()) {
         widget.init();
-        paymentMethodsToggle(true);
 
         if ($('.saferoute_widget_block').hasClass('submitted'))
           hideOtherShippings();
       } else {
         widget.destroy();
-        paymentMethodsToggle();
       }
     }
 
@@ -289,6 +283,8 @@
             $('.saferoute_widget_block').addClass('submitted').hide();
             hideOtherShippings();
 
+            togglePaymentMethods(widget.data.payType);
+
             setDelivery({
               price: getCurrentShippingCost(),
               days: getDeliveryDaysString(),
@@ -313,6 +309,8 @@
 
           this._.destruct();
           this._ = null;
+
+          togglePaymentMethods(null);
         }
 
         $('input#saferoute_id').val('no');
@@ -328,6 +326,8 @@
 
       // Отправка запроса для обновления блоков
       $(document).ajaxSuccess((event, jqxhr, settings) => {
+        if (widget.data) togglePaymentMethods(widget.data.payType);
+
         if (settings.url.indexOf('wc-ajax=update_order_review') !== -1)
           // Проверка выбранного способа доставки после загрузки блоков
           renderWidget();
