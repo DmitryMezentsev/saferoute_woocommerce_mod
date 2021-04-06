@@ -135,6 +135,7 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
             $vat = ($diff) ? round(100 / ($product->price / $diff)) : null;
 
             return [
+                'id'         => $product->id,
                 'name'       => $product->name,
                 'vendorCode' => $product->sku,
                 'vat'        => $vat,
