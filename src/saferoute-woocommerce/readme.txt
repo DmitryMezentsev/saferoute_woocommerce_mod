@@ -21,6 +21,8 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Changelog ==
 
+= 2.3.2 =
+* bugfix
 = 2.3.1 =
 * Исправлена ошибка в передаче списка товаров в ЛК
 = 2.3.0 =
@@ -57,6 +59,8 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Upgrade Notice ==
 
+= 2.3.2 =
+* bugfix
 = 2.3.1 =
 * Исправлена ошибка в передаче списка товаров в ЛК
 = 2.3.0 =
