@@ -120,4 +120,17 @@ class SafeRouteWooCommerceBase
 
         return false;
     }
+
+    /**
+     * Возвращает номер заказа в WooCommerce
+     *
+     * @param $post_id  string|int  ID поста (заказа в WooCommerce)
+     * @return string
+     */
+    public static function getOrderNumber($post_id)
+    {
+        $order_number = get_post_meta($post_id, '_order_number'); // Plugin: Sequential Order Numbers for WooCommerce
+
+        return (isset($order_number[0])) ? $order_number[0] : $post_id;
+    }
 }

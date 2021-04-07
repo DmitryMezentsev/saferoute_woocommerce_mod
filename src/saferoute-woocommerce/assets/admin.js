@@ -16,6 +16,8 @@
     const SR_IS_SELECTED_CLASSNAME = 'sr-is-selected';
 
     const postId = getQueryVariable('post');
+    const cmsId = $('#order_data .woocommerce-order-data__heading').text().match(/#([^\s])/)[1];
+
     const widget = new SafeRouteCabinetWidget(SR_TOKEN);
 
     const $editAddress = $('#order_data .order_data_column:nth-child(3) .edit_address');
@@ -73,7 +75,7 @@
         const company = $('input#_shipping_company').val();
 
         widget.run(widget.MODE.ORDER_CREATE, {
-          cmsId: postId,
+          cmsId,
           products: $('.woocommerce_order_items #order_line_items .item').map(function() {
             const name = $(this).find('.name .wc-order-item-name').text();
             const vendorCode = $.trim($(this).find('.name .wc-order-item-sku').text().replace(/^[^:]+:/, ''));

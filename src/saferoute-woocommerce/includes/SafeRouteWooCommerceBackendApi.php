@@ -166,7 +166,7 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
             $response = self::updateOrderInSafeRoute([
                 'id'     => $order_sr_id,
                 'status' => $post->post_status,
-                'cmsId'  => $post_id,
+                'cmsId'  => self::getOrderNumber($post_id),
             ]);
 
             // Если заказ был перенесен в ЛК

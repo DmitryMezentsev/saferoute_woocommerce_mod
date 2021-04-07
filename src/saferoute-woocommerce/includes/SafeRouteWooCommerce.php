@@ -189,7 +189,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
                 // Отправка запроса к бэку SafeRoute
                 $response = SafeRouteWooCommerceBackendApi::updateOrderInSafeRoute([
                     'id'            => $posted['saferoute_id'],
-                    'cmsId'         => $order_id,
+                    'cmsId'         => self::getOrderNumber($order_id),
                     'status'        => $order->post_status,
                     'paymentMethod' => $posted['payment_method'],
                 ]);
