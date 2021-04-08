@@ -34,7 +34,8 @@
         $paymentMethodSafeRoute.hide().siblings().show();
       }
 
-      $('.wc_payment_method:visible input').first().trigger('click');
+      if ($('.wc_payment_method input:checked').closest('.wc_payment_method').is(':hidden'))
+        $('.wc_payment_method:visible input').first().trigger('click');
     }
 
     // Скрывает все варианты доставки, кроме SafeRoute

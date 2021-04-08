@@ -21,6 +21,8 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Changelog ==
 
+= 2.3.4 =
+* fix
 = 2.3.3 =
 * Добавлена поддержка плагина Sequential Order Numbers for WooCommerce
 = 2.3.2 =
@@ -61,6 +63,8 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Upgrade Notice ==
 
+= 2.3.4 =
+* fix
 = 2.3.3 =
 * Добавлена поддержка плагина Sequential Order Numbers for WooCommerce
 = 2.3.2 =
