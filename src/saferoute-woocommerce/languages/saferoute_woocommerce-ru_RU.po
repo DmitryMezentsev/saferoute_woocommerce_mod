@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SafeRoute WooCommerce\n"
-"POT-Creation-Date: 2021-01-21 17:48+0500\n"
-"PO-Revision-Date: 2021-01-21 17:49+0500\n"
+"POT-Creation-Date: 2021-04-12 13:55+0500\n"
+"PO-Revision-Date: 2021-04-12 13:56+0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -34,24 +34,24 @@ msgstr "Выберите и подтвердите параметры доста
 msgid "Settings"
 msgstr "Настройки"
 
-#: includes/SafeRouteWooCommerceAdmin.php:118
-#: includes/SafeRouteWooCommerceAdmin.php:127
+#: includes/SafeRouteWooCommerceAdmin.php:119
+#: includes/SafeRouteWooCommerceAdmin.php:128
 #: includes/SafeRouteWooCommerceShippingMethod.php:33
 #: includes/SafeRouteWooCommerceShippingMethod.php:47
 msgid "SafeRoute"
 msgstr "SafeRoute"
 
-#: includes/SafeRouteWooCommerceAdmin.php:131
+#: includes/SafeRouteWooCommerceAdmin.php:132
 msgid "Order Tracking"
 msgstr "Трекинг заказа"
 
-#: includes/SafeRouteWooCommerceAdmin.php:152
+#: includes/SafeRouteWooCommerceAdmin.php:153
 msgid "WooCommerce is required for SafeRoute WooCommerce plugin."
 msgstr ""
 "Для работы плагина SafeRoute WooCommerce должен быть установлен и "
 "активирован сам WooCommerce."
 
-#: includes/SafeRouteWooCommerceAdmin.php:159
+#: includes/SafeRouteWooCommerceAdmin.php:160
 msgid "SafeRoute settings not set."
 msgstr "Настройки плагина SafeRoute не заданы."
 
@@ -91,6 +91,10 @@ msgid "Enable order editing in SafeRoute from your WordPress admin"
 msgstr "Активировать редактирование заказа в SafeRoute через админку WordPress"
 
 #: views/admin-settings-page.php:61
+msgid "Hide billing block in checkout"
+msgstr "Скрыть блок \"Детали оплаты\" в чекауте"
+
+#: views/admin-settings-page.php:78
 msgid ""
 "Token and shop ID can be found on in the SafeRoute cabinet. See installation "
 "instructions for details."

@@ -55,6 +55,23 @@
                     >
                 </td>
             </tr>
+            <tr>
+                <th scope="row">
+                    <label for="<?php echo SafeRouteWooCommerce::HIDE_CHECKOUT_BILLING_BLOCK_OPTION; ?>">
+                        <?php _e('Hide billing block in checkout', SafeRouteWooCommerce::TEXT_DOMAIN); ?>
+                    </label>
+                </th>
+                <td>
+                    <input name="<?php echo SafeRouteWooCommerce::HIDE_CHECKOUT_BILLING_BLOCK_OPTION; ?>"
+                           id="<?php echo SafeRouteWooCommerce::HIDE_CHECKOUT_BILLING_BLOCK_OPTION; ?>"
+                           value="1"
+                           class="regular-text"
+                           type="checkbox"
+                           autocomplete="off"
+                        <?= get_option(SafeRouteWooCommerce::HIDE_CHECKOUT_BILLING_BLOCK_OPTION) ? 'checked' : ''; ?>
+                    >
+                </td>
+            </tr>
             </tbody>
         </table>
 

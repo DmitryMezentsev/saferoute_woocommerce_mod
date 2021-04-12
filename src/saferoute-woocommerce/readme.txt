@@ -21,6 +21,8 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Changelog ==
 
+= 2.3.5 =
+* Добавлена опция "Скрыть блок 'Детали оплаты' в чекауте"
 = 2.3.4 =
 * fix
 = 2.3.3 =
@@ -63,6 +65,8 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Upgrade Notice ==
 
+= 2.3.5 =
+* Добавлена опция "Скрыть блок 'Детали оплаты' в чекауте"
 = 2.3.4 =
 * fix
 = 2.3.3 =

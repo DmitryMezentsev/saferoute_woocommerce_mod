@@ -1,4 +1,4 @@
-/* global SafeRouteCartWidget */
+/* global SafeRouteCartWidget, SR_HIDE_CHECKOUT_BILLING_BLOCK */
 
 (function ($) {
   $(function () {
@@ -109,23 +109,23 @@
 
     // Копирует данные виджета в блок "Детали оплаты", если был установлен соответствующий чекбокс
     function copyWidgetDataIntoBillingDetails (data) {
-      if (!$('input#copy-widget-data-into-bill').is(':checked')) return;
+      if ($('input#copy-widget-data-into-bill').is(':checked') || SR_HIDE_CHECKOUT_BILLING_BLOCK) {
+        const fullName = splitFullName(data.contacts.fullName);
 
-      const fullName = splitFullName(data.contacts.fullName);
-
-      $('input#billing_first_name').val(fullName.firstName);
-      $('input#billing_last_name').val(fullName.lastName);
-      $('input#billing_address_1').val(buildAddress(data.contacts.address));
-      $('input#billing_address_2').val(data.contacts.address.apartment);
-      if (data.city) {
-        $('input#billing_city').val(data.city.name);
-        $('input#billing_state').val(data.city.name);
-      }
-      $('input#billing_postcode').val(data.contacts.address.zipCode);
-      $('input#billing_company').val(data.contacts.companyName);
-      $('input#billing_phone').val(data.contacts.phone);
-      if (data.contacts.email) {
-        $('input#billing_email').val(data.contacts.email);
+        $('input#billing_first_name').val(fullName.firstName);
+        $('input#billing_last_name').val(fullName.lastName);
+        $('input#billing_address_1').val(buildAddress(data.contacts.address));
+        $('input#billing_address_2').val(data.contacts.address.apartment);
+        if (data.city) {
+          $('input#billing_city').val(data.city.name);
+          $('input#billing_state').val(data.city.name);
+        }
+        $('input#billing_postcode').val(data.contacts.address.zipCode);
+        $('input#billing_company').val(data.contacts.companyName);
+        $('input#billing_phone').val(data.contacts.phone);
+        if (data.contacts.email) {
+          $('input#billing_email').val(data.contacts.email);
+        }
       }
     }
 
@@ -365,6 +365,8 @@
           childList: true,
           subtree: false
         });
+
+      if (SR_HIDE_CHECKOUT_BILLING_BLOCK) $('.woocommerce-billing-fields').hide();
     }
 
     // Для страницы корзины

@@ -59,7 +59,10 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
             'CURRENCY' => get_woocommerce_currency(),
         ];
 
-        return 'var SR_WIDGET = ' . json_encode($widget_params, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) . ';';
+        $js  = 'var SR_WIDGET = ' . json_encode($widget_params, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) . ';';
+        $js .= 'var SR_HIDE_CHECKOUT_BILLING_BLOCK = ' . (get_option(self::HIDE_CHECKOUT_BILLING_BLOCK_OPTION) ? 'true' : 'false') . ';';
+
+        return $js;
     }
 
     /**
@@ -146,6 +149,28 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
                     $fields['order']['saferoute_in_cabinet'] = ['type' => 'hidden'];
 
                     return $fields;
+                });
+
+                add_filter('woocommerce_billing_fields', function ($billing_fields) {
+                    if(!is_checkout()) return $billing_fields;
+
+                    // При включённой опции 'Скрыть блок "Детали оплаты" в чекауте' поля оплаты делаем необязательными,
+                    // а те поля, которые необязательными сделать нельзя, полностью удаляем
+                    if (get_option(self::HIDE_CHECKOUT_BILLING_BLOCK_OPTION)) {
+                        $billing_fields['billing_first_name']['required'] = false;
+                        $billing_fields['billing_last_name']['required'] = false;
+                        $billing_fields['billing_phone']['required'] = false;
+                        $billing_fields['billing_email']['required'] = false;
+
+                        unset($billing_fields['billing_address_1']);
+                        unset($billing_fields['billing_address_2']);
+                        unset($billing_fields['billing_country']);
+                        unset($billing_fields['billing_city']);
+                        unset($billing_fields['billing_state']);
+                        unset($billing_fields['billing_postcode']);
+                    }
+
+                    return $billing_fields;
                 });
 
                 // Изменение текста ошибки валидации поля SafeRoute ID
