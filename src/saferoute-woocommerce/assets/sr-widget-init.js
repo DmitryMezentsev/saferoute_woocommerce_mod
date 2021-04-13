@@ -6,6 +6,8 @@
     if (!SR_WIDGET.PRODUCTS.length) return;
 
 
+    const deliveryTypes = { 1: 'Самовывоз', 2: 'Курьерская', 3: 'Почта' };
+
     const availableLangs = { en_US: 'en', ru_RU: 'ru' };
     const availableCurrencies = { RUB: 'rub', USD: 'usd', EUR: 'euro' };
 
@@ -74,7 +76,7 @@
         lastName = '';
 
       if (fullName) {
-        const splitted = fullName.split(' ');
+        const splitted = fullName.split(/\s+/);
 
         // ФИО
         if (splitted.length >= 3) {
@@ -118,7 +120,7 @@
         $('input#billing_address_2').val(data.contacts.address.apartment);
         if (data.city) {
           $('input#billing_city').val(data.city.name);
-          $('input#billing_state').val(data.city.name);
+          $('input#billing_state').val(data.city.region || data.city.name);
         }
         $('input#billing_postcode').val(data.contacts.address.zipCode);
         $('input#billing_company').val(data.contacts.companyName);
@@ -139,7 +141,7 @@
       $('input#shipping_last_name').val(fullName.lastName || '-');
       if (data.city) {
         $('input#shipping_city').val(data.city.name);
-        $('input#shipping_state').val(data.city.name);
+        $('input#shipping_state').val(data.city.region || data.city.name);
       }
       if (data.contacts.email) {
         $('input#shipping_email').val(data.contacts.email);
@@ -158,9 +160,12 @@
     }
 
     // Передаёт в WooCommerce данные выбранной доставки, обновляет стоимость на странице
-    function setDelivery ({ price, days, company }, end) {
+    function setDelivery ({ price, days, company, type }, end) {
       $.post(SR_WIDGET.BASE_URL + '/wp-json/saferoute-widget-api/set-delivery', {
-        price, days, company,
+        price,
+        days,
+        company,
+        type: type ? deliveryTypes[type] : null,
       }, (response) => {
         if (response && response.status === 'ok' && end) {
           if (typeof end === 'string')
@@ -275,11 +280,9 @@
             $('input#saferoute_id').val(response.id || 'no');
             $('input#saferoute_in_cabinet').val(response.confirmed ? 1 : 0);
 
-            const types = { 1: 'Самовывоз', 2: 'Курьерская', 3: 'Почта' };
-
             $('input#saferoute_days').val(getDeliveryDaysString());
             $('input#saferoute_company').val(widget.data.delivery.deliveryCompanyName);
-            $('input#saferoute_type').val(types[widget.data.delivery.type]);
+            $('input#saferoute_type').val(deliveryTypes[widget.data.delivery.type]);
 
             $('.saferoute_widget_block').addClass('submitted').hide();
             hideOtherShippings();
@@ -290,6 +293,7 @@
               price: getCurrentShippingCost(),
               days: getDeliveryDaysString(),
               company: widget.data.delivery.deliveryCompanyName,
+              type: widget.data.delivery.type,
             }, 'update_checkout');
 
             showSuccessMessage(widget.data);
@@ -306,7 +310,7 @@
       },
       destroy: function () {
         if (this._) {
-          setDelivery({ price: 0, days: null, company: null }, 'update_checkout');
+          setDelivery({ price: 0 }, 'update_checkout');
 
           this._.destruct();
           this._ = null;
@@ -323,7 +327,7 @@
     // Для страницы чекаута
     if ($('form.woocommerce-checkout').length) {
       // Обнуление ранее выбранной доставки
-      setDelivery({ price: 0, days: null, company: null }, 'update_checkout');
+      setDelivery({ price: 0 }, 'update_checkout');
 
       // Отправка запроса для обновления блоков
       $(document).ajaxSuccess((event, jqxhr, settings) => {
@@ -351,6 +355,7 @@
             price: getCurrentShippingCost(),
             days: getDeliveryDaysString(),
             company: widget.data ? widget.data.delivery.deliveryCompanyName : null,
+            type: widget.data ? widget.data.delivery.type : null,
           }, 'update_checkout');
       });
 
@@ -380,7 +385,7 @@
       hideSafeRouteCostInCart();
 
       // Обнуление ранее выбранной доставки
-      setDelivery({ price: 0, days: null, company: null }, () => {
+      setDelivery({ price: 0 }, () => {
         // Обновление блока со стоимостью
         $('.shipping input.shipping_method').first().trigger('change');
       });
@@ -406,7 +411,7 @@
       $('input#saferoute_id').val('');
       $('.saferoute_widget_block').removeClass('submitted').show();
 
-      setDelivery({ price: 0, days: null, company: null }, 'update_checkout');
+      setDelivery({ price: 0 }, 'update_checkout');
 
       $('.saferoute_delivery_info').hide().empty();
 

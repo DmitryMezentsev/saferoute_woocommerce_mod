@@ -60,8 +60,13 @@ function addSafeRouteShippingMethod()
 
                 $label = $this->title;
 
-                if (!empty($_SESSION['saferoute_company']) && !empty($_SESSION['saferoute_days']))
-                    $label .= " ($_SESSION[saferoute_company], $_SESSION[saferoute_days] дн.)";
+                if (
+                    get_option('show_details_in_delivery_name') &&
+                    !empty($_SESSION['saferoute_company']) &&
+                    !empty($_SESSION['saferoute_days']) &&
+                    !empty($_SESSION['saferoute_type'])
+                )
+                    $label .= " ($_SESSION[saferoute_company], $_SESSION[saferoute_type], $_SESSION[saferoute_days] дн.)";
 
                 $this->add_rate([
                     'id'       => $this->id,

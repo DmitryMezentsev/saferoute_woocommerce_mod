@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SafeRoute WooCommerce\n"
-"POT-Creation-Date: 2021-04-12 13:55+0500\n"
-"PO-Revision-Date: 2021-04-12 13:56+0500\n"
+"POT-Creation-Date: 2021-04-13 16:30+0500\n"
+"PO-Revision-Date: 2021-04-13 16:31+0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -22,11 +22,11 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: includes/SafeRouteWooCommerce.php:139 includes/SafeRouteWooCommerce.php:153
+#: includes/SafeRouteWooCommerce.php:142 includes/SafeRouteWooCommerce.php:178
 msgid "Shipping type"
 msgstr "Способ доставки"
 
-#: includes/SafeRouteWooCommerce.php:154
+#: includes/SafeRouteWooCommerce.php:179
 msgid "Select and confirm shipping type."
 msgstr "Выберите и подтвердите параметры доставки."
 
@@ -95,6 +95,10 @@ msgid "Hide billing block in checkout"
 msgstr "Скрыть блок \"Детали оплаты\" в чекауте"
 
 #: views/admin-settings-page.php:78
+msgid "Show details in delivery name"
+msgstr "Выводить в названии способа доставки детали по доставке"
+
+#: views/admin-settings-page.php:95
 msgid ""
 "Token and shop ID can be found on in the SafeRoute cabinet. See installation "
 "instructions for details."
@@ -106,7 +110,7 @@ msgstr ""
 msgid "Select Shipping Type"
 msgstr "Выберите способ доставки"
 
-#: views/checkout-widget-block.php:5
+#: views/checkout-widget-block.php:6
 msgid "Copy widget data into billing details"
 msgstr "Использовать данные доставки в блоке деталей оплаты"
 

@@ -38,6 +38,7 @@ class SafeRouteWooCommerceWidgetApi extends SafeRouteWooCommerceBase
         $_SESSION['saferoute_price'] = $data->get_param('price');
         $_SESSION['saferoute_company'] = $data->get_param('company');
         $_SESSION['saferoute_days'] = $data->get_param('days');
+        $_SESSION['saferoute_type'] = $data->get_param('type');
 
         return ['status' => 'ok'];
     }

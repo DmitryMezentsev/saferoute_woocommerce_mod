@@ -72,6 +72,23 @@
                     >
                 </td>
             </tr>
+            <tr>
+                <th scope="row">
+                    <label for="<?php echo SafeRouteWooCommerce::SHOW_DETAILS_IN_DELIVERY_NAME_OPTION; ?>">
+                        <?php _e('Show details in delivery name', SafeRouteWooCommerce::TEXT_DOMAIN); ?>
+                    </label>
+                </th>
+                <td>
+                    <input name="<?php echo SafeRouteWooCommerce::SHOW_DETAILS_IN_DELIVERY_NAME_OPTION; ?>"
+                           id="<?php echo SafeRouteWooCommerce::SHOW_DETAILS_IN_DELIVERY_NAME_OPTION; ?>"
+                           value="1"
+                           class="regular-text"
+                           type="checkbox"
+                           autocomplete="off"
+                        <?= get_option(SafeRouteWooCommerce::SHOW_DETAILS_IN_DELIVERY_NAME_OPTION) ? 'checked' : ''; ?>
+                    >
+                </td>
+            </tr>
             </tbody>
         </table>
 

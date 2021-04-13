@@ -19,6 +19,9 @@ class SafeRouteWooCommerceBase
     // Имя параметра 'Скрыть блок "Детали оплаты" в чекауте'
     const HIDE_CHECKOUT_BILLING_BLOCK_OPTION = 'hide_checkout_billing_block';
 
+    // Имя параметра 'Выводить в названии способа доставки детали по доставке'
+    const SHOW_DETAILS_IN_DELIVERY_NAME_OPTION = 'show_details_in_delivery_name';
+
     // Имя мета-параметра SafeRoute ID заказа
     const SAFEROUTE_ID_META_KEY = '_order_saferoute_id';
 
@@ -104,13 +107,11 @@ class SafeRouteWooCommerceBase
 
         if ($shipping)
         {
-            $delivery_types = ['1' => 'Самовывоз', '2' => 'Курьерская', '3' => 'Почта'];
-
             $delivery_item_id = $shipping[0]->order_item_id;
 
             // Сохранение подробностей по выбранной доставке в метаданных
             $data_store = WC_Data_Store::load('order-item');
-            $data_store->update_metadata($delivery_item_id, self::DELIVERY_TYPE_META_KEY, $delivery_types[$data['type']]);
+            $data_store->update_metadata($delivery_item_id, self::DELIVERY_TYPE_META_KEY, $data['type']);
             $data_store->update_metadata($delivery_item_id, self::DELIVERY_DAYS_META_KEY, $data['days']);
             $data_store->update_metadata($delivery_item_id, self::DELIVERY_COMPANY_META_KEY, $data['company']);
 

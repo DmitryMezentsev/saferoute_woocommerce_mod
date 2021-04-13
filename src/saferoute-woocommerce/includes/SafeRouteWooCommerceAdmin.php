@@ -103,6 +103,7 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
             update_option(self::SR_SHOP_ID_OPTION, self::clearOptionValue($_POST[self::SR_SHOP_ID_OPTION]));
             update_option(self::ENABLE_SAFEROUTE_CABINET_WIDGET_OPTION, $_POST[self::ENABLE_SAFEROUTE_CABINET_WIDGET_OPTION]);
             update_option(self::HIDE_CHECKOUT_BILLING_BLOCK_OPTION, $_POST[self::HIDE_CHECKOUT_BILLING_BLOCK_OPTION]);
+            update_option(self::SHOW_DETAILS_IN_DELIVERY_NAME_OPTION, $_POST[self::SHOW_DETAILS_IN_DELIVERY_NAME_OPTION]);
             // Перезагрузка страницы, чтобы исчезло уведомление об отсутствии настроек
             wp_redirect($_SERVER['REQUEST_URI']);
         }
