@@ -23,6 +23,8 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
         add_option(self::SR_SHOP_ID_OPTION, '', '', 'no');
         add_option(self::SR_TOKEN_OPTION, '', '', 'no');
         add_option(self::ENABLE_SAFEROUTE_CABINET_WIDGET_OPTION, '', '', 'no');
+        add_option(self::HIDE_CHECKOUT_BILLING_BLOCK_OPTION, '', '', 'no');
+        add_option(self::SHOW_DETAILS_IN_DELIVERY_NAME_OPTION, 1, '', 'no');
     }
 
     /**
@@ -33,6 +35,8 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
         delete_option(self::SR_SHOP_ID_OPTION);
         delete_option(self::SR_TOKEN_OPTION);
         delete_option(self::ENABLE_SAFEROUTE_CABINET_WIDGET_OPTION);
+        delete_option(self::HIDE_CHECKOUT_BILLING_BLOCK_OPTION);
+        delete_option(self::SHOW_DETAILS_IN_DELIVERY_NAME_OPTION);
     }
 
 
