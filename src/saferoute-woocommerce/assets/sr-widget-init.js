@@ -368,7 +368,7 @@
         .observe($('.woocommerce-checkout-review-order').get(0), {
           attributes: false,
           childList: true,
-          subtree: false
+          subtree: true,
         });
 
       if (SR_HIDE_CHECKOUT_BILLING_BLOCK) $('.woocommerce-billing-fields').hide();
