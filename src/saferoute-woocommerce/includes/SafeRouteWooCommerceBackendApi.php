@@ -98,7 +98,10 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
 
             // Обновление статуса заказа
             if (isset($data['statusCMS']))
-                wp_update_post(['ID' => $id, 'post_status' => $data['statusCMS']]);
+            {
+                $wc_order = new WC_Order($id);
+                $wc_order->update_status($data['statusCMS']);
+            }
 
             return ['status' => 'ok'];
         }

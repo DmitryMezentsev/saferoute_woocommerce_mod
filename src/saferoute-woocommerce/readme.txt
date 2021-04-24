@@ -21,6 +21,8 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Changelog ==
 
+= 2.3.9 =
+* updating order statuses fix
 = 2.3.8 =
 * fix
 = 2.3.7 =
@@ -71,6 +73,8 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Upgrade Notice ==
 
+= 2.3.9 =
+* updating order statuses fix
 = 2.3.8 =
 * fix
 = 2.3.7 =
