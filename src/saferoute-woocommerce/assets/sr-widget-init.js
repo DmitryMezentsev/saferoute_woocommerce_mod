@@ -395,12 +395,23 @@
     // (т.к. при использовании для этих целей валидации самого WooCommerce возникают проблемы с назначением стоимости доставки)
     $('form.checkout.woocommerce-checkout').on('checkout_place_order', () => {
       if (checkSelectedShippingMethod() && !$('input#saferoute_id').val()) {
-        alert(SR_WIDGET.LANG === 'en_US' ? 'Select and confirm delivery method in the widget' : 'Выберите и подтвердите способ доставки в виджете');
+        alert(SR_WIDGET.LANG === 'en_US'
+          ? 'Select and confirm delivery method in the widget'
+          : 'Выберите и подтвердите способ доставки в виджете'
+        );
         return false;
       }
 
-      if (checkSelectedShippingMethod() && checkCODPaymentSelected() && widget.data.delivery.nppDisabled) {
-        alert(SR_WIDGET.LANG === 'en_US' ? 'The selected payment method is not available' : 'Выбранный способ оплаты недоступен');
+      if (
+        checkSelectedShippingMethod() &&
+        checkCODPaymentSelected() &&
+        (widget.data.delivery.nppDisabled || widget.data.city.countryIsoCode !== 'RU')
+      ) {
+        alert(
+          SR_WIDGET.LANG === 'en_US'
+            ? 'Selected payment method is not available for selected delivery'
+            : 'Выбранный способ оплаты недоступен для выбранной доставки'
+        );
         return false;
       }
     });
