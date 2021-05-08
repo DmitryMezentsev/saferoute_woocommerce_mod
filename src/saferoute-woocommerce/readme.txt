@@ -21,6 +21,8 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Changelog ==
 
+= 2.4.0 =
+* Поддержка новых атрибутов товара: ТН ВЭД, код страны-производителя, бренд, название товара на английском
 = 2.3.9 =
 * updating order statuses fix
 = 2.3.8 =
@@ -73,6 +75,8 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Upgrade Notice ==
 
+= 2.4.0 =
+* Поддержка новых атрибутов товара: ТН ВЭД, код страны-производителя, бренд, название товара на английском
 = 2.3.9 =
 * updating order statuses fix
 = 2.3.8 =

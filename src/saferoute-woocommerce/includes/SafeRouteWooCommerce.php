@@ -96,29 +96,41 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
             // Размер скидки (начальная цена минус цена продажи)
             $discount = $regular_price - $woo_cart_item['data']->get_price();
 
-            // Индивидуальные атрибуты товара
-            $attributes = $woo_cart_item['data']->get_attributes();
-
-            // Получение штрих-кода из индивидуальных атрибутов товара
-            $barcode = (isset($attributes[self::PRODUCT_BARCODE_ATTR_NAME]))
-                ? $attributes[self::PRODUCT_BARCODE_ATTR_NAME]->get_options()[0]
-                : '';
-
             $products[] = [
-                'name'       => $woo_cart_item['data']->get_name(),
-                'vendorCode' => $woo_cart_item['data']->get_sku(),
-                'barcode'    => $barcode,
-                'vat'        => $vat,
-                'price'      => $regular_price,
-                'discount'   => $discount,
-                'count'      => $woo_cart_item['quantity'],
-                'width'      => wc_get_dimension($woo_cart_item['data']->get_width(), 'cm'),
-                'height'     => wc_get_dimension($woo_cart_item['data']->get_height(), 'cm'),
-                'length'     => wc_get_dimension($woo_cart_item['data']->get_length(), 'cm'),
+                'name'             => $woo_cart_item['data']->get_name(),
+                'vendorCode'       => $woo_cart_item['data']->get_sku(),
+                'barcode'          => self::_getAttrValue($woo_cart_item, self::PRODUCT_BARCODE_ATTR_NAME),
+                'tnved'            => self::_getAttrValue($woo_cart_item, self::PRODUCT_TNVED_ATTR_NAME),
+                'producingCountry' => self::_getAttrValue($woo_cart_item, self::PRODUCT_PRODUCING_COUNTRY_ATTR_NAME),
+                'brand'            => self::_getAttrValue($woo_cart_item, self::PRODUCT_BRAND_ATTR_NAME),
+                'nameEn'           => self::_getAttrValue($woo_cart_item, self::PRODUCT_NAME_EN_ATTR_NAME),
+                'vat'              => $vat,
+                'price'            => $regular_price,
+                'discount'         => $discount,
+                'count'            => $woo_cart_item['quantity'],
+                'width'            => wc_get_dimension($woo_cart_item['data']->get_width(), 'cm'),
+                'height'           => wc_get_dimension($woo_cart_item['data']->get_height(), 'cm'),
+                'length'           => wc_get_dimension($woo_cart_item['data']->get_length(), 'cm'),
             ];
         }
 
         return $products;
+    }
+
+    /**
+     * Получает значение указанного индивидуального атрибута товара
+     *
+     * @param $woo_cart_item array Товар из корзины WooCommerce
+     * @param $name string Имя атрибута
+     * @return string
+     */
+    private static function _getAttrValue($woo_cart_item, $name)
+    {
+        $attributes = $woo_cart_item['data']->get_attributes();
+
+        return (isset($attributes[$name]))
+            ? $attributes[$name]->get_options()[0]
+            : '';
     }
 
     /**
