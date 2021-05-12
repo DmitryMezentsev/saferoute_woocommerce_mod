@@ -402,11 +402,7 @@
         return false;
       }
 
-      if (
-        checkSelectedShippingMethod() &&
-        checkCODPaymentSelected() &&
-        (widget.data.delivery.nppDisabled || widget.data.city.countryIsoCode !== 'RU')
-      ) {
+      if (checkSelectedShippingMethod() && checkCODPaymentSelected() && widget.data.delivery.nppDisabled) {
         alert(
           SR_WIDGET.LANG === 'en_US'
             ? 'Selected payment method is not available for selected delivery'
