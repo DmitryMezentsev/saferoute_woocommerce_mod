@@ -28,30 +28,6 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
         return sanitize_text_field(preg_replace('/["\'\\\<>]/', '', $value));
     }
 
-    /**
-     * Подключает к странице редактирования заказа ЛК SafeRoute
-     */
-    private static function _useCabinetForEdit()
-    {
-        add_action('current_screen', function () {
-            if (get_current_screen()->id === 'shop_order' && get_option(self::ENABLE_SAFEROUTE_CABINET_WIDGET_OPTION)) {
-                $order_sr_id = (isset($_GET['post'])) ? get_post_meta($_GET['post'], self::SAFEROUTE_ID_META_KEY, true) : '';
-
-                wp_enqueue_script('saferoute-cabinet-api', 'https://cabinet-next.saferoute.ru/api.js');
-                wp_enqueue_script('saferoute-admin', plugins_url('assets/admin.js', dirname(__FILE__)), ['jquery']);
-                wp_add_inline_script(
-                    'saferoute-admin',
-                    "const SR_TOKEN = '" . get_option(self::SR_TOKEN_OPTION) . "'; let SR_ORDER_ID = '" . $order_sr_id . "';",
-                    'before'
-                );
-
-                wp_enqueue_style('saferoute-css', plugins_url('assets/common.css', dirname(__FILE__)));
-
-                wp_localize_script('saferoute-admin', 'myajax', ['url' => admin_url('admin-ajax.php')]);
-            }
-        });
-    }
-
 
     /**
      * Добавляет уведомление в стэк уведомлений
@@ -101,9 +77,9 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
         {
             update_option(self::SR_TOKEN_OPTION, self::clearOptionValue($_POST[self::SR_TOKEN_OPTION]));
             update_option(self::SR_SHOP_ID_OPTION, self::clearOptionValue($_POST[self::SR_SHOP_ID_OPTION]));
-            update_option(self::ENABLE_SAFEROUTE_CABINET_WIDGET_OPTION, $_POST[self::ENABLE_SAFEROUTE_CABINET_WIDGET_OPTION]);
             update_option(self::HIDE_CHECKOUT_BILLING_BLOCK_OPTION, $_POST[self::HIDE_CHECKOUT_BILLING_BLOCK_OPTION]);
             update_option(self::SHOW_DETAILS_IN_DELIVERY_NAME_OPTION, $_POST[self::SHOW_DETAILS_IN_DELIVERY_NAME_OPTION]);
+            update_option(self::SR_ORDER_CONFIRMATION_STATUS_OPTION, $_POST[self::SR_ORDER_CONFIRMATION_STATUS_OPTION]);
             // Перезагрузка страницы, чтобы исчезло уведомление об отсутствии настроек
             wp_redirect($_SERVER['REQUEST_URI']);
         }
@@ -153,8 +129,6 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
             // Сообщение, что для плагина SafeRoute WooCommerce необходим WooCommerce
             self::_pushNotice(__('WooCommerce is required for SafeRoute WooCommerce plugin.', self::TEXT_DOMAIN));
         }
-
-        self::_useCabinetForEdit();
 
         // Сообщение, параметры SafeRoute (токен и ID магазина) не заданы в настройках плагина
         if (!self::checkSettings())

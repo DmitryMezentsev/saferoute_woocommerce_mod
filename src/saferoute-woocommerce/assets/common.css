@@ -33,12 +33,3 @@
   cursor: pointer;
   user-select: none;
 }
-
-
-/**
- * Скрытие в админке элементов, когда для заказа выбрана доставка SafeRoute
- */
-.wp-admin #post.sr-is-selected .load_customer_shipping,
-.wp-admin #post.sr-is-selected .billing-same-as-shipping {
-  display: none !important;
-}

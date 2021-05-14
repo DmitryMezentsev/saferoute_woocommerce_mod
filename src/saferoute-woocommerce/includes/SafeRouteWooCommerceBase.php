@@ -13,8 +13,8 @@ class SafeRouteWooCommerceBase
     // Имя параметра 'ID магазина SafeRoute' в БД WordPress
     const SR_SHOP_ID_OPTION = 'saferoute_shop_id';
 
-    // Имя параметра 'Включить редактирование заказа в SafeRoute прямо из админки WordPress' в БД WordPress
-    const ENABLE_SAFEROUTE_CABINET_WIDGET_OPTION = 'enable_saferoute_cabinet_widget';
+    // Имя параметра 'Статус для подтверждения заказов в SafeRoute при управлении из админки' в БД WordPress
+    const SR_ORDER_CONFIRMATION_STATUS_OPTION = 'saferoute_order_confirmation_status';
 
     // Имя параметра 'Скрыть блок "Детали оплаты" в чекауте'
     const HIDE_CHECKOUT_BILLING_BLOCK_OPTION = 'hide_checkout_billing_block';

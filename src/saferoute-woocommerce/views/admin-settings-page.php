@@ -40,23 +40,6 @@
             </tr>
             <tr>
                 <th scope="row">
-                    <label for="<?php echo SafeRouteWooCommerce::ENABLE_SAFEROUTE_CABINET_WIDGET_OPTION; ?>">
-                        <?php _e('Enable order editing in SafeRoute from your WordPress admin', SafeRouteWooCommerce::TEXT_DOMAIN); ?>
-                    </label>
-                </th>
-                <td>
-                    <input name="<?php echo SafeRouteWooCommerce::ENABLE_SAFEROUTE_CABINET_WIDGET_OPTION; ?>"
-                           id="<?php echo SafeRouteWooCommerce::ENABLE_SAFEROUTE_CABINET_WIDGET_OPTION; ?>"
-                           value="1"
-                           class="regular-text"
-                           type="checkbox"
-                           autocomplete="off"
-                        <?= get_option(SafeRouteWooCommerce::ENABLE_SAFEROUTE_CABINET_WIDGET_OPTION) ? 'checked' : ''; ?>
-                    >
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">
                     <label for="<?php echo SafeRouteWooCommerce::HIDE_CHECKOUT_BILLING_BLOCK_OPTION; ?>">
                         <?php _e('Hide billing block in checkout', SafeRouteWooCommerce::TEXT_DOMAIN); ?>
                     </label>
@@ -87,6 +70,30 @@
                            autocomplete="off"
                         <?= get_option(SafeRouteWooCommerce::SHOW_DETAILS_IN_DELIVERY_NAME_OPTION) ? 'checked' : ''; ?>
                     >
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
+                    <label for="<?php echo SafeRouteWooCommerce::SR_ORDER_CONFIRMATION_STATUS_OPTION; ?>">
+                        <?php _e('Status for confirming orders in SafeRoute when managed from the admin panel', SafeRouteWooCommerce::TEXT_DOMAIN); ?>
+                    </label>
+                </th>
+                <td>
+                    <select name="<?php echo SafeRouteWooCommerce::SR_ORDER_CONFIRMATION_STATUS_OPTION; ?>"
+                            id="<?php echo SafeRouteWooCommerce::SR_ORDER_CONFIRMATION_STATUS_OPTION; ?>"
+                            autocomplete="off"
+                            required>
+                        <? foreach(wc_get_order_statuses() as $status_id => $status):  ?>
+                            <option value="<?=$status_id?>"
+                                <?= get_option(SafeRouteWooCommerce::SR_ORDER_CONFIRMATION_STATUS_OPTION) === $status_id ? 'selected' : ''; ?>
+                            >
+                                <?=$status?>
+                            </option>
+                        <? endforeach; ?>
+                    </select>
+                    <div style="margin-top: 7px;">
+                        <small>* <?php _e('Once this status has been assigned, the data in SafeRoute will not be updated', SafeRouteWooCommerce::TEXT_DOMAIN); ?></small>
+                    </div>
                 </td>
             </tr>
             </tbody>

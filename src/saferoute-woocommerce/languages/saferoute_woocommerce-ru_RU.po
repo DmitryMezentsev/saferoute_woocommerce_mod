@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SafeRoute WooCommerce\n"
-"POT-Creation-Date: 2021-04-13 16:30+0500\n"
-"PO-Revision-Date: 2021-04-13 16:31+0500\n"
+"POT-Creation-Date: 2021-05-14 20:41+0500\n"
+"PO-Revision-Date: 2021-05-14 20:41+0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -22,36 +22,36 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: includes/SafeRouteWooCommerce.php:142 includes/SafeRouteWooCommerce.php:178
+#: includes/SafeRouteWooCommerce.php:155 includes/SafeRouteWooCommerce.php:191
 msgid "Shipping type"
 msgstr "Способ доставки"
 
-#: includes/SafeRouteWooCommerce.php:179
+#: includes/SafeRouteWooCommerce.php:192
 msgid "Select and confirm shipping type."
 msgstr "Выберите и подтвердите параметры доставки."
 
-#: includes/SafeRouteWooCommerceAdmin.php:90
+#: includes/SafeRouteWooCommerceAdmin.php:66
 msgid "Settings"
 msgstr "Настройки"
 
-#: includes/SafeRouteWooCommerceAdmin.php:119
-#: includes/SafeRouteWooCommerceAdmin.php:128
+#: includes/SafeRouteWooCommerceAdmin.php:96
+#: includes/SafeRouteWooCommerceAdmin.php:105
 #: includes/SafeRouteWooCommerceShippingMethod.php:33
 #: includes/SafeRouteWooCommerceShippingMethod.php:47
 msgid "SafeRoute"
 msgstr "SafeRoute"
 
-#: includes/SafeRouteWooCommerceAdmin.php:132
+#: includes/SafeRouteWooCommerceAdmin.php:109
 msgid "Order Tracking"
 msgstr "Трекинг заказа"
 
-#: includes/SafeRouteWooCommerceAdmin.php:153
+#: includes/SafeRouteWooCommerceAdmin.php:130
 msgid "WooCommerce is required for SafeRoute WooCommerce plugin."
 msgstr ""
 "Для работы плагина SafeRoute WooCommerce должен быть установлен и "
 "активирован сам WooCommerce."
 
-#: includes/SafeRouteWooCommerceAdmin.php:160
+#: includes/SafeRouteWooCommerceAdmin.php:135
 msgid "SafeRoute settings not set."
 msgstr "Настройки плагина SafeRoute не заданы."
 
@@ -87,18 +87,25 @@ msgid "SafeRoute shop ID"
 msgstr "ID магазина"
 
 #: views/admin-settings-page.php:44
-msgid "Enable order editing in SafeRoute from your WordPress admin"
-msgstr "Активировать редактирование заказа в SafeRoute через админку WordPress"
-
-#: views/admin-settings-page.php:61
 msgid "Hide billing block in checkout"
 msgstr "Скрыть блок \"Детали оплаты\" в чекауте"
 
-#: views/admin-settings-page.php:78
+#: views/admin-settings-page.php:61
 msgid "Show details in delivery name"
 msgstr "Выводить в названии способа доставки детали по доставке"
 
-#: views/admin-settings-page.php:95
+#: views/admin-settings-page.php:78
+msgid ""
+"Status for confirming orders in SafeRoute when managed from the admin panel"
+msgstr "Статус для подтверждения заказов в SafeRoute при управлении из админки"
+
+#: views/admin-settings-page.php:96
+msgid ""
+"Once this status has been assigned, the data in SafeRoute will not be updated"
+msgstr ""
+"После присвоения этого статуса данные в SafeRoute обновляться не будут."
+
+#: views/admin-settings-page.php:103
 msgid ""
 "Token and shop ID can be found on in the SafeRoute cabinet. See installation "
 "instructions for details."
@@ -125,6 +132,10 @@ msgstr "Плагин виджета SafeRoute для WooCommerce"
 #. Author of the plugin/theme
 msgid "Dmitry Mezentsev"
 msgstr "Dmitry Mezentsev"
+
+#~ msgid "Enable order editing in SafeRoute from your WordPress admin"
+#~ msgstr ""
+#~ "Активировать редактирование заказа в SafeRoute через админку WordPress"
 
 #~ msgid "Open order in the SafeRoute Cabinet"
 #~ msgstr "Открыть заказ в личном кабинете SafeRoute"
