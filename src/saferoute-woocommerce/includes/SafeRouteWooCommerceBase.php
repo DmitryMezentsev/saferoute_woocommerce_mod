@@ -32,19 +32,19 @@ class SafeRouteWooCommerceBase
     const IN_SAFEROUTE_CABINET_META_KEY = '_order_in_saferoute_cabinet';
 
     // Имя атрибута со штрих-кодом товара
-    const PRODUCT_BARCODE_ATTR_NAME =  'barcode';
+    const PRODUCT_BARCODE_ATTR_NAME = 'barcode';
 
     // Имя атрибута с кодом товара
-    const PRODUCT_TNVED_ATTR_NAME =  'tnved';
+    const PRODUCT_TNVED_ATTR_NAME = 'tnved';
 
     // Имя атрибута с кодом страны-производителя
-    const PRODUCT_PRODUCING_COUNTRY_ATTR_NAME =  'producing_country';
+    const PRODUCT_PRODUCING_COUNTRY_ATTR_NAME = 'producing_country';
 
     // Имя атрибута с названием бренда
-    const PRODUCT_BRAND_ATTR_NAME =  'brand';
+    const PRODUCT_BRAND_ATTR_NAME = 'brand';
 
     // Имя атрибута с названием товара на английском
-    const PRODUCT_NAME_EN_ATTR_NAME =  'name_en';
+    const PRODUCT_NAME_EN_ATTR_NAME = 'name_en';
 
     // Text Domain плагина
     const TEXT_DOMAIN = 'saferoute_woocommerce';
