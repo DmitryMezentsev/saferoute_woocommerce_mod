@@ -141,7 +141,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
         add_action('woocommerce_init', function () {
             add_action('wp_loaded', function () {
                 // Подключение JS...
-                wp_enqueue_script('saferoute-widget-api', 'https://widgets.saferoute.ru/cart/api.js?new');
+                wp_enqueue_script('saferoute-widget-api', 'https://widgets.saferoute.ru/cart/api.js');
                 wp_enqueue_script('saferoute-widget-init', plugins_url('assets/sr-widget-init.js', dirname(__FILE__)), ['jquery']);
                 wp_add_inline_script('saferoute-widget-init', self::_getInlineJs(), 'before');
                 // ...и CSS
