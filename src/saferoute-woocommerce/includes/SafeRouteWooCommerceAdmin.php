@@ -92,6 +92,23 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
     }
 
     /**
+     * Преобразует ключи метаданных с информацией о доставке в текстовые названия
+     *
+     * @param $meta_key string
+     * @return string
+     */
+    public static function _mapOrderMetaDataKeys($meta_key)
+    {
+        $keys_texts = [
+            self::DELIVERY_TYPE_META_KEY    => translate('Type', self::TEXT_DOMAIN),
+            self::DELIVERY_DAYS_META_KEY    => translate('Time (days)', self::TEXT_DOMAIN),
+            self::DELIVERY_COMPANY_META_KEY => translate('Company', self::TEXT_DOMAIN),
+        ];
+
+        return isset($keys_texts[$meta_key]) ? $keys_texts[$meta_key] : $meta_key;
+    }
+
+    /**
      * Страница настроек плагина в админке
      */
     public static function _adminSettingsPage()
@@ -146,6 +163,7 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
         {
             add_action('admin_menu', __CLASS__ . '::_createAdminSettingsPage');
             add_filter('plugin_action_links_' . $plugin_basename, [__CLASS__, '_addSettingsLink']);
+            add_filter('woocommerce_order_item_display_meta_key', [__CLASS__, '_mapOrderMetaDataKeys']);
             add_action('load-post.php', __CLASS__ . '::_addOrderMetaBox');
         }
         else

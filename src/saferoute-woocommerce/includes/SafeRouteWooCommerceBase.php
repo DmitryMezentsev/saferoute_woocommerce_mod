@@ -56,9 +56,9 @@ class SafeRouteWooCommerceBase
     const SAFEROUTE_API_URL = 'https://api.saferoute.ru/v2/';
 
     // Имена метаданных с деталями по доставке
-    const DELIVERY_TYPE_META_KEY = 'Тип';
-    const DELIVERY_DAYS_META_KEY = 'Срок (дней)';
-    const DELIVERY_COMPANY_META_KEY = 'Компания';
+    const DELIVERY_TYPE_META_KEY = 'sr_delivery_type';
+    const DELIVERY_DAYS_META_KEY = 'sr_delivery_days';
+    const DELIVERY_COMPANY_META_KEY = 'sr_delivery_company_name';
 
 
     /**
@@ -145,8 +145,17 @@ class SafeRouteWooCommerceBase
      */
     public static function getOrderNumber($post_id)
     {
-        $order_number = get_post_meta($post_id, '_order_number'); // Plugin: Sequential Order Numbers for WooCommerce
+        $plugins_meta_keys = [
+            '_order_number', // Sequential Order Numbers for WooCommerce, WooCommerce Sequential Order Numbers
+            '_alg_wc_full_custom_order_number', // Custom Order Numbers for WooCommerce
+        ];
 
-        return (isset($order_number[0])) ? $order_number[0] : $post_id;
+        foreach($plugins_meta_keys as $meta_key)
+        {
+            $order_number = get_post_meta($post_id, $meta_key, true);
+            if (!empty($order_number)) return $order_number;
+        }
+
+        return $post_id;
     }
 }

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SafeRoute WooCommerce\n"
-"POT-Creation-Date: 2021-04-13 16:30+0500\n"
-"PO-Revision-Date: 2021-04-13 16:31+0500\n"
+"POT-Creation-Date: 2021-07-06 03:05+0500\n"
+"PO-Revision-Date: 2021-07-06 03:05+0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -22,11 +22,11 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: includes/SafeRouteWooCommerce.php:142 includes/SafeRouteWooCommerce.php:178
+#: includes/SafeRouteWooCommerce.php:158 includes/SafeRouteWooCommerce.php:194
 msgid "Shipping type"
 msgstr "Способ доставки"
 
-#: includes/SafeRouteWooCommerce.php:179
+#: includes/SafeRouteWooCommerce.php:195
 msgid "Select and confirm shipping type."
 msgstr "Выберите и подтвердите параметры доставки."
 
@@ -34,24 +34,36 @@ msgstr "Выберите и подтвердите параметры доста
 msgid "Settings"
 msgstr "Настройки"
 
-#: includes/SafeRouteWooCommerceAdmin.php:119
-#: includes/SafeRouteWooCommerceAdmin.php:128
+#: includes/SafeRouteWooCommerceAdmin.php:103
+msgid "Type"
+msgstr "Тип"
+
+#: includes/SafeRouteWooCommerceAdmin.php:104
+msgid "Time (days)"
+msgstr "Срок (дней)"
+
+#: includes/SafeRouteWooCommerceAdmin.php:105
+msgid "Company"
+msgstr "Компания"
+
+#: includes/SafeRouteWooCommerceAdmin.php:137
+#: includes/SafeRouteWooCommerceAdmin.php:146
 #: includes/SafeRouteWooCommerceShippingMethod.php:33
 #: includes/SafeRouteWooCommerceShippingMethod.php:47
 msgid "SafeRoute"
 msgstr "SafeRoute"
 
-#: includes/SafeRouteWooCommerceAdmin.php:132
+#: includes/SafeRouteWooCommerceAdmin.php:150
 msgid "Order Tracking"
 msgstr "Трекинг заказа"
 
-#: includes/SafeRouteWooCommerceAdmin.php:153
+#: includes/SafeRouteWooCommerceAdmin.php:172
 msgid "WooCommerce is required for SafeRoute WooCommerce plugin."
 msgstr ""
 "Для работы плагина SafeRoute WooCommerce должен быть установлен и "
 "активирован сам WooCommerce."
 
-#: includes/SafeRouteWooCommerceAdmin.php:160
+#: includes/SafeRouteWooCommerceAdmin.php:179
 msgid "SafeRoute settings not set."
 msgstr "Настройки плагина SafeRoute не заданы."
 
