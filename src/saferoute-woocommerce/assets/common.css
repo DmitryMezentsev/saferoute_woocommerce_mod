@@ -29,7 +29,11 @@
 #saferoute_days_field,
 #saferoute_in_cabinet { display: none; }
 
-.saferoute_change_delivery {
+.saferoute_delivery_info .info-wrap span {
+  font-weight: bold;
+}
+
+.saferoute_delivery_info .saferoute_change_delivery {
   cursor: pointer;
   user-select: none;
 }

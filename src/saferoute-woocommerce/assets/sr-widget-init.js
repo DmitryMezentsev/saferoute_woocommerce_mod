@@ -184,7 +184,9 @@
       };
 
       $('.saferoute_delivery_info').show().html(
-        '<h3>' + t[lang].delivery + '</h3><div>' + data._meta.commonDeliveryData + '</div><a class="saferoute_change_delivery">' + t[lang].changeDelivery + '</div>'
+        '<h3>' + t[lang].delivery + '</h3>' +
+        '<div class="info-wrap">' + data._meta.commonDeliveryDataHTML + '</div>' +
+        '<a class="saferoute_change_delivery">' + t[lang].changeDelivery + '</div>'
       );
     }
 
