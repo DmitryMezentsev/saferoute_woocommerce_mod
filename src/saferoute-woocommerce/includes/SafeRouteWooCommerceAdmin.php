@@ -52,6 +52,36 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
         });
     }
 
+    /**
+     * Возвращает детали доставки SafeRoute из метаданных
+     *
+     * @param $order_id int|string
+     * @return array|null
+     */
+    private static function _getSRDeliveryDetails($order_id)
+    {
+        $shipping = array_values(wc_get_order($order_id)->get_items('shipping'));
+        if (!$shipping || $shipping[0]->get_method_id() !== self::ID) return null;
+
+        $meta_data = $shipping[0]->get_meta_data();
+        if (empty($meta_data)) return null;
+
+        $data = [];
+
+        foreach($meta_data as $meta_item) {
+            switch ($meta_item->key) {
+                case self::DELIVERY_TYPE_META_KEY:
+                    $data[self::DELIVERY_TYPE_META_KEY] = self::getDeliveryType($meta_item->value); break;
+                case self::DELIVERY_DAYS_META_KEY:
+                    $data[self::DELIVERY_DAYS_META_KEY] = $meta_item->value; break;
+                case self::DELIVERY_COMPANY_META_KEY:
+                    $data[self::DELIVERY_COMPANY_META_KEY] = $meta_item->value; break;
+            }
+        }
+
+        return $data;
+    }
+
 
     /**
      * Добавляет уведомление в стэк уведомлений
@@ -92,20 +122,29 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
     }
 
     /**
-     * Преобразует ключи метаданных с информацией о доставке в текстовые названия
+     * Преобразует ключи метаданных с информацией о доставке и код типа доставки в текстовые названия
      *
-     * @param $meta_key string
-     * @return string
+     * @param $metadata array
+     * @return array
      */
-    public static function _mapOrderMetaDataKeys($meta_key)
+    public static function _formatOrderMetaData($metadata)
     {
-        $keys_texts = [
-            self::DELIVERY_TYPE_META_KEY    => translate('Type', self::TEXT_DOMAIN),
-            self::DELIVERY_DAYS_META_KEY    => translate('Time (days)', self::TEXT_DOMAIN),
-            self::DELIVERY_COMPANY_META_KEY => translate('Company', self::TEXT_DOMAIN),
-        ];
+        foreach($metadata as $metadata_item) {
+            switch($metadata_item->key) {
+                case self::DELIVERY_TYPE_META_KEY:
+                    $metadata_item->display_key = __('Type', self::TEXT_DOMAIN);
+                    $metadata_item->display_value = self::getDeliveryType($metadata_item->value);
+                    break;
+                case self::DELIVERY_DAYS_META_KEY:
+                    $metadata_item->display_key = __('Time (days)', self::TEXT_DOMAIN);
+                    break;
+                case self::DELIVERY_COMPANY_META_KEY:
+                    $metadata_item->display_key = __('Company', self::TEXT_DOMAIN);
+                    break;
+            }
+        }
 
-        return isset($keys_texts[$meta_key]) ? $keys_texts[$meta_key] : $meta_key;
+        return $metadata;
     }
 
     /**
@@ -143,14 +182,60 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
     public static function _addOrderMetaBox()
     {
         add_action('add_meta_boxes', function () {
-            add_meta_box('shop_order_saferoute_link', __('SafeRoute', self::TEXT_DOMAIN), function ($post) {
+            add_meta_box('shop_order_saferoute_link', __('Order tracking', self::TEXT_DOMAIN), function ($post) {
                 $saferoute_id = get_post_meta($post->ID, self::SAFEROUTE_ID_META_KEY, true);
+                $track_number = get_post_meta($post->ID, self::TRACKING_NUMBER_META_KEY, true);
 
-                echo '<a href="' . self::SAFEROUTE_TRACKING_URL . $saferoute_id . '" target="_blank">';
-                _e('Order Tracking', self::TEXT_DOMAIN);
-                echo '</a>';
+                echo '<p><a href="' . self::SAFEROUTE_TRACKING_URL . $saferoute_id . '" target="_blank">';
+                _e('SafeRoute order tracking', self::TEXT_DOMAIN);
+                echo '</a></p>';
+
+                if ($track_number)
+                    echo '<p>'. __('Delivery track-number', self::TEXT_DOMAIN) . ': ' . $track_number . '.</p>';
             }, 'shop_order');
         });
+    }
+
+    /**
+     * Добавляет столбец с деталями доставки SafeRoute в список заказов
+     */
+    public static function _addDeliveryDetailsColumnInOrders()
+    {
+        add_filter('manage_edit-shop_order_columns', function ($columns) {
+            $reordered_columns = [];
+
+            foreach ($columns as $key => $column) {
+                $reordered_columns[$key] = $column;
+
+                // Вставка после поля "Статус"
+                if ($key === 'order_status')
+                    $reordered_columns['sr-delivery-details'] = __('Delivery details', self::TEXT_DOMAIN);
+            }
+
+            return $reordered_columns;
+        }, 20);
+
+        add_action('manage_shop_order_posts_custom_column', function ($column, $post_id) {
+            if ($column === 'sr-delivery-details') {
+                $details = self::_getSRDeliveryDetails($post_id);
+                $track_number = get_post_meta($post_id, self::TRACKING_NUMBER_META_KEY, true);
+
+                if ($details || $track_number) {
+                    echo '<div style="line-height: 1.3;">';
+                    if (!empty($details[self::DELIVERY_TYPE_META_KEY]))
+                        echo '<div>' . __('Type', self:: TEXT_DOMAIN) . ': ' . $details[self::DELIVERY_TYPE_META_KEY] . '.</div>';
+                    if (!empty($details[self::DELIVERY_DAYS_META_KEY]))
+                        echo '<div>' . __('Time (days)', self:: TEXT_DOMAIN) . ': ' . $details[self::DELIVERY_DAYS_META_KEY] . '.</div>';
+                    if (!empty($details[self::DELIVERY_COMPANY_META_KEY]))
+                        echo '<div>' . __('Company', self:: TEXT_DOMAIN) . ': ' . $details[self::DELIVERY_COMPANY_META_KEY] . '.</div>';
+                    if ($track_number)
+                        echo '<div>'. __('Delivery track-number', self::TEXT_DOMAIN) . ': ' . $track_number . '.</div>';
+                    echo '</div>';
+                } else {
+                    echo '&mdash;';
+                }
+            }
+        }, 20, 2);
     }
 
     /**
@@ -163,8 +248,9 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
         {
             add_action('admin_menu', __CLASS__ . '::_createAdminSettingsPage');
             add_filter('plugin_action_links_' . $plugin_basename, [__CLASS__, '_addSettingsLink']);
-            add_filter('woocommerce_order_item_display_meta_key', [__CLASS__, '_mapOrderMetaDataKeys']);
+            add_filter('woocommerce_order_item_get_formatted_meta_data', [__CLASS__, '_formatOrderMetaData']);
             add_action('load-post.php', __CLASS__ . '::_addOrderMetaBox');
+            self::_addDeliveryDetailsColumnInOrders();
         }
         else
         {
@@ -174,7 +260,7 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
 
         self::_useCabinetForEdit();
 
-        // Сообщение, параметры SafeRoute (токен и ID магазина) не заданы в настройках плагина
+        // Сообщение, что параметры SafeRoute (токен и ID магазина) не заданы в настройках плагина
         if (!self::checkSettings())
             self::_pushNotice(__('SafeRoute settings not set.', self::TEXT_DOMAIN));
 

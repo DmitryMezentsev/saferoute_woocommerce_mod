@@ -60,6 +60,11 @@ class SafeRouteWooCommerceBase
     const DELIVERY_DAYS_META_KEY = 'sr_delivery_days';
     const DELIVERY_COMPANY_META_KEY = 'sr_delivery_company_name';
 
+    // Типы доставок
+    const DELIVERY_TYPE_PICKUP  = 1;
+    const DELIVERY_TYPE_COURIER = 2;
+    const DELIVERY_TYPE_POST    = 3;
+
 
     /**
      * Ворзвращает путь к директории плагина
@@ -140,7 +145,7 @@ class SafeRouteWooCommerceBase
     /**
      * Возвращает номер заказа в WooCommerce
      *
-     * @param $post_id  string|int  ID поста (заказа в WooCommerce)
+     * @param $post_id string|int ID поста (заказа в WooCommerce)
      * @return string
      */
     public static function getOrderNumber($post_id)
@@ -157,5 +162,22 @@ class SafeRouteWooCommerceBase
         }
 
         return $post_id;
+    }
+
+    /**
+     * Возвращает текстовое описание способа доставки по коду
+     *
+     * @param $type int|string Тип доставки
+     * @return mixed
+     */
+    public static function getDeliveryType($type)
+    {
+        switch((int) $type) {
+            case self::DELIVERY_TYPE_PICKUP: return __('Pickup', self::TEXT_DOMAIN);
+            case self::DELIVERY_TYPE_COURIER: return __('Courier', self::TEXT_DOMAIN);
+            case self::DELIVERY_TYPE_POST: return __('Post', self::TEXT_DOMAIN);
+        }
+
+        return $type;
     }
 }

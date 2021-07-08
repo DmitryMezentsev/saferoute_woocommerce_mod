@@ -17,25 +17,52 @@
 
     // Переключает отображаемые способы оплаты
     function togglePaymentMethods (type) {
-      const $paymentMethodSafeRoute = $('.wc_payment_method.payment_method_saferoute');
-
-      const $paymentMethodCOD = widget.data && widget.data._meta.widgetSettings.payMethodWithCOD
+      // Способ оплаты наличными при получении
+      const $paymentMethodWithCOD = widget.data && widget.data._meta.widgetSettings.payMethodWithCOD
         ? $('.wc_payment_method.payment_method_' + widget.data._meta.widgetSettings.payMethodWithCOD)
         : null;
+      // Способ оплаты картой при получении
+      const $cardPaymentMethodWithCOD = widget.data && widget.data._meta.widgetSettings.cardPayMethodWithCOD
+        ? $('.wc_payment_method.payment_method_' + widget.data._meta.widgetSettings.cardPayMethodWithCOD)
+        : null;
+      // Способ оплаты "Оплата через SafeRoute"
+      const $paymentMethodSafeRoute = $('.wc_payment_method.payment_method_saferoute');
 
-      if (checkSelectedShippingMethod() && type) {
+      // Скрывает способы оплаты с НП, если оплата НП отключена у доставки
+      function hideCODPaymentMethodsIfNppDisabled () {
+        if (widget.data.delivery && widget.data.delivery.nppDisabled) {
+          if ($paymentMethodWithCOD) $paymentMethodWithCOD.hide();
+          if ($cardPaymentMethodWithCOD) $cardPaymentMethodWithCOD.hide();
+        }
+      }
+
+      // Выбрана доставка SafeRoute
+      if (checkSelectedShippingMethod()) {
+        // Выбрана оплата при получении
         if (type === 1) {
-          // Отображение только способа "Оплата при получении"
-          if ($paymentMethodCOD) $paymentMethodCOD.show().siblings().hide();
+          // Отображение только способов с оплатой при получении
+          $('.wc_payment_method').hide();
+          if ($paymentMethodWithCOD) $paymentMethodWithCOD.show();
+          if ($cardPaymentMethodWithCOD) $cardPaymentMethodWithCOD.show();
+        // Выбрана оплата через виджет
         } else if (type === 2) {
           // Отображение только способа "Оплата через SafeRoute"
           $paymentMethodSafeRoute.show().siblings().hide();
+        // В виджете был выбран другой способ оплаты, либо в виджете не было шага выбора оплаты
+        } else {
+          // Скрытие способа оплаты "Оплата через SafeRoute"
+          $paymentMethodSafeRoute.hide().siblings().show();
+          // Скрытие оплат при получении, если доставка их запрещает
+          hideCODPaymentMethodsIfNppDisabled();
         }
+      // Доставка SafeRoute не выбрана
       } else {
         // Скрытие способа оплаты "Оплата через SafeRoute"
         $paymentMethodSafeRoute.hide().siblings().show();
       }
 
+      // Автоматическое переключение способа оплаты на первый доступный, если ранее
+      // выбранный способ оплаты больше не доступен
       if ($('.wc_payment_method input:checked').closest('.wc_payment_method').is(':hidden'))
         $('.wc_payment_method:visible input').first().trigger('click');
     }
@@ -214,15 +241,6 @@
       }, 500);
     }
 
-    // Проверяет, был ли выбран способ оплаты с наложенным платежом
-    function checkCODPaymentSelected() {
-      const selected = $('.payment_methods input[name=payment_method]:checked').val();
-
-      return widget.data && selected && (
-        selected === widget.data._meta.widgetSettings.payMethodWithCOD || selected === widget.data._meta.widgetSettings.cardPayMethodWithCOD
-      );
-    }
-
     // Возвращает полную текущую стоимость доставки
     function getCurrentShippingCost() {
       if (!widget.data) return 0;
@@ -264,6 +282,7 @@
             products: SR_WIDGET.PRODUCTS,
             weight: SR_WIDGET.WEIGHT,
             discount: SR_WIDGET.DISCOUNT,
+            onlyCountries: SR_WIDGET.COUNTRIES,
             mod: 'woocommerce',
           });
 
@@ -284,7 +303,7 @@
 
             $('input#saferoute_days').val(getDeliveryDaysString());
             $('input#saferoute_company').val(widget.data.delivery.deliveryCompanyName);
-            $('input#saferoute_type').val(deliveryTypes[widget.data.delivery.type]);
+            $('input#saferoute_type').val(widget.data.delivery.type);
 
             $('.saferoute_widget_block').addClass('submitted').hide();
             hideOtherShippings();
@@ -400,15 +419,6 @@
         alert(SR_WIDGET.LANG === 'en_US'
           ? 'Select and confirm delivery method in the widget'
           : 'Выберите и подтвердите способ доставки в виджете'
-        );
-        return false;
-      }
-
-      if (checkSelectedShippingMethod() && checkCODPaymentSelected() && widget.data.delivery.nppDisabled) {
-        alert(
-          SR_WIDGET.LANG === 'en_US'
-            ? 'Selected payment method is not available for selected delivery'
-            : 'Выбранный способ оплаты недоступен для выбранной доставки'
         );
         return false;
       }

@@ -54,13 +54,14 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
         $woocommerce->cart->calculate_totals();
 
         $widget_params = [
-            'LANG'     => get_locale(),
-            'BASE_URL' => get_site_url(),
-            'API_URL'  => get_site_url() . '/wp-json/' . SafeRouteWooCommerceWidgetApi::API_PATH . '/saferoute',
-            'PRODUCTS' => self::_getProducts(),
-            'WEIGHT'   => wc_get_weight($woocommerce->cart->get_cart_contents_weight(), 'kg'),
-            'DISCOUNT' => $woocommerce->cart->get_discount_total(),
-            'CURRENCY' => get_woocommerce_currency(),
+            'LANG'      => get_locale(),
+            'BASE_URL'  => get_site_url(),
+            'API_URL'   => get_site_url() . '/wp-json/' . SafeRouteWooCommerceWidgetApi::API_PATH . '/saferoute',
+            'PRODUCTS'  => self::_getProducts(),
+            'COUNTRIES' => self::_getSRDeliveryCountries(),
+            'WEIGHT'    => wc_get_weight($woocommerce->cart->get_cart_contents_weight(), 'kg'),
+            'DISCOUNT'  => $woocommerce->cart->get_discount_total(),
+            'CURRENCY'  => get_woocommerce_currency(),
         ];
 
         $js  = 'var SR_WIDGET = ' . json_encode($widget_params, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) . ';';
@@ -131,6 +132,30 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
         return (isset($attributes[$name]))
             ? $attributes[$name]->get_options()[0]
             : '';
+    }
+
+    /**
+     * Возвращает список кодов стран, куда согласно настройкам WooCommerce разрешена доставка SafeRoute
+     *
+     * @return array
+     */
+    private static function _getSRDeliveryCountries()
+    {
+        $zones = array_filter(WC_Shipping_Zones::get_zones(), function ($zone) {
+            return array_filter($zone['shipping_methods'], function ($shipping_method) {
+                return $shipping_method->id === self::ID && $shipping_method->enabled === 'yes';
+            });
+        });
+
+        $countries = [];
+
+        foreach($zones as $zone) {
+            foreach($zone['zone_locations'] as $zone_location) {
+                $countries[] = preg_replace('/:.+$/', '', $zone_location->code);
+            }
+        }
+
+        return array_values(array_unique($countries));
     }
 
     /**
