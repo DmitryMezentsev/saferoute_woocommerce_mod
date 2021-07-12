@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SafeRoute WooCommerce\n"
 "POT-Creation-Date: 2021-07-08 17:22+0500\n"
-"PO-Revision-Date: 2021-07-08 17:51+0500\n"
+"PO-Revision-Date: 2021-07-12 06:06+0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -66,7 +66,7 @@ msgstr "Трекинг заказа в SafeRoute"
 #: includes/SafeRouteWooCommerceAdmin.php:185
 #: includes/SafeRouteWooCommerceAdmin.php:223
 msgid "Delivery track-number"
-msgstr "Трек-номер компании доставки"
+msgstr "Трек-номер ТК"
 
 #: includes/SafeRouteWooCommerceAdmin.php:203
 msgid "Delivery details"

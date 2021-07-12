@@ -185,12 +185,15 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
             add_meta_box('shop_order_saferoute_link', __('Order tracking', self::TEXT_DOMAIN), function ($post) {
                 $saferoute_id = get_post_meta($post->ID, self::SAFEROUTE_ID_META_KEY, true);
                 $track_number = get_post_meta($post->ID, self::TRACKING_NUMBER_META_KEY, true);
+                $track_url = get_post_meta($post->ID, self::TRACKING_URL_META_KEY, true);
 
                 echo '<p><a href="' . self::SAFEROUTE_TRACKING_URL . $saferoute_id . '" target="_blank">';
                 _e('SafeRoute order tracking', self::TEXT_DOMAIN);
                 echo '</a></p>';
 
-                if ($track_number)
+                if ($track_url)
+                    echo '<p>' . __('Delivery track-number', self::TEXT_DOMAIN) . ': ' . "<a href='$track_url' target='_blank'>$track_number</a>.</p>";
+                elseif ($track_number)
                     echo '<p>'. __('Delivery track-number', self::TEXT_DOMAIN) . ': ' . $track_number . '.</p>';
             }, 'shop_order');
         });
@@ -219,8 +222,9 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
             if ($column === 'sr-delivery-details') {
                 $details = self::_getSRDeliveryDetails($post_id);
                 $track_number = get_post_meta($post_id, self::TRACKING_NUMBER_META_KEY, true);
+                $track_url = get_post_meta($post_id, self::TRACKING_URL_META_KEY, true);
 
-                if ($details || $track_number) {
+                if ($details || $track_url || $track_number) {
                     echo '<div style="line-height: 1.3;">';
                     if (!empty($details[self::DELIVERY_TYPE_META_KEY]))
                         echo '<div>' . __('Type', self:: TEXT_DOMAIN) . ': ' . $details[self::DELIVERY_TYPE_META_KEY] . '.</div>';
@@ -228,8 +232,10 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
                         echo '<div>' . __('Time (days)', self:: TEXT_DOMAIN) . ': ' . $details[self::DELIVERY_DAYS_META_KEY] . '.</div>';
                     if (!empty($details[self::DELIVERY_COMPANY_META_KEY]))
                         echo '<div>' . __('Company', self:: TEXT_DOMAIN) . ': ' . $details[self::DELIVERY_COMPANY_META_KEY] . '.</div>';
-                    if ($track_number)
-                        echo '<div>'. __('Delivery track-number', self::TEXT_DOMAIN) . ': ' . $track_number . '.</div>';
+                    if ($track_url)
+                        echo '<div>' . __('Delivery track-number', self::TEXT_DOMAIN) . ': ' . "<a href='$track_url' target='_blank'>$track_number</a>.</div>";
+                    elseif ($track_number)
+                        echo '<div>' . __('Delivery track-number', self::TEXT_DOMAIN) . ': ' . $track_number . '.</div>';
                     echo '</div>';
                 } else {
                     echo '&mdash;';

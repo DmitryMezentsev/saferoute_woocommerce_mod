@@ -95,6 +95,9 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
             // Сохранение трек-номера
             if (isset($data['trackNumber']))
                 update_post_meta($id, self::TRACKING_NUMBER_META_KEY, $data['trackNumber']);
+            // Сохранение ссылки на трекинг
+            if (isset($data['trackUrl']))
+                update_post_meta($id, self::TRACKING_URL_META_KEY, $data['trackUrl']);
 
             // Обновление статуса заказа
             if (isset($data['statusCMS']))

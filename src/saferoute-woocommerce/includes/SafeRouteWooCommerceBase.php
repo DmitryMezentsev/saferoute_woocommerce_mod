@@ -28,6 +28,9 @@ class SafeRouteWooCommerceBase
     // Имя мета-параметра трек-номера заказа
     const TRACKING_NUMBER_META_KEY = 'order_tracking_number';
 
+    // Имя мета-параметра ссылки на трекинг заказа на сайте службы доставки
+    const TRACKING_URL_META_KEY = 'order_tracking_url';
+
     // Имя мета-параметра флага переноса заказа в ЛК
     const IN_SAFEROUTE_CABINET_META_KEY = '_order_in_saferoute_cabinet';
 
