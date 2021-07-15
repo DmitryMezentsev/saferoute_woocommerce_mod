@@ -68,9 +68,12 @@ class SafeRouteWooCommerceBase
     const DELIVERY_TYPE_COURIER = 2;
     const DELIVERY_TYPE_POST    = 3;
 
+    // Код статуса "Принят компанией доставки"
+    const SUBMITTED_TO_DELIVERY_SERVICE_STATUS_CODE = 41;
+
 
     /**
-     * Ворзвращает путь к директории плагина
+     * Возвращает путь к директории плагина
      *
      * @return string
      */
@@ -182,5 +185,84 @@ class SafeRouteWooCommerceBase
         }
 
         return $type;
+    }
+
+    /**
+     * Возвращает детали доставки SafeRoute из метаданных
+     *
+     * @param $order_id int|string
+     * @return array|null
+     */
+    public static function getSRDeliveryDetails($order_id)
+    {
+        $shipping = array_values(wc_get_order($order_id)->get_items('shipping'));
+        if (!$shipping || $shipping[0]->get_method_id() !== self::ID) return null;
+
+        $meta_data = $shipping[0]->get_meta_data();
+        if (empty($meta_data)) return null;
+
+        $data = [];
+
+        foreach($meta_data as $meta_item) {
+            switch ($meta_item->key) {
+                case self::DELIVERY_TYPE_META_KEY:
+                    $data[self::DELIVERY_TYPE_META_KEY] = self::getDeliveryType($meta_item->value); break;
+                case self::DELIVERY_DAYS_META_KEY:
+                    $data[self::DELIVERY_DAYS_META_KEY] = $meta_item->value; break;
+                case self::DELIVERY_COMPANY_META_KEY:
+                    $data[self::DELIVERY_COMPANY_META_KEY] = $meta_item->value; break;
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * Отправляет покупателю E-mail уведомление об изменениях в заказе
+     *
+     * @param $id string ID заказа
+     * @param $event string Тип произошедшего события
+     * @return bool|void
+     */
+    public static function sendCustomerEmailNotification($id, $event)
+    {
+        $order = new WC_Order($id);
+        if (!$order) return false;
+
+        $email = $order->billing_email;
+        if (!$email) return false;
+
+        $order_number     = $order->get_order_number();
+        $track_number     = get_post_meta($id, self::TRACKING_NUMBER_META_KEY, true);
+        $track_url        = get_post_meta($id, self::TRACKING_URL_META_KEY, true);
+        $site_name        = get_bloginfo('name');
+        $delivery_details = self::getSRDeliveryDetails($id);
+
+        $tracking_link = $track_url ? "<a href='$track_url'>" . __('Order tracking', self::TEXT_DOMAIN) . '</a>' : '';
+
+        if ($event === 'track_number_updated')
+        {
+            $title = $site_name . ' :: ' . __('Your order has been assigned a track number', self::TEXT_DOMAIN);
+
+            $message  = '<p>' . __('Order', self::TEXT_DOMAIN) . " $order_number " . __('received a track number', self::TEXT_DOMAIN) . " $track_number ";
+            $message .= __('in the delivery service', self::TEXT_DOMAIN) . ' &laquo;' . $delivery_details[self::DELIVERY_COMPANY_META_KEY] . '&raquo;.</p>';
+            $message .= '<p>' . __('In the near future, the order will be transferred to the delivery service.', self::TEXT_DOMAIN) . '</p>';
+            $message .= $tracking_link;
+        }
+        elseif ($event === 'submitted_to_delivery_service')
+        {
+            $title = $site_name . ' :: ' . __('Your order has been sent', self::TEXT_DOMAIN);
+
+            $message  = '<p>' . __('Order', self::TEXT_DOMAIN) . " $order_number " . __('has been transferred to the delivery service', self::TEXT_DOMAIN);
+            $message .= ' &laquo;' . $delivery_details[self::DELIVERY_COMPANY_META_KEY] . '&raquo;.</p>';
+            $message .= '<p>' . __('Expect delivery in', self::TEXT_DOMAIN) . ' ' . $delivery_details[self::DELIVERY_DAYS_META_KEY] . ' ' . __('days', self::TEXT_DOMAIN) . '.</p>';
+            $message .= $tracking_link;
+        }
+        else
+        {
+            return false;
+        }
+
+        wp_mail($email, $title, $message, ['content-type: text/html']);
     }
 }

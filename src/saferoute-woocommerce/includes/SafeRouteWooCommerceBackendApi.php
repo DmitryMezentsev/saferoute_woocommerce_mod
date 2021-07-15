@@ -92,18 +92,29 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
         {
             $id = $query->posts[0]->ID;
 
-            // Сохранение трек-номера
-            if (isset($data['trackNumber']))
-                update_post_meta($id, self::TRACKING_NUMBER_META_KEY, $data['trackNumber']);
             // Сохранение ссылки на трекинг
-            if (isset($data['trackUrl']))
+            if (!empty($data['trackUrl']))
                 update_post_meta($id, self::TRACKING_URL_META_KEY, $data['trackUrl']);
 
+            // Сохранение трек-номера
+            if (!empty($data['trackNumber'])) {
+                $old_track_number = get_post_meta($id, self::TRACKING_NUMBER_META_KEY, true);
+
+                if ($old_track_number !== (string) $data['trackNumber']) {
+                    update_post_meta($id, self::TRACKING_NUMBER_META_KEY, $data['trackNumber']);
+                    // Отправка уведомления покупателю с информацией о присвоенном трек-номере
+                    self::sendCustomerEmailNotification($id, 'track_number_updated');
+                }
+            }
+
             // Обновление статуса заказа
-            if (isset($data['statusCMS']))
+            if (!empty($data['statusCMS']))
             {
                 $wc_order = new WC_Order($id);
                 $wc_order->update_status($data['statusCMS']);
+                // Отправка уведомления покупателю, когда заказ передан в службу доставки
+                if ((int) $data['statusSR'] === self::SUBMITTED_TO_DELIVERY_SERVICE_STATUS_CODE)
+                    self::sendCustomerEmailNotification($id, 'submitted_to_delivery_service');
             }
 
             return ['status' => 'ok'];

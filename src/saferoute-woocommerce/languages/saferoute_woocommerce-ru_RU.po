@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SafeRoute WooCommerce\n"
-"POT-Creation-Date: 2021-07-08 17:22+0500\n"
-"PO-Revision-Date: 2021-07-12 06:06+0500\n"
+"POT-Creation-Date: 2021-07-16 00:14+0500\n"
+"PO-Revision-Date: 2021-07-16 00:14+0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -30,69 +30,110 @@ msgstr "Способ доставки"
 msgid "Select and confirm shipping type."
 msgstr "Выберите и подтвердите параметры доставки."
 
-#: includes/SafeRouteWooCommerceAdmin.php:120
+#: includes/SafeRouteWooCommerceAdmin.php:90
 msgid "Settings"
 msgstr "Настройки"
 
-#: includes/SafeRouteWooCommerceAdmin.php:133
-#: includes/SafeRouteWooCommerceAdmin.php:217
+#: includes/SafeRouteWooCommerceAdmin.php:105
+#: includes/SafeRouteWooCommerceAdmin.php:200
 msgid "Type"
 msgstr "Тип"
 
-#: includes/SafeRouteWooCommerceAdmin.php:134
-#: includes/SafeRouteWooCommerceAdmin.php:219
+#: includes/SafeRouteWooCommerceAdmin.php:109
+#: includes/SafeRouteWooCommerceAdmin.php:202
 msgid "Time (days)"
 msgstr "Срок (дней)"
 
-#: includes/SafeRouteWooCommerceAdmin.php:135
-#: includes/SafeRouteWooCommerceAdmin.php:221
+#: includes/SafeRouteWooCommerceAdmin.php:112
+#: includes/SafeRouteWooCommerceAdmin.php:204
 msgid "Company"
 msgstr "Компания"
 
-#: includes/SafeRouteWooCommerceAdmin.php:167
+#: includes/SafeRouteWooCommerceAdmin.php:146
 #: includes/SafeRouteWooCommerceShippingMethod.php:33
 #: includes/SafeRouteWooCommerceShippingMethod.php:47
 msgid "SafeRoute"
 msgstr "SafeRoute"
 
-#: includes/SafeRouteWooCommerceAdmin.php:176
+#: includes/SafeRouteWooCommerceAdmin.php:155
+#: includes/SafeRouteWooCommerceBase.php:241
 msgid "Order tracking"
 msgstr "Трекинг заказа"
 
-#: includes/SafeRouteWooCommerceAdmin.php:181
+#: includes/SafeRouteWooCommerceAdmin.php:161
 msgid "SafeRoute order tracking"
 msgstr "Трекинг заказа в SafeRoute"
 
-#: includes/SafeRouteWooCommerceAdmin.php:185
-#: includes/SafeRouteWooCommerceAdmin.php:223
+#: includes/SafeRouteWooCommerceAdmin.php:165
+#: includes/SafeRouteWooCommerceAdmin.php:167
+#: includes/SafeRouteWooCommerceAdmin.php:206
+#: includes/SafeRouteWooCommerceAdmin.php:208
 msgid "Delivery track-number"
 msgstr "Трек-номер ТК"
 
-#: includes/SafeRouteWooCommerceAdmin.php:203
+#: includes/SafeRouteWooCommerceAdmin.php:185
 msgid "Delivery details"
 msgstr "Детали доставки"
 
-#: includes/SafeRouteWooCommerceAdmin.php:249
+#: includes/SafeRouteWooCommerceAdmin.php:234
 msgid "WooCommerce is required for SafeRoute WooCommerce plugin."
 msgstr ""
 "Для работы плагина SafeRoute WooCommerce должен быть установлен и "
 "активирован сам WooCommerce."
 
-#: includes/SafeRouteWooCommerceAdmin.php:256
+#: includes/SafeRouteWooCommerceAdmin.php:241
 msgid "SafeRoute settings not set."
 msgstr "Настройки плагина SafeRoute не заданы."
 
-#: includes/SafeRouteWooCommerceBase.php:176
+#: includes/SafeRouteWooCommerceBase.php:182
 msgid "Pickup"
 msgstr "Доставка в пункт выдачи"
 
-#: includes/SafeRouteWooCommerceBase.php:177
+#: includes/SafeRouteWooCommerceBase.php:183
 msgid "Courier"
 msgstr "Курьерская доставка"
 
-#: includes/SafeRouteWooCommerceBase.php:178
+#: includes/SafeRouteWooCommerceBase.php:184
 msgid "Post"
 msgstr "Доставка почтой"
+
+#: includes/SafeRouteWooCommerceBase.php:245
+msgid "Your order has been assigned a track number"
+msgstr "Вашему заказу присвоен трекинг-номер"
+
+#: includes/SafeRouteWooCommerceBase.php:247
+#: includes/SafeRouteWooCommerceBase.php:256
+msgid "Order"
+msgstr "Заказ"
+
+#: includes/SafeRouteWooCommerceBase.php:247
+msgid "received a track number"
+msgstr "получил трекинг-номер"
+
+#: includes/SafeRouteWooCommerceBase.php:248
+msgid "in the delivery service"
+msgstr "в службе доставки"
+
+#: includes/SafeRouteWooCommerceBase.php:249
+msgid ""
+"In the near future, the order will be transferred to the delivery service."
+msgstr "В ближайшее время заказ будет передан в службу доставки."
+
+#: includes/SafeRouteWooCommerceBase.php:254
+msgid "Your order has been sent"
+msgstr "Ваш заказ отправлен"
+
+#: includes/SafeRouteWooCommerceBase.php:256
+msgid "has been transferred to the delivery service"
+msgstr "был передан в службу доставки"
+
+#: includes/SafeRouteWooCommerceBase.php:258
+msgid "Expect delivery in"
+msgstr "Ожидайте доставку через"
+
+#: includes/SafeRouteWooCommerceBase.php:258
+msgid "days"
+msgstr "дн"
 
 #: includes/SafeRouteWooCommercePaymentMethod.php:27
 #: includes/SafeRouteWooCommercePaymentMethod.php:34

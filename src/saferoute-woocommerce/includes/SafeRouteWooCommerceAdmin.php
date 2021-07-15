@@ -52,36 +52,6 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
         });
     }
 
-    /**
-     * Возвращает детали доставки SafeRoute из метаданных
-     *
-     * @param $order_id int|string
-     * @return array|null
-     */
-    private static function _getSRDeliveryDetails($order_id)
-    {
-        $shipping = array_values(wc_get_order($order_id)->get_items('shipping'));
-        if (!$shipping || $shipping[0]->get_method_id() !== self::ID) return null;
-
-        $meta_data = $shipping[0]->get_meta_data();
-        if (empty($meta_data)) return null;
-
-        $data = [];
-
-        foreach($meta_data as $meta_item) {
-            switch ($meta_item->key) {
-                case self::DELIVERY_TYPE_META_KEY:
-                    $data[self::DELIVERY_TYPE_META_KEY] = self::getDeliveryType($meta_item->value); break;
-                case self::DELIVERY_DAYS_META_KEY:
-                    $data[self::DELIVERY_DAYS_META_KEY] = $meta_item->value; break;
-                case self::DELIVERY_COMPANY_META_KEY:
-                    $data[self::DELIVERY_COMPANY_META_KEY] = $meta_item->value; break;
-            }
-        }
-
-        return $data;
-    }
-
 
     /**
      * Добавляет уведомление в стэк уведомлений
@@ -220,7 +190,7 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
 
         add_action('manage_shop_order_posts_custom_column', function ($column, $post_id) {
             if ($column === 'sr-delivery-details') {
-                $details = self::_getSRDeliveryDetails($post_id);
+                $details = self::getSRDeliveryDetails($post_id);
                 $track_number = get_post_meta($post_id, self::TRACKING_NUMBER_META_KEY, true);
                 $track_url = get_post_meta($post_id, self::TRACKING_URL_META_KEY, true);
 
