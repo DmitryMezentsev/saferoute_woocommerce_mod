@@ -30,7 +30,7 @@
 
       // Скрывает способы оплаты с НП, если оплата НП отключена у доставки
       function hideCODPaymentMethodsIfNppDisabled () {
-        if (widget.data.delivery && widget.data.delivery.nppDisabled) {
+        if (widget.data.delivery && !widget.data.delivery.CODAvailable) {
           if ($paymentMethodWithCOD) $paymentMethodWithCOD.hide();
           if ($cardPaymentMethodWithCOD) $cardPaymentMethodWithCOD.hide();
         }

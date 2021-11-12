@@ -115,7 +115,10 @@ class SafeRouteWidgetApi
         // Загрузка кода виджета
         if ($this->isHtmlRequest($url))
         {
-            return wp_remote_get($url, ['timeout' => 30])['body'];
+            return wp_remote_get($url, [
+                'timeout' => 30,
+                'sslverify' => false,
+            ])['body'];
         }
         // Запрос к API
         else
@@ -135,6 +138,7 @@ class SafeRouteWidgetApi
                 $res = wp_remote_get($url . '?' . http_build_query($this->data), [
                     'timeout' => 30,
                     'headers' => $headers,
+                    'sslverify' => false,
                 ]);
             }
             else
@@ -143,6 +147,7 @@ class SafeRouteWidgetApi
                     'body' => $this->data,
                     'timeout' => 30,
                     'headers' => $headers,
+                    'sslverify' => false,
                 ]);
             }
 

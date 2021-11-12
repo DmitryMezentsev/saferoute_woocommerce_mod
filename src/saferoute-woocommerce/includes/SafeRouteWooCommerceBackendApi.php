@@ -242,6 +242,7 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
         $res = wp_remote_post($api, [
             'body' => $data,
             'timeout' => 30,
+            'sslverify' => false,
             'headers' => [
                 'Authorization' => 'Bearer ' . get_option(self::SR_TOKEN_OPTION),
                 'Shop-Id' => get_option(self::SR_SHOP_ID_OPTION),
@@ -266,6 +267,7 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
         $res = wp_remote_post($api, [
             'body' => ['checkoutSessId' => $checkout_sess_id],
             'timeout' => 30,
+            'sslverify' => false,
             'headers' => [
                 'Authorization' => 'Bearer ' . get_option(self::SR_TOKEN_OPTION),
                 'Shop-Id' => get_option(self::SR_SHOP_ID_OPTION),
