@@ -21,6 +21,8 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Changelog ==
 
+= 2.4.10 =
+* fix
 = 2.4.9 =
 * Небольшие доработки
 = 2.4.8 =
@@ -96,6 +98,8 @@ https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953
 
 == Upgrade Notice ==
 
+= 2.4.10 =
+* fix
 = 2.4.9 =
 * Небольшие доработки
 = 2.4.8 =
