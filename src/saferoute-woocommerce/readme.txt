@@ -38,7 +38,7 @@ SafeRoute включает в себя более 10 служб доставки
 
 == Installation ==
 
-[Инструкция по установке](https://saferoute.atlassian.net/wiki/spaces/modules/pages/17661953)
+[Инструкция по установке](https://wiki.saferoute.ru/ru/modules/woocommerce)
 
 
 == Screenshots ==
