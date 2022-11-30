@@ -129,7 +129,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
                 wp_enqueue_style('saferoute-widget-css', plugins_url('assets/checkout.css', dirname(__FILE__)));
 
                 // Вывод HTML блока с виджетом
-                add_action('woocommerce_checkout_before_customer_details', function () {
+                add_action('woocommerce_checkout_after_customer_details', function () {
                     require self::getPluginDir() . '/views/checkout-widget-block.php';
                 });
 

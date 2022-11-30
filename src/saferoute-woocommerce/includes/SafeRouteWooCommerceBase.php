@@ -547,9 +547,7 @@ class SafeRouteWooCommerceBase
 
         $services = !empty($widget_data['_meta']['widgetSettings']['enabledServices'])
             ? array_filter($widget_data['_meta']['widgetSettings']['enabledServices'], function ($service) use ($widget_data) {
-                return !empty($widget_data['delivery']['services'])
-                    ? in_array($service, $widget_data['delivery']['services'])
-                    : false;
+                return !empty($widget_data['delivery']['services']) && in_array($service, $widget_data['delivery']['services']);
             })
             : [];
 
@@ -678,6 +676,7 @@ class SafeRouteWooCommerceBase
             'headers' => [
                 'Authorization' => 'Bearer ' . get_option(self::SR_TOKEN_OPTION),
                 'Shop-Id' => get_option(self::SR_SHOP_ID_OPTION),
+                'Stay-New' => 'true',
             ],
         ]);
 

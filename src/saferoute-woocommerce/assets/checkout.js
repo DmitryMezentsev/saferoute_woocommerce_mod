@@ -58,14 +58,26 @@
       return shippingMethod === 'saferoute';
     }
 
+    // Переключает отображение полей адреса
+    function toggleAddressFields (show) {
+      const $fields = $(
+        '#shipping_company, #shipping_country, #shipping_address_1, #shipping_address_2, #shipping_city, #shipping_state, #shipping_postcode, #order_comments'
+      ).closest('.form-row');
+
+      if (show) $fields.show();
+      else $fields.hide();
+    }
+
     // Отображает блок с виджетом в случае, если выбрана доставка SafeRoute
     function renderWidget () {
       if (checkSelectedShippingMethod()) {
+        toggleAddressFields(false);
         widget.init();
 
         if ($('.saferoute_widget_block').hasClass('submitted'))
           hideOtherShippings();
       } else {
+        toggleAddressFields(true);
         widget.destroy();
       }
     }
@@ -133,6 +145,7 @@
 
           this._ = new SafeRouteCartWidget('sr_widget', {
             onlyDeliverySelect: true,
+            inputAddress: true,
             lang: SR_WIDGET.LANG,
             currency: SR_WIDGET.CURRENCY,
             apiScript: SR_WIDGET.API_URL,
@@ -148,14 +161,22 @@
           this._.on('select', (data) => {
             widget.data = data;
 
+            $('textarea[name=order_comments]').val(data.comment);
             $('input[name=shipping_city]').val(data.city.name);
             $('input[name=shipping_state]').val(data.city.region);
             $('select[name=shipping_country]').val(data.city.countryIsoCode).trigger('change');
+            $('input[name=shipping_address_2]').val('');
 
             if (data.delivery.point) {
               $('input[name=shipping_address_1]').val(data.delivery.point.address);
-              $('input[name=shipping_address_2]').val('');
               $('input[name=shipping_postcode]').val(data.delivery.point.zipCode || '000000');
+            } else {
+              let address = `${data.contacts.address.street || ''} ${data.contacts.address.building || ''} ${data.contacts.address.bulk || ''}`
+                .trim();
+              if (data.contacts.address.apartment) address += `, ${data.contacts.address.apartment}`;
+
+              $('input[name=shipping_address_1]').val(address);
+              $('input[name=shipping_postcode]').val(data.contacts.address.zipCode || '000000');
             }
 
             $('.saferoute_widget_block').addClass('submitted').hide();
@@ -270,8 +291,10 @@
 
       $('.saferoute_delivery_info').hide().empty();
 
-      widget._.destruct();
-      widget._ = null;
+      if (widget._) {
+        widget._.destruct();
+        widget._ = null;
+      }
 
       widget.init();
     });
