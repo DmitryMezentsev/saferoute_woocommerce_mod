@@ -60,13 +60,16 @@ function addSafeRouteShippingMethod()
 
                 $label = $this->title;
 
-                if (
-                    get_option('show_details_in_delivery_name') &&
-                    !empty($_SESSION['saferoute_company']) &&
-                    !empty($_SESSION['saferoute_days']) &&
-                    !empty($_SESSION['saferoute_type'])
-                )
-                    $label .= " ($_SESSION[saferoute_company], $_SESSION[saferoute_type], $_SESSION[saferoute_days] дн.)";
+                if (get_option(SafeRouteWooCommerceBase::SHOW_DETAILS_IN_DELIVERY_NAME_OPTION) && !empty($_SESSION['sr_data']))
+                {
+                    $days = $_SESSION['sr_data']['delivery']['deliveryDays'];
+                    if ($_SESSION['sr_data']['delivery']['maxDeliveryDays'] !== $days)
+                        $days .= '-' . $_SESSION['sr_data']['delivery']['maxDeliveryDays'];
+
+                    $label .= ' (' . $_SESSION['sr_data']['delivery']['deliveryCompanyName'];
+                    $label .= ', ' . SafeRouteWooCommerceBase::getDeliveryType($_SESSION['sr_data']['delivery']['type']);
+                    $label .= ", $days дн.)";
+                }
 
                 $this->add_rate([
                     'id'       => $this->id,
@@ -92,8 +95,18 @@ function addSafeRouteShippingMethod()
         foreach($rates as $rate_key => $rate_values)
         {
             // Назначение стоимости доставки SafeRoute
-            if ($rate_values->method_id === SafeRouteWooCommerceBase::ID)
-                $rates[$rate_values->id]->cost = isset($_SESSION['saferoute_price']) ? $_SESSION['saferoute_price'] : null;
+            if ($rate_values->method_id === SafeRouteWooCommerceBase::ID && !empty($_SESSION['sr_data']))
+            {
+                $rates[$rate_values->id]->cost = $_SESSION['sr_data']['delivery']['totalPrice'];
+
+                if (!empty($_SESSION['pay_method']))
+                {
+                    if ($_SESSION['pay_method'] === get_option(SafeRouteWooCommerceBase::COD_PAY_METHOD_OPTION))
+                        $rates[$rate_values->id]->cost += $_SESSION['sr_data']['delivery']['priceCommissionCod'];
+                    elseif ($_SESSION['pay_method'] === get_option(SafeRouteWooCommerceBase::CARD_COD_PAY_METHOD_OPTION))
+                        $rates[$rate_values->id]->cost += $_SESSION['sr_data']['delivery']['priceCommissionCodCard'];
+                }
+            }
         }
 
         return $rates;

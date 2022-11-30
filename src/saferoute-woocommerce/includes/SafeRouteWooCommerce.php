@@ -21,14 +21,14 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
     {
         add_option(self::SR_SHOP_ID_OPTION, '');
         add_option(self::SR_TOKEN_OPTION, '');
-        add_option(self::HIDE_CHECKOUT_BILLING_BLOCK_OPTION, '');
+        add_option(self::HIDE_CHECKOUT_BILLING_BLOCK_OPTION, 1);
         add_option(self::SHOW_DETAILS_IN_DELIVERY_NAME_OPTION, 1);
         add_option(self::ORDER_STATUS_FOR_SENDING_TO_SR_OPTION, self::ORDER_STATUS_FOR_SENDING_TO_SR_DEFAULT);
         add_option(self::SEND_ORDERS_AS_CONFIRMED_OPTION, '');
         add_option(self::PRICE_DECLARED_PERCENT_OPTION, self::PRICE_DECLARED_PERCENT_DEFAULT);
         add_option(self::COD_PAY_METHOD_OPTION, '');
         add_option(self::CARD_COD_PAY_METHOD_OPTION, '');
-        add_option(self::STATUSES_MATCHING_OPTION, '');
+        add_option(self::STATUSES_MATCHING_OPTION, []);
     }
 
     /**
@@ -63,14 +63,16 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
         $woocommerce->cart->calculate_totals();
 
         $widget_params = [
-            'LANG'      => self::getCurrentLang(),
-            'BASE_URL'  => get_site_url(),
-            'API_URL'   => get_site_url() . '/wp-json/' . SafeRouteWooCommerceWidgetApi::API_PATH . '/saferoute',
-            'PRODUCTS'  => self::_getProducts(),
-            'COUNTRIES' => self::_getSRDeliveryCountries(),
-            'WEIGHT'    => wc_get_weight($woocommerce->cart->get_cart_contents_weight(), 'kg'),
-            'DISCOUNT'  => $woocommerce->cart->get_discount_total(),
-            'CURRENCY'  => get_woocommerce_currency(),
+            'LANG'                     => self::getCurrentLang(),
+            'BASE_URL'                 => get_site_url(),
+            'API_URL'                  => self::getWidgetApiScriptPath(),
+            'PRODUCTS'                 => self::_getProducts(),
+            'COUNTRIES'                => self::_getSRDeliveryCountries(),
+            'WEIGHT'                   => wc_get_weight($woocommerce->cart->get_cart_contents_weight(), 'kg'),
+            'DISCOUNT'                 => $woocommerce->cart->get_discount_total(),
+            'CURRENCY'                 => self::getWCCurrency(),
+            'PAY_METHOD_WITH_COD'      => get_option(self::COD_PAY_METHOD_OPTION, ''),
+            'PAY_METHOD_WITH_COD_CARD' => get_option(self::CARD_COD_PAY_METHOD_OPTION, ''),
         ];
 
         $js  = 'var SR_WIDGET = ' . json_encode($widget_params, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) . ';';
@@ -96,59 +98,20 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
             if($woo_cart_item['data']->is_virtual() || $woo_cart_item['data']->is_downloadable())
                 continue;
 
-            // Вычисление НДС
-            $vat = ($woo_cart_item['line_total'] && $woo_cart_item['line_tax'])
-                ? round(100 / ($woo_cart_item['line_total'] / $woo_cart_item['line_tax']))
-                : null;
-
-            // Начальная цена
-            $regular_price = (float) $woo_cart_item['data']->get_regular_price();
-            // Размер скидки (начальная цена минус цена продажи)
-            $discount = $regular_price - $woo_cart_item['data']->get_price();
-
             $products[] = [
-                'name'             => $woo_cart_item['data']->get_name(),
-                'vendorCode'       => $woo_cart_item['data']->get_sku(),
-                'barcode'          => get_post_meta($woo_cart_item['data']->get_id(), self::PRODUCT_BARCODE_META_KEY, true),
-                'tnved'            => get_post_meta($woo_cart_item['data']->get_id(), self::PRODUCT_TNVED_META_KEY, true),
-                'producingCountry' => get_post_meta($woo_cart_item['data']->get_id(), self::PRODUCT_PRODUCING_COUNTRY_META_KEY, true),
-                'brand'            => get_post_meta($woo_cart_item['data']->get_id(), self::PRODUCT_BRAND_META_KEY, true),
-                'nameEn'           => get_post_meta($woo_cart_item['data']->get_id(), self::PRODUCT_NAME_EN_META_KEY, true),
-                'vat'              => $vat,
-                'price'            => $regular_price,
-                'discount'         => $discount,
-                'count'            => $woo_cart_item['quantity'],
-                'width'            => wc_get_dimension($woo_cart_item['data']->get_width(), 'cm'),
-                'height'           => wc_get_dimension($woo_cart_item['data']->get_height(), 'cm'),
-                'length'           => wc_get_dimension($woo_cart_item['data']->get_length(), 'cm'),
+                'name'       => $woo_cart_item['data']->get_name(),
+                'vendorCode' => $woo_cart_item['data']->get_sku(),
+                'vat'        => self::calcProductVAT($woo_cart_item),
+                'price'      => self::calcProductPriceAndDiscount($woo_cart_item['data'])['price'],
+                'discount'   => self::calcProductPriceAndDiscount($woo_cart_item['data'])['discount'],
+                'count'      => $woo_cart_item['quantity'],
+                'width'      => wc_get_dimension($woo_cart_item['data']->get_width(), 'cm'),
+                'height'     => wc_get_dimension($woo_cart_item['data']->get_height(), 'cm'),
+                'length'     => wc_get_dimension($woo_cart_item['data']->get_length(), 'cm'),
             ];
         }
 
         return $products;
-    }
-
-    /**
-     * Возвращает список кодов стран, куда согласно настройкам WooCommerce разрешена доставка SafeRoute
-     *
-     * @return array
-     */
-    private static function _getSRDeliveryCountries()
-    {
-        $zones = array_filter(WC_Shipping_Zones::get_zones(), function ($zone) {
-            return array_filter($zone['shipping_methods'], function ($shipping_method) {
-                return $shipping_method->id === self::ID && $shipping_method->enabled === 'yes';
-            });
-        });
-
-        $countries = [];
-
-        foreach($zones as $zone) {
-            foreach($zone['zone_locations'] as $zone_location) {
-                $countries[] = preg_replace('/:.+$/', '', $zone_location->code);
-            }
-        }
-
-        return array_values(array_unique($countries));
     }
 
     /**
@@ -159,7 +122,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
         add_action('woocommerce_init', function () {
             add_action('wp_loaded', function () {
                 // Подключение JS...
-                wp_enqueue_script('saferoute-widget-api', 'https://widgets.saferoute.ru/cart/api.js');
+                wp_enqueue_script('saferoute-widget-api', self::SAFEROUTE_WIDGET_API_PATH);
                 wp_enqueue_script('saferoute-widget-init', plugins_url('assets/checkout.js', dirname(__FILE__)), ['jquery']);
                 wp_add_inline_script('saferoute-widget-init', self::_getInlineJs(), 'before');
                 // ...и CSS
@@ -170,32 +133,17 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
                     require self::getPluginDir() . '/views/checkout-widget-block.php';
                 });
 
-                // Добавление доп. полей для заказа
-                add_filter('woocommerce_checkout_fields', function ($fields) {
-                    $fields['order']['saferoute_id'] = [
-                        'label'    => __('Shipping type', self::TEXT_DOMAIN),
-                        'type'     => 'text',
-                        'required' => self::_getProducts() ? 1 : 0,
-                    ];
-                    $fields['order']['saferoute_type']       = ['type' => 'hidden'];
-                    $fields['order']['saferoute_company']    = ['type' => 'hidden'];
-                    $fields['order']['saferoute_days']       = ['type' => 'hidden'];
-                    $fields['order']['saferoute_in_cabinet'] = ['type' => 'hidden'];
-
-                    return $fields;
-                });
-
                 add_filter('woocommerce_billing_fields', function ($billing_fields) {
                     if(!is_checkout()) return $billing_fields;
+
+                    $billing_fields['billing_phone']['required'] = true;
 
                     // При включённой опции 'Скрыть блок "Детали оплаты" в чекауте' поля оплаты делаем необязательными,
                     // а те поля, которые необязательными сделать нельзя, полностью удаляем
                     if (get_option(self::HIDE_CHECKOUT_BILLING_BLOCK_OPTION)) {
-                        $billing_fields['billing_first_name']['required'] = false;
-                        $billing_fields['billing_last_name']['required'] = false;
-                        $billing_fields['billing_phone']['required'] = false;
-                        $billing_fields['billing_email']['required'] = false;
-
+                        unset($billing_fields['billing_company']);
+                        unset($billing_fields['billing_first_name']);
+                        unset($billing_fields['billing_last_name']);
                         unset($billing_fields['billing_address_1']);
                         unset($billing_fields['billing_address_2']);
                         unset($billing_fields['billing_country']);
@@ -226,40 +174,23 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
      */
     public static function _onAfterOrderCreate($order_id, $posted)
     {
+        if (empty($_SESSION['sr_data'])) return;
+
+        if (!session_id()) session_start();
+
         // Только для заказов, для которых была выбрана доставка SafeRoute
-        if (!empty($posted['saferoute_id']))
+        // и не была выбрана собственная компания доставки
+        if ($posted['shipping_method'][0] === self::ID)
         {
-            // Только если не была выбрана собственная компания доставки
-            if ($posted['saferoute_id'] !== 'no')
+            self::saveWidgetSafeRouteOrderData($order_id, $_SESSION['sr_data']);
+
+            // Если выбрана собственная доставка, в ЛК заказ передавать не нужно
+            if (!empty($_SESSION['sr_data']['delivery']['isMyDelivery'])) return;
+
+            // Проверка статуса
+            if (get_post($order_id)->post_status === get_option(self::ORDER_STATUS_FOR_SENDING_TO_SR_OPTION))
             {
-                $order = get_post($order_id);
-
-                self::setDeliveryMetaData($order_id, [
-                    'type'    => $posted['saferoute_type'],
-                    'days'    => $posted['saferoute_days'],
-                    'company' => $posted['saferoute_company'],
-                ]);
-
-                // Сохранение SafeRoute ID заказа
-                update_post_meta($order_id, self::SAFEROUTE_ID_META_KEY, $posted['saferoute_id']);
-
-                if ($posted['saferoute_in_cabinet']) update_post_meta($order_id, self::IN_SAFEROUTE_CABINET_META_KEY, 1);
-
-                // Отправка запроса к бэку SafeRoute
-                $response = SafeRouteWooCommerceBackendApi::updateOrderInSafeRoute([
-                    'id'            => $posted['saferoute_id'],
-                    'cmsId'         => self::getOrderNumber($order_id),
-                    'status'        => $order->post_status,
-                    'paymentMethod' => $posted['payment_method'],
-                ]);
-
-                // Если заказ был перенесен в ЛК
-                if ($response && $response['cabinetId'])
-                {
-                    // Обновляем его SafeRoute ID и устанавливаем флаг, что заказ находится в ЛК
-                    update_post_meta($order_id, self::SAFEROUTE_ID_META_KEY, $response['cabinetId']);
-                    update_post_meta($order_id, self::IN_SAFEROUTE_CABINET_META_KEY, 1);
-                }
+                SafeRouteWooCommerceBackendApi::createOrderInSafeRoute($order_id);
             }
         }
     }

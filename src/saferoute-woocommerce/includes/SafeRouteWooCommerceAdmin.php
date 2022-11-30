@@ -113,10 +113,24 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
                 case self::DELIVERY_COMPANY_META_KEY:
                     $metadata_item->display_key = __('Company', self::TEXT_DOMAIN);
                     break;
+                case self::DELIVERY_POINT_ID_META_KEY:
+                    $metadata_item->display_key = __('Pickup point ID', self::TEXT_DOMAIN);
+                    break;
+                case self::DELIVERY_POINT_ADDRESS_META_KEY:
+                    $metadata_item->display_key = __('Pickup point address', self::TEXT_DOMAIN);
+                    break;
             }
         }
 
         return $metadata;
+    }
+
+    /**
+     * Выводит ошибку SafeRoute (при её наличии) на странице заказа
+     */
+    public static function _showOrderError()
+    {
+        echo isset($_GET['post']) ? self::getErrorBlock($_GET['post']) : '';
     }
 
     /**
@@ -150,7 +164,7 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
             wp_redirect($_SERVER['REQUEST_URI']);
         }
 
-        wp_enqueue_script('saferoute-settings-page', plugins_url('assets/settings-page.js', dirname(__FILE__)), ['jquery']);
+        wp_enqueue_script('saferoute-settings-page', plugins_url('assets/admin-settings-page.js', dirname(__FILE__)), ['jquery']);
 
         // Подключение шаблона страницы
         require self::getPluginDir() . '/views/admin-settings-page.php';
@@ -175,16 +189,139 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
                 $track_number = get_post_meta($post->ID, self::TRACKING_NUMBER_META_KEY, true);
                 $track_url = get_post_meta($post->ID, self::TRACKING_URL_META_KEY, true);
 
-                echo '<p><a href="' . self::SAFEROUTE_TRACKING_URL . $saferoute_id . '" target="_blank">';
-                _e('SafeRoute order tracking', self::TEXT_DOMAIN);
-                echo '</a></p>';
+                if ($saferoute_id)
+                {
+                    echo '<p><a href="' . self::SAFEROUTE_TRACKING_URL . $saferoute_id . '" target="_blank">';
+                    _e('SafeRoute order tracking', self::TEXT_DOMAIN);
+                    echo '</a></p>';
+                }
 
                 if ($track_url)
                     echo '<p>' . __('Delivery track-number', self::TEXT_DOMAIN) . ': ' . "<a href='$track_url' target='_blank'>$track_number</a>.</p>";
                 elseif ($track_number)
                     echo '<p>'. __('Delivery track-number', self::TEXT_DOMAIN) . ': ' . $track_number . '.</p>';
+
+                if (!$saferoute_id && !$track_url && !$track_number) _e('Unavailable', self::TEXT_DOMAIN);
             }, 'shop_order');
         });
+    }
+
+    /**
+     * Выводит в блок выбранной доставки SafeRoute кнопку запуска виджета, а также различную информацию, связанную
+     * с выбором доставки в виджете
+     *
+     * @param $item_id int
+     * @param $item WC_Order_Item_Shipping|WC_Order_Item_Product
+     */
+    public static function _addWidgetBlock($item_id, $item)
+    {
+        if (is_a($item, 'WC_Order_Item_Shipping') && $item->get_method_id() === self::ID)
+        {
+            $order = wc_get_order(isset($_POST['order_id']) ? $_POST['order_id'] : false);
+
+            $order_in_sr = get_post_meta($order->get_id(), self::SAFEROUTE_ID_META_KEY, true);
+            $widget_order_data = get_post_meta($order->get_id(), self::WIDGET_ORDER_DATA, true);
+
+            echo '<div class="widget-block">';
+            echo '<button class="button button-primary" type="button" onclick="openWidget()" ' . ($order_in_sr ? 'disabled' : '') . '>';
+            echo __('Change delivery', self::TEXT_DOMAIN);
+            echo '</button>';
+
+            if (!$order_in_sr && !$widget_order_data)
+                echo '<b>' . __('Select a delivery by clicking "Change delivery"', self::TEXT_DOMAIN) . '</b>';
+
+            if ($order_in_sr)
+                echo '<div class="muted-msg">' . __('Order already send in SafeRoute, change delivery is impossible', self::TEXT_DOMAIN) . '</div>';
+
+            echo '</div>';
+        }
+    }
+
+    /**
+     * Вызывается при запуске пересчёта заказа
+     *
+     * @param $and_taxes bool
+     * @param $order WC_Order object
+     */
+    public static function _onRecalculateOrder($and_taxes, $order)
+    {
+        // Если у заказа доставка не SafeRoute, ничего не делаем
+        if (!$order->has_shipping_method(self::ID)) return;
+
+        $id = $order->get_id();
+
+        $sr_order_id = (int) get_post_meta($id, self::SAFEROUTE_ID_META_KEY, true);
+
+        // Если заказ уже попал в SafeRoute, ничего не делаем
+        if ($sr_order_id) return;
+
+        $widget_order_data = get_post_meta($id, self::WIDGET_ORDER_DATA, true);
+
+        // Если нет данных по доставке из виджета, ничего не делаем
+        if (!$widget_order_data) return;
+
+        $price_declared_percent = get_option(self::PRICE_DECLARED_PERCENT_OPTION);
+
+        $res = wp_remote_post(self::SAFEROUTE_API_URL . 'calculator/one', [
+            'body' => [
+                'reception' => [
+                    'countryCode' => $widget_order_data['city']['countryIsoCode'],
+                    'cityFias'    => $widget_order_data['city']['fias'],
+                    'cityName'    => $widget_order_data['city']['name'],
+                    'cityType'    => $widget_order_data['city']['type'],
+                    'zipCode'     => $order->shipping_postcode,
+                    'region'      => $widget_order_data['city']['region'],
+                ],
+                'products' => array_map(function ($product) use ($price_declared_percent) {
+                    return [
+                        'vendorCode' => $product['vendorCode'],
+                        'priceDeclared' => $product['price'] * $price_declared_percent / 100,
+                        'priceCod' => $product['price'],
+                        'discount' => $product['discount'],
+                        'dimensions' => [
+                            'width'  => $product['width'],
+                            'height' => $product['height'],
+                            'length' => $product['length'],
+                        ],
+                        'count' => $product['count'],
+                    ];
+                }, self::getOrderProducts($id)),
+                'discount' => self::getOrderCouponsSum($id),
+                'weight'   => self::getOrderWeight($id),
+                'applyDefaultDimensions' => true,
+                'applyWidgetSettings'    => true,
+            ],
+            'timeout'   => 30,
+            'sslverify' => false,
+            'headers'   => [
+                'Authorization' => 'Bearer ' . get_option(self::SR_TOKEN_OPTION),
+                'Shop-Id'       => get_option(self::SR_SHOP_ID_OPTION),
+                'Type'          => $widget_order_data['delivery']['type'],
+                'Company-Id'    => $widget_order_data['delivery']['deliveryCompanyId'],
+            ],
+        ]);
+
+        $res_body = json_decode($res['body'], true);
+
+        if ($res['response']['code'] === 200 && $res_body) {
+            $price = $res_body['totalPrice'];
+
+            if ($order->payment_method === get_option(self::COD_PAY_METHOD_OPTION))
+                $price += $res_body['priceCommissionCod'];
+            elseif ($order->payment_method === get_option(self::CARD_COD_PAY_METHOD_OPTION))
+                $price += $res_body['priceCommissionCodCard'];
+
+            $days = $res_body['deliveryDays']['min'];
+            if ($days !== $res_body['deliveryDays']['max']) $days .= '-' . $res_body['deliveryDays']['max'];
+
+            self::setDeliveryMetaData($id, [
+                'cost' => $price,
+                'days' => $days,
+            ]);
+        // В случае отсутствия доступности прежнего варианта или ошибки - сброс доставки
+        } else {
+            self::removeSafeRouteData($id);
+        }
     }
 
     /**
@@ -211,8 +348,9 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
                 $details = self::getSRDeliveryDetails($post_id);
                 $track_number = get_post_meta($post_id, self::TRACKING_NUMBER_META_KEY, true);
                 $track_url = get_post_meta($post_id, self::TRACKING_URL_META_KEY, true);
+                $error = self::getErrorBlock($post_id);
 
-                if ($details || $track_url || $track_number) {
+                if ($details || $track_url || $track_number || $error) {
                     echo '<div style="line-height: 1.3;">';
                     if (!empty($details[self::DELIVERY_TYPE_META_KEY]))
                         echo '<div>' . __('Type', self:: TEXT_DOMAIN) . ': ' . $details[self::DELIVERY_TYPE_META_KEY] . '.</div>';
@@ -220,10 +358,15 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
                         echo '<div>' . __('Time (days)', self:: TEXT_DOMAIN) . ': ' . $details[self::DELIVERY_DAYS_META_KEY] . '.</div>';
                     if (!empty($details[self::DELIVERY_COMPANY_META_KEY]))
                         echo '<div>' . __('Company', self:: TEXT_DOMAIN) . ': ' . $details[self::DELIVERY_COMPANY_META_KEY] . '.</div>';
+                    if (!empty($details[self::DELIVERY_POINT_ID_META_KEY]))
+                        echo '<div>' . __('Pickup point ID', self:: TEXT_DOMAIN) . ': ' . $details[self::DELIVERY_POINT_ID_META_KEY] . '.</div>';
+                    if (!empty($details[self::DELIVERY_POINT_ADDRESS_META_KEY]))
+                        echo '<div>' . __('Pickup point address', self:: TEXT_DOMAIN) . ': ' . $details[self::DELIVERY_POINT_ADDRESS_META_KEY] . '.</div>';
                     if ($track_url)
                         echo '<div>' . __('Delivery track-number', self::TEXT_DOMAIN) . ': ' . "<a href='$track_url' target='_blank'>$track_number</a>.</div>";
                     elseif ($track_number)
                         echo '<div>' . __('Delivery track-number', self::TEXT_DOMAIN) . ': ' . $track_number . '.</div>';
+                    echo $error;
                     echo '</div>';
                 } else {
                     echo '&mdash;';
@@ -293,7 +436,11 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
             add_action('admin_menu', __CLASS__ . '::_createAdminSettingsPage');
             add_filter('plugin_action_links_' . $plugin_basename, [__CLASS__, '_addSettingsLink']);
             add_filter('woocommerce_order_item_get_formatted_meta_data', [__CLASS__, '_formatOrderMetaData']);
+            add_action('woocommerce_admin_order_data_after_shipping_address', __CLASS__ . '::_showOrderError');
             add_action('load-post.php', __CLASS__ . '::_addOrderMetaBox');
+            add_action('woocommerce_after_order_itemmeta', __CLASS__ . '::_addWidgetBlock', 10, 2);
+            add_action('woocommerce_order_before_calculate_totals', __CLASS__ . '::_onRecalculateOrder', 10, 2);
+
             self::_addDeliveryDetailsColumnInOrders();
             self::_addProductFields();
         }
@@ -307,9 +454,12 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
         if (!self::checkSettings())
             self::_pushNotice(__('SafeRoute settings not set.', self::TEXT_DOMAIN));
 
-        // Подключение CSS к админке
+        // Подключение скриптов и CSS к админке
         add_action('wp_loaded', function () {
+            wp_enqueue_script('saferoute-widget-api', self::SAFEROUTE_WIDGET_API_PATH);
             wp_enqueue_style('saferoute-widget-css', plugins_url('assets/admin.css', dirname(__FILE__)));
+            wp_enqueue_script('saferoute-common', plugins_url('assets/admin-common.js', dirname(__FILE__)), ['jquery']);
+            wp_localize_script('saferoute-common', 'myajax', ['url' => admin_url('admin-ajax.php')]);
         });
 
         self::_echoNotices();

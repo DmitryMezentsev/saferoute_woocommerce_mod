@@ -61,6 +61,7 @@
                     <?php foreach (wc_get_order_statuses() as $status_id => $status_title): ?>
                       <option
                           value="<?=$status_id?>"
+                          <?=$status_id === self::ORDER_CANCELLED_STATUS ? 'disabled' : ''?>
                           <?= get_option(
                               self::ORDER_STATUS_FOR_SENDING_TO_SR_OPTION,
                               self::ORDER_STATUS_FOR_SENDING_TO_SR_DEFAULT
@@ -200,6 +201,11 @@
                                     id="sr-status-<?=$sr_status_id?>"
                                     name="<?=self::STATUSES_MATCHING_OPTION?>[<?=$sr_status_id?>]"
                                     autocomplete="off">
+                                    <option
+                                        value=""
+                                        <?= (!self::getMatchedWCStatus($sr_status_id)) ? 'selected' : '' ?>>
+                                        <?php _e('Not set', self::TEXT_DOMAIN)?>
+                                    </option>
                                     <?php foreach (wc_get_order_statuses() as $wc_status_id => $wc_status_title): ?>
                                         <option
                                             value="<?=$wc_status_id?>"

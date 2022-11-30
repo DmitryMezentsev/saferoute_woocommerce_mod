@@ -11,8 +11,7 @@
 /**
  * Форма чекаута, когда выбрана доставка SafeRoute
  */
-.woocommerce-checkout.saferoute_shipping_selected #customer_details #ship-to-different-address,
-.woocommerce-checkout.saferoute_shipping_selected #customer_details .shipping_address { display: none !important; }
+.woocommerce-checkout.saferoute_shipping_selected #customer_details #ship-to-different-address { display: none !important; }
 
 
 /**
@@ -23,11 +22,6 @@
 
 .saferoute_widget_block { margin-bottom: 1.6em; }
 .saferoute_widget_block label { display: inline-block; }
-#saferoute_id_field,
-#saferoute_type_field,
-#saferoute_company_field,
-#saferoute_days_field,
-#saferoute_in_cabinet { display: none; }
 
 .saferoute_delivery_info .info-wrap span {
   font-weight: bold;

@@ -35,13 +35,8 @@ class SafeRouteWooCommerceWidgetApi extends SafeRouteWooCommerceBase
     {
         if (!session_id()) session_start();
 
-        $price = $data->get_param('price');
-        if ($price < 0) $price = 999999; // Для особо умных
-
-        $_SESSION['saferoute_price'] = $price;
-        $_SESSION['saferoute_company'] = $data->get_param('company');
-        $_SESSION['saferoute_days'] = $data->get_param('days');
-        $_SESSION['saferoute_type'] = $data->get_param('type');
+        $_SESSION['sr_data'] = $data->get_param('sr_data');
+        $_SESSION['pay_method'] = $data->get_param('pay_method');
 
         return ['status' => 'ok'];
     }
@@ -90,6 +85,7 @@ class SafeRouteWooCommerceWidgetApi extends SafeRouteWooCommerceBase
                     {
                         return call_user_func_array(__CLASS__ . '::' . $route_params[0], [$data]);
                     },
+                    'permission_callback' => '__return_true',
                 ]);
             }
         });

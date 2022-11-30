@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SafeRoute WooCommerce\n"
-"POT-Creation-Date: 2021-12-23 14:43+0500\n"
-"PO-Revision-Date: 2021-12-23 14:44+0500\n"
+"POT-Creation-Date: 2022-02-14 09:38+0500\n"
+"PO-Revision-Date: 2022-02-14 09:39+0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -22,37 +22,11 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: emails/track_number_updated.php:7
-#, php-format
-msgid "Hi %s,"
-msgstr ""
-
-#: emails/track_number_updated.php:8
-#, php-format
-msgid ""
-"Order #%s has been assigned tracking number %s in the delivery service "
-"&laquo;%s&raquo;."
-msgstr ""
-"Заказу #%s присвоен трекинг-номер %s в службе доставки &laquo;%s&raquo;."
-
-#: emails/track_number_updated.php:9 includes/SafeRouteWooCommerceBase.php:273
-msgid ""
-"In the near future, the order will be transferred to the delivery service."
-msgstr "В ближайшее время заказ будет передан в службу доставки."
-
-#: emails/track_number_updated.php:10
-msgid "You can track the movement of your order using"
-msgstr "Отслеживать перемещение заказа вы можете по"
-
-#: emails/track_number_updated.php:10
-msgid "this link"
-msgstr "этой ссылке"
-
-#: includes/SafeRouteWooCommerce.php:176 includes/SafeRouteWooCommerce.php:212
+#: includes/SafeRouteWooCommerce.php:160
 msgid "Shipping type"
 msgstr "Способ доставки"
 
-#: includes/SafeRouteWooCommerce.php:213
+#: includes/SafeRouteWooCommerce.php:161
 msgid "Select and confirm shipping type."
 msgstr "Выберите и подтвердите параметры доставки."
 
@@ -61,130 +35,187 @@ msgid "Settings"
 msgstr "Настройки"
 
 #: includes/SafeRouteWooCommerceAdmin.php:107
-#: includes/SafeRouteWooCommerceAdmin.php:218
+#: includes/SafeRouteWooCommerceAdmin.php:356
 msgid "Type"
 msgstr "Тип"
 
 #: includes/SafeRouteWooCommerceAdmin.php:111
-#: includes/SafeRouteWooCommerceAdmin.php:220
+#: includes/SafeRouteWooCommerceAdmin.php:358
 msgid "Time (days)"
 msgstr "Срок (дней)"
 
 #: includes/SafeRouteWooCommerceAdmin.php:114
-#: includes/SafeRouteWooCommerceAdmin.php:222
+#: includes/SafeRouteWooCommerceAdmin.php:360
 msgid "Company"
 msgstr "Компания"
 
-#: includes/SafeRouteWooCommerceAdmin.php:164
+#: includes/SafeRouteWooCommerceAdmin.php:117
+#: includes/SafeRouteWooCommerceAdmin.php:362
+msgid "Pickup point ID"
+msgstr "ID ПВЗ"
+
+#: includes/SafeRouteWooCommerceAdmin.php:120
+#: includes/SafeRouteWooCommerceAdmin.php:364
+msgid "Pickup point address"
+msgstr "Адрес ПВЗ"
+
+#: includes/SafeRouteWooCommerceAdmin.php:178
 #: includes/SafeRouteWooCommerceShippingMethod.php:33
 #: includes/SafeRouteWooCommerceShippingMethod.php:47
 msgid "SafeRoute"
 msgstr "SafeRoute"
 
-#: includes/SafeRouteWooCommerceAdmin.php:173
-#: includes/SafeRouteWooCommerceBase.php:265
+#: includes/SafeRouteWooCommerceAdmin.php:187
+#: includes/SafeRouteWooCommerceBase.php:305
 msgid "Order tracking"
 msgstr "Трекинг заказа"
 
-#: includes/SafeRouteWooCommerceAdmin.php:179
+#: includes/SafeRouteWooCommerceAdmin.php:195
 msgid "SafeRoute order tracking"
 msgstr "Трекинг заказа в SafeRoute"
 
-#: includes/SafeRouteWooCommerceAdmin.php:183
-#: includes/SafeRouteWooCommerceAdmin.php:185
-#: includes/SafeRouteWooCommerceAdmin.php:224
-#: includes/SafeRouteWooCommerceAdmin.php:226
+#: includes/SafeRouteWooCommerceAdmin.php:200
+#: includes/SafeRouteWooCommerceAdmin.php:202
+#: includes/SafeRouteWooCommerceAdmin.php:366
+#: includes/SafeRouteWooCommerceAdmin.php:368
 msgid "Delivery track-number"
 msgstr "Трек-номер ТК"
 
-#: includes/SafeRouteWooCommerceAdmin.php:203
+#: includes/SafeRouteWooCommerceAdmin.php:204
+msgid "Unavailable"
+msgstr "Недоступно"
+
+#: includes/SafeRouteWooCommerceAdmin.php:227
+msgid "Change delivery"
+msgstr "Изменить доставку"
+
+#: includes/SafeRouteWooCommerceAdmin.php:231
+msgid "Select a delivery by clicking \"Change delivery\""
+msgstr "Выберите доставку, нажав \"Изменить доставку\""
+
+#: includes/SafeRouteWooCommerceAdmin.php:234
+msgid "Order already send in SafeRoute, change delivery is impossible"
+msgstr "Заказ уже отправлен в SafeRoute, изменить способ доставки нельзя"
+
+#: includes/SafeRouteWooCommerceAdmin.php:340
 msgid "Delivery details"
 msgstr "Детали доставки"
 
-#: includes/SafeRouteWooCommerceAdmin.php:243
+#: includes/SafeRouteWooCommerceAdmin.php:386
 msgid "Barcode"
 msgstr "Штрих-код"
 
-#: includes/SafeRouteWooCommerceAdmin.php:248
+#: includes/SafeRouteWooCommerceAdmin.php:391
 msgid "Producing country"
 msgstr "Страна производства"
 
-#: includes/SafeRouteWooCommerceAdmin.php:251 views/admin-settings-page.php:120
-#: views/admin-settings-page.php:143
+#: includes/SafeRouteWooCommerceAdmin.php:394 views/admin-settings-page.php:121
+#: views/admin-settings-page.php:144
 msgid "Not selected"
 msgstr "[Не выбрано]"
 
-#: includes/SafeRouteWooCommerceAdmin.php:257
+#: includes/SafeRouteWooCommerceAdmin.php:400
 msgid "Brand"
 msgstr "Бренд"
 
-#: includes/SafeRouteWooCommerceAdmin.php:262
+#: includes/SafeRouteWooCommerceAdmin.php:405
 msgid "Product code"
 msgstr "Код товара"
 
-#: includes/SafeRouteWooCommerceAdmin.php:264
-#: includes/SafeRouteWooCommerceAdmin.php:271
+#: includes/SafeRouteWooCommerceAdmin.php:407
+#: includes/SafeRouteWooCommerceAdmin.php:414
 msgid "Required for SafeRoute international shipping"
 msgstr "Требуется для международной доставки SafeRoute"
 
-#: includes/SafeRouteWooCommerceAdmin.php:269
+#: includes/SafeRouteWooCommerceAdmin.php:412
 msgid "English product title"
 msgstr "Название товара на английском языке"
 
-#: includes/SafeRouteWooCommerceAdmin.php:303
+#: includes/SafeRouteWooCommerceAdmin.php:450
 msgid "WooCommerce is required for SafeRoute WooCommerce plugin."
 msgstr ""
 "Для работы плагина SafeRoute WooCommerce должен быть установлен и "
 "активирован сам WooCommerce."
 
-#: includes/SafeRouteWooCommerceAdmin.php:308
+#: includes/SafeRouteWooCommerceAdmin.php:455
 msgid "SafeRoute settings not set."
 msgstr "Настройки плагина SafeRoute не заданы."
 
-#: includes/SafeRouteWooCommerceBase.php:206
+#: includes/SafeRouteWooCommerceBase.php:242
 msgid "Pickup"
 msgstr "Доставка в пункт выдачи"
 
-#: includes/SafeRouteWooCommerceBase.php:207
+#: includes/SafeRouteWooCommerceBase.php:243
 msgid "Courier"
 msgstr "Курьерская доставка"
 
-#: includes/SafeRouteWooCommerceBase.php:208
+#: includes/SafeRouteWooCommerceBase.php:244
 msgid "Post"
 msgstr "Доставка почтой"
 
-#: includes/SafeRouteWooCommerceBase.php:269
+#: includes/SafeRouteWooCommerceBase.php:309
 msgid "Your order has been assigned a track number"
 msgstr "Вашему заказу присвоен трекинг-номер"
 
-#: includes/SafeRouteWooCommerceBase.php:271
-#: includes/SafeRouteWooCommerceBase.php:280
+#: includes/SafeRouteWooCommerceBase.php:311
+#: includes/SafeRouteWooCommerceBase.php:320
 msgid "Order"
 msgstr "Заказ"
 
-#: includes/SafeRouteWooCommerceBase.php:271
+#: includes/SafeRouteWooCommerceBase.php:311
 msgid "received a track number"
 msgstr "получил трекинг-номер"
 
-#: includes/SafeRouteWooCommerceBase.php:272
+#: includes/SafeRouteWooCommerceBase.php:312
 msgid "in the delivery service"
 msgstr "в службе доставки"
 
-#: includes/SafeRouteWooCommerceBase.php:278
+#: includes/SafeRouteWooCommerceBase.php:313
+msgid ""
+"In the near future, the order will be transferred to the delivery service."
+msgstr "В ближайшее время заказ будет передан в службу доставки."
+
+#: includes/SafeRouteWooCommerceBase.php:318
 msgid "Your order has been sent"
 msgstr "Ваш заказ отправлен"
 
-#: includes/SafeRouteWooCommerceBase.php:280
+#: includes/SafeRouteWooCommerceBase.php:320
 msgid "has been transferred to the delivery service"
 msgstr "был передан в службу доставки"
 
-#: includes/SafeRouteWooCommerceBase.php:282
+#: includes/SafeRouteWooCommerceBase.php:322
 msgid "Expect delivery in"
 msgstr "Ожидайте доставку через"
 
-#: includes/SafeRouteWooCommerceBase.php:282
+#: includes/SafeRouteWooCommerceBase.php:322
 msgid "days"
 msgstr "дн"
+
+#: includes/SafeRouteWooCommerceBase.php:455
+msgid "Order creation error"
+msgstr "Ошибка создания заказа в SafeRoute"
+
+#: includes/SafeRouteWooCommerceBase.php:458
+msgid "Order confirmation error"
+msgstr "Ошибка подтверждения  заказа в SafeRoute"
+
+#: includes/SafeRouteWooCommerceBase.php:461
+msgid "Order cancelling error"
+msgstr "Ошибка отмены заказа в SafeRoute"
+
+#: includes/SafeRouteWooCommerceBase.php:469
+msgid "Retry"
+msgstr "Повтор"
+
+#: includes/SafeRouteWooCommerceBase.php:471
+msgid "Hide"
+msgstr "Скрыть"
+
+#: includes/SafeRouteWooCommerceBase.php:489
+msgid "Warning: delivery method not selected!"
+msgstr ""
+"Внимание: конкретный способ доставки не был выбран. Выберите способ доставки "
+"через виджет SafeRoute."
 
 #: includes/SafeRouteWooCommerceCountries.php:17
 msgid "China"
@@ -1226,53 +1257,53 @@ msgstr "Общие настройки"
 msgid "Order status for sending to SafeRoute"
 msgstr "Статус заказа для передачи его в SafeRoute"
 
-#: views/admin-settings-page.php:77
+#: views/admin-settings-page.php:78
 msgid "Send orders to SafeRoute as confirmed"
 msgstr "Передавать заказы как подтверждённые"
 
-#: views/admin-settings-page.php:93
+#: views/admin-settings-page.php:94
 msgid "Price declared percent"
 msgstr "Процент оценочной стоимости"
 
-#: views/admin-settings-page.php:111
+#: views/admin-settings-page.php:112
 msgid "COD pay method"
 msgstr "Способ оплаты с наложенным платежом"
 
-#: views/admin-settings-page.php:134
+#: views/admin-settings-page.php:135
 msgid "Card COD pay method"
 msgstr "Способ оплаты с наложенным платежом картой"
 
-#: views/admin-settings-page.php:157
+#: views/admin-settings-page.php:158
 msgid "Hide billing block in checkout"
 msgstr "Скрыть блок \"Детали оплаты\" в чекауте"
 
-#: views/admin-settings-page.php:173
+#: views/admin-settings-page.php:174
 msgid "Show details in delivery name"
 msgstr "Выводить в названии способа доставки детали по доставке"
 
-#: views/admin-settings-page.php:188
+#: views/admin-settings-page.php:189
 msgid "Statuses matching"
 msgstr "Соответствие статусов"
 
-#: views/admin-settings-page.php:219
+#: views/admin-settings-page.php:207
+msgid "Not set"
+msgstr "[Не выбрано]"
+
+#: views/admin-settings-page.php:225
 msgid "Set auth data to setup statuses matching"
 msgstr "Задайте настройки авторизации, чтобы установить соответствие статусов."
 
-#: views/admin-settings-page.php:221
+#: views/admin-settings-page.php:227
 msgid "Invalid auth settings"
 msgstr "Заданы некорректные настройки авторизации."
 
-#: views/admin-settings-page.php:223
+#: views/admin-settings-page.php:229
 msgid "Error while getting the list of statuses from SafeRoute"
 msgstr "Ошибка при получении списка статусов от SafeRoute."
 
 #: views/checkout-widget-block.php:2
 msgid "Select Shipping Type"
 msgstr "Выберите способ доставки"
-
-#: views/checkout-widget-block.php:6
-msgid "Copy widget data into billing details"
-msgstr "Использовать данные доставки в блоке деталей оплаты"
 
 #. Plugin Name of the plugin/theme
 msgid "SafeRoute WooCommerce"
@@ -1285,6 +1316,28 @@ msgstr "Плагин виджета SafeRoute для WooCommerce"
 #. Author of the plugin/theme
 msgid "Dmitry Mezentsev"
 msgstr "Dmitry Mezentsev"
+
+#~ msgid ""
+#~ "The previously selected delivery is not available, please select another "
+#~ "delivery"
+#~ msgstr ""
+#~ "Выбранная ранее доставка недоступна, выберите другую доставку, нажав "
+#~ "кнопку \"Изменить доставку\""
+
+#~ msgid ""
+#~ "Order #%s has been assigned tracking number %s in the delivery service "
+#~ "&laquo;%s&raquo;."
+#~ msgstr ""
+#~ "Заказу #%s присвоен трекинг-номер %s в службе доставки &laquo;%s&raquo;."
+
+#~ msgid "You can track the movement of your order using"
+#~ msgstr "Отслеживать перемещение заказа вы можете по"
+
+#~ msgid "this link"
+#~ msgstr "этой ссылке"
+
+#~ msgid "Copy widget data into billing details"
+#~ msgstr "Использовать данные доставки в блоке деталей оплаты"
 
 #, fuzzy
 #~| msgid ""

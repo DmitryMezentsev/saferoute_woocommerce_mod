@@ -18,10 +18,9 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
     private static function _getApiRoutes()
     {
         return [
-            'statuses.json'        => ['_statusesApi'          , 'GET'],
-            'payment-methods.json' => ['_paymentMethodsApi'    , 'GET'],
-            'order-status-update'  => ['_orderStatusUpdateApi' , 'POST'],
-            'products'             => ['_productsApi'          , 'GET'],
+            'order-status-update'      => ['_orderStatusUpdateApi'     , 'POST'],
+            'product-quantity-update'  => ['_productQuantityUpdateApi' , 'POST'],
+            'products'                 => ['_productsApi'              , 'GET'],
         ];
     }
 
@@ -37,33 +36,6 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
     }
 
     /**
-     * Выводит список статусов заказов
-     *
-     * @param $data WP_REST_Request
-     * @return array
-     */
-    public static function _statusesApi(WP_REST_Request $data)
-    {
-        return wc_get_order_statuses();
-    }
-
-    /**
-     * Выводит список способов оплаты
-     *
-     * @param $data WP_REST_Request
-     * @return array
-     */
-    public static function _paymentMethodsApi(WP_REST_Request $data)
-    {
-        $methods = [];
-
-        foreach(WC()->payment_gateways->get_available_payment_gateways() as $gateway)
-            $methods[$gateway->id] = $gateway->title;
-
-        return $methods;
-    }
-
-    /**
      * API синхронизации статусов заказов WP со статусами в ЛК SafeRoute
      *
      * @param $data WP_REST_Request
@@ -73,7 +45,7 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
     {
         // Не передан обязательный параметр 'id'
         if (empty($data['id']))
-            return new WP_Error('id_is_required', 'Parameter \'id\' is required', ['status' => 400]);
+            return new WP_Error('id_is_required', "Parameter 'id' is required", ['status' => 400]);
 
         // Находим заказ в БД по SafeRoute ID
         $query = new WP_Query([
@@ -86,7 +58,7 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
         // Заказ не найден
         if (!$query->posts)
         {
-            return new WP_Error('not_found', 'Order \'' . $data['id'] . '\'not found', ['status' => 404]);
+            return new WP_Error('not_found', "Order $data[id] not found", ['status' => 404]);
         }
         else
         {
@@ -108,10 +80,13 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
             }
 
             // Обновление статуса заказа
-            if (!empty($data['statusCMS']))
+            if (!empty($data['statusSR']))
             {
                 $wc_order = new WC_Order($id);
-                $wc_order->update_status($data['statusCMS']);
+                $status_wc = self::getMatchedWCStatus($data['statusSR']);
+
+                if ($status_wc) $wc_order->update_status($status_wc);
+
                 // Отправка уведомления покупателю, когда заказ передан в службу доставки
                 if ((int) $data['statusSR'] === self::SUBMITTED_TO_DELIVERY_SERVICE_STATUS_CODE)
                     self::sendCustomerEmailNotification($id, 'submitted_to_delivery_service');
@@ -119,6 +94,39 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
 
             return ['status' => 'ok'];
         }
+    }
+
+    /**
+     * API синхронизации остатков товара
+     *
+     * @param $data WP_REST_Request
+     * @return mixed
+     */
+    public static function _productQuantityUpdateApi(WP_REST_Request $data)
+    {
+        // Не передан обязательный параметр 'vendorCode'
+        if (empty($data['vendorCode']))
+            return new WP_Error('vendor_code_is_required', "Parameter 'vendorCode' is required", ['status' => 400]);
+
+        // Не передан обязательный параметр 'quantity'
+        if (!isset($data['quantity']))
+            return new WP_Error('quantity_is_required', "Parameter 'quantity' is required", ['status' => 400]);
+
+        $quantity = (int) $data['quantity'];
+
+        // Передано некорректное количество остатков
+        if (!is_numeric($data['quantity']) || $quantity < 0)
+            return new WP_Error('invalid_quantity', "Parameter 'quantity' is invalid", ['status' => 400]);
+
+        $product_id = wc_get_product_id_by_sku($data['vendorCode']);
+
+        // Товар по переданному артикулу не найден
+        if (!$product_id)
+            return new WP_Error('not_found', "Product with SKU '$data[vendorCode]' not found", ['status' => 404]);
+
+        wc_update_product_stock($product_id, $quantity);
+
+        return ['status' => 'ok'];
     }
 
     /**
@@ -173,26 +181,27 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
     public static function _onPostEdit($post_id)
     {
         $post = get_post($post_id);
+        $order = wc_get_order($post_id);
 
         $order_sr_id = get_post_meta($post_id, self::SAFEROUTE_ID_META_KEY, true);
-        $order_in_sr_cabinet = get_post_meta($post_id, self::IN_SAFEROUTE_CABINET_META_KEY, true);
+        $sr_data = get_post_meta($post_id, self::WIDGET_ORDER_DATA, true);
 
-        // Только посты, являющиеся заказами WooCommerce, имеющие SafeRoute ID, и ещё не перенесенные в ЛК
-        if ($post->post_type === 'shop_order' && $order_sr_id && !$order_in_sr_cabinet)
+        if (!$sr_data) return;
+
+        // Только посты, являющиеся заказами WooCommerce, и в которых не выбран собственный вариант доставки SafeRoute
+        if ($post->post_type === 'shop_order' && empty($sr_data['delivery']['isMyDelivery']))
         {
-            $response = self::updateOrderInSafeRoute([
-                'id'     => $order_sr_id,
-                'status' => $post->post_status,
-                'cmsId'  => self::getOrderNumber($post_id),
-            ]);
-
-            // Если заказ был перенесен в ЛК
-            if (!empty($response['cabinetId']))
+            // Если заказ не имеет SafeRoute ID (т.е. не перенесён в ЛК), для него была выбрана доставка SR и ему присвоен статус для передачи в ЛК
+            if (!$order_sr_id && $order->has_shipping_method(self::ID) && $post->post_status === get_option(self::ORDER_STATUS_FOR_SENDING_TO_SR_OPTION))
             {
-                // Устанавливаем соответствующий флаг
-                update_post_meta($post_id, self::IN_SAFEROUTE_CABINET_META_KEY, 1);
-                // Сохраняем его новый SafeRoute ID
-                update_post_meta($post_id, self::SAFEROUTE_ID_META_KEY, $response['cabinetId']);
+                // Создание заказа в ЛК SafeRoute
+                self::createOrderInSafeRoute($post_id);
+            }
+            // Если заказ имеет SafeRoute ID и он либо был отменён в WooCommerce, либо ему присвоена другая доставка, не SafeRoute
+            elseif ($order_sr_id && ($post->post_status === self::ORDER_CANCELLED_STATUS || !$order->has_shipping_method(self::ID)))
+            {
+                // Отмена заказа в SafeRoute
+                self::cancelOrderInSafeRoute($post_id);
             }
         }
     }
@@ -227,30 +236,5 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
 
         // Ловим событие изменения постов (заказов)
         add_action('edit_post', __CLASS__ . '::_onPostEdit');
-    }
-
-    /**
-     * Обновляет данные заказа на сервере SafeRoute
-     *
-     * @param $data array Параметры запроса
-     * @return mixed
-     */
-    public static function updateOrderInSafeRoute(array $data)
-    {
-        $api = self::SAFEROUTE_API_URL . 'widgets/update-order';
-
-        $res = wp_remote_post($api, [
-            'body' => $data,
-            'timeout' => 30,
-            'sslverify' => false,
-            'headers' => [
-                'Authorization' => 'Bearer ' . get_option(self::SR_TOKEN_OPTION),
-                'Shop-Id' => get_option(self::SR_SHOP_ID_OPTION),
-            ],
-        ]);
-
-        return ($res['response']['code'] === 200)
-            ? json_decode($res['body'], true)
-            : null;
     }
 }
