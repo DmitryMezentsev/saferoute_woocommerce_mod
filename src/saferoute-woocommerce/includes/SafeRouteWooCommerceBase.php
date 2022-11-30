@@ -338,7 +338,7 @@ class SafeRouteWooCommerceBase
      *
      * @return string
      */
-    public static function getCurrentLang()
+    public static function getCurrentLang(): string
     {
         return get_locale() === 'ru_RU' ? 'ru' : 'en';
     }
@@ -377,7 +377,7 @@ class SafeRouteWooCommerceBase
      * Вычисляет НДС товара
      *
      * @param $item
-     * @return int|null
+     * @return float|null
      */
     public static function calcProductVAT($item)
     {
@@ -504,6 +504,8 @@ class SafeRouteWooCommerceBase
                 return $html;
             }
         }
+
+        return '';
     }
 
     /**
