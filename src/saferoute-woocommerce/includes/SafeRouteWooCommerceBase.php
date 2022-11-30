@@ -123,7 +123,7 @@ class SafeRouteWooCommerceBase
      *
      * @return string
      */
-    public static function getPluginDir()
+    public static function getPluginDir(): string
     {
         return dirname(dirname(__FILE__));
     }
@@ -133,7 +133,7 @@ class SafeRouteWooCommerceBase
      *
      * @return bool
      */
-    public static function checkWooCommerce()
+    public static function checkWooCommerce(): bool
     {
         return in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')));
     }
@@ -143,7 +143,7 @@ class SafeRouteWooCommerceBase
      *
      * @return bool
      */
-    public static function checkSettings()
+    public static function checkSettings(): bool
     {
         return strlen(get_option(self::SR_TOKEN_OPTION)) && strlen(get_option(self::SR_SHOP_ID_OPTION));
     }
@@ -153,7 +153,7 @@ class SafeRouteWooCommerceBase
      *
      * @return array
      */
-    public static function getAllStatuses()
+    public static function getAllStatuses(): array
     {
         return array_merge(array_keys(wc_get_order_statuses()), array_keys(get_post_statuses()));
     }
@@ -165,7 +165,7 @@ class SafeRouteWooCommerceBase
      * @param $data      array       Значения: тип доставки, срок в днях, компания, стоимость (опционально), адрес и ID ПВЗ
      * @return boolean
      */
-    public static function setDeliveryMetaData($order_id, array $data)
+    public static function setDeliveryMetaData($order_id, array $data): bool
     {
         global $wpdb;
 
@@ -451,7 +451,7 @@ class SafeRouteWooCommerceBase
      * @param $order_id int ID заказа в WooCommerce
      * @return string
      */
-    public static function getErrorBlock($order_id)
+    public static function getErrorBlock($order_id): string
     {
         $error_code = (int) get_post_meta($order_id, self::ERROR_CODE_META_KEY, true);
         $error_text = get_post_meta($order_id, self::ERROR_MESSAGE_META_KEY, true);
@@ -512,7 +512,7 @@ class SafeRouteWooCommerceBase
      * @param $order_id int ID заказа
      * @return bool
      */
-    public static function checkCODInOrder($order_id)
+    public static function checkCODInOrder($order_id): bool
     {
         $payment_method = (wc_get_order($order_id))->get_payment_method();
 
@@ -527,7 +527,7 @@ class SafeRouteWooCommerceBase
      * @param $order_id int ID заказа в WP
      * @return bool
      */
-    public static function createOrderInSafeRoute($order_id)
+    public static function createOrderInSafeRoute($order_id): bool
     {
         $order = wc_get_order($order_id);
         $widget_data = get_post_meta($order_id, self::WIDGET_ORDER_DATA, true);
@@ -602,8 +602,8 @@ class SafeRouteWooCommerceBase
             ],
             'recipient' => [
                 'fullName'    => trim($order->shipping_first_name . ' ' . $order->shipping_last_name),
-                'phone'       => $order->billing_phone ? $order->billing_phone : $order->shipping_phone,
-                'email'       => $order->billing_email ? $order->billing_email : $order->shipping_email,
+                'phone'       => $order->billing_phone ?: $order->shipping_phone,
+                'email'       => $order->billing_email ?: $order->shipping_email,
                 'legalEntity' => ['name' => $order->shipping_company],
             ],
             'applyWidgetSettings' => true,
@@ -670,7 +670,7 @@ class SafeRouteWooCommerceBase
      * @param $wc_order_id int ID заказа в WP
      * @return bool
      */
-    public static function confirmOrderInSafeRoute($wc_order_id)
+    public static function confirmOrderInSafeRoute($wc_order_id): bool
     {
         $sr_order_id = (int) get_post_meta($wc_order_id, self::SAFEROUTE_ID_META_KEY, true);
 
@@ -709,7 +709,7 @@ class SafeRouteWooCommerceBase
      * @param $wc_order_id int ID заказа в WP
      * @return bool
      */
-    public static function cancelOrderInSafeRoute($wc_order_id)
+    public static function cancelOrderInSafeRoute($wc_order_id): bool
     {
         $sr_order_id = (int) get_post_meta($wc_order_id, self::SAFEROUTE_ID_META_KEY, true);
 
@@ -771,7 +771,7 @@ class SafeRouteWooCommerceBase
      *
      * @return array
      */
-    public static function _getSRDeliveryCountries()
+    public static function _getSRDeliveryCountries(): array
     {
         $zones = array_filter(WC_Shipping_Zones::get_zones(), function ($zone) {
             return array_filter($zone['shipping_methods'], function ($shipping_method) {
@@ -795,7 +795,7 @@ class SafeRouteWooCommerceBase
      *
      * @return string
      */
-    public static function getWidgetApiScriptPath()
+    public static function getWidgetApiScriptPath(): string
     {
         return get_site_url() . '/wp-json/' . SafeRouteWooCommerceWidgetApi::API_PATH . '/saferoute';
     }
@@ -806,7 +806,7 @@ class SafeRouteWooCommerceBase
      * @param $order_id int ID заказа
      * @return array
      */
-    public static function getOrderProducts($order_id)
+    public static function getOrderProducts($order_id): array
     {
         $items = wc_get_order($order_id)->get_items();
 

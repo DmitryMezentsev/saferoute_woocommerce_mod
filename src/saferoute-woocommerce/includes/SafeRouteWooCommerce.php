@@ -56,7 +56,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
      *
      * @return string
      */
-    private static function _getInlineJs()
+    private static function _getInlineJs(): string
     {
         global $woocommerce;
 
@@ -89,7 +89,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
      *
      * @return array
      */
-    private static function _getProducts()
+    private static function _getProducts(): array
     {
         global $woocommerce;
 
@@ -175,7 +175,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
      * @param $order_id int
      * @param $posted array
      */
-    public static function _onAfterOrderCreate($order_id, $posted)
+    public static function _onAfterOrderCreate($order_id, array $posted)
     {
         if (empty($_SESSION['sr_data'])) return;
 
@@ -204,7 +204,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
      *
      * @param $plugin_file string
      */
-    public static function init($plugin_file)
+    public static function init(string $plugin_file)
     {
         // Загрузка перевода
         load_plugin_textdomain(self::TEXT_DOMAIN, false, basename(self::getPluginDir()) . '/languages/');

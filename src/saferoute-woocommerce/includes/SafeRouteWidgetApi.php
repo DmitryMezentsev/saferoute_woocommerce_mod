@@ -47,7 +47,7 @@ class SafeRouteWidgetApi
      * @param string $url URL запроса
      * @return bool
      */
-    private function isHtmlRequest($url)
+    private function isHtmlRequest(string $url): bool
     {
         preg_match("/\.html$/", $url, $m);
         return (bool) $m;
@@ -69,7 +69,7 @@ class SafeRouteWidgetApi
      *
      * @param string $token Токен авторизации
      */
-    public function setToken($token)
+    public function setToken(string $token)
     {
         $this->token = $token;
     }
@@ -99,7 +99,7 @@ class SafeRouteWidgetApi
      *
      * @param string $method Метод запроса
      */
-    public function setMethod($method)
+    public function setMethod(string $method)
     {
         $this->method = strtoupper($method);
     }
@@ -108,9 +108,9 @@ class SafeRouteWidgetApi
      * Отправляет запрос
      *
      * @param string $url URL
-     * @return string
+     * @return string|false
      */
-    public function submit($url)
+    public function submit(string $url)
     {
         // Загрузка кода виджета
         if ($this->isHtmlRequest($url))

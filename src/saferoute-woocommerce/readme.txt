@@ -2,7 +2,7 @@
 Contributors: dmitrymezentsev
 Tags: saferoute, shipping, woocommerce, shop, доставка, delivery, агрегатор, ecommerce, checkout, чекаут
 Requires at least: 4.9
-Tested up to: 5.9
+Tested up to: 6.1
 Requires PHP: 7.0
 Stable tag: trunk
 License: GPLv2 or later

@@ -11,7 +11,7 @@ final class SafeRouteWooCommerceCountries extends SafeRouteWooCommerceBase
      * Возвращает список стран в формате "ISO-код" => "Название"
      * @return array
      */
-    public static function get()
+    public static function get(): array
     {
         return [
             'CN' => __('China', self::TEXT_DOMAIN),

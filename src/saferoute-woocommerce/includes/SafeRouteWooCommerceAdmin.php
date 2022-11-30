@@ -24,7 +24,7 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
      * @param $value string
      * @return string
      */
-    private static function clearOptionValue($value)
+    private static function clearOptionValue(string $value): string
     {
         return sanitize_text_field(preg_replace('/["\'\\\<>]/', '', $value));
     }
@@ -60,7 +60,7 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
      *
      * @param $text string Текст уведомления
      */
-    public static function _pushNotice($text)
+    public static function _pushNotice(string $text)
     {
         $notices = get_option(self::ADMIN_NOTICES_OPTION_NAME, []);
         $notices[] = $text;
@@ -87,7 +87,7 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
      * @param $links array
      * @return array
      */
-    public static function _addSettingsLink(array $links)
+    public static function _addSettingsLink(array $links): array
     {
         $links[] = '<a href="' . self::ADMIN_PARENT_SLUG . '?page=' . self::ADMIN_MENU_SLUG . '">' . __('Settings') . '</a>';
         return $links;
@@ -99,7 +99,7 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
      * @param $metadata array
      * @return array
      */
-    public static function _formatOrderMetaData($metadata)
+    public static function _formatOrderMetaData(array $metadata): array
     {
         foreach($metadata as $metadata_item) {
             switch($metadata_item->key) {
@@ -429,7 +429,7 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
     /**
      * @param $plugin_basename string
      */
-    public static function init($plugin_basename)
+    public static function init(string $plugin_basename)
     {
         // Проверка, что WooCommerce установлен и активирован
         if (self::checkWooCommerce())

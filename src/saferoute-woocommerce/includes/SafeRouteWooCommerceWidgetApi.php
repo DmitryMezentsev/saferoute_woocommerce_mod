@@ -16,7 +16,7 @@ class SafeRouteWooCommerceWidgetApi extends SafeRouteWooCommerceBase
      *
      * @return array
      */
-    private static function _getApiRoutes()
+    private static function _getApiRoutes(): array
     {
         return [
             'saferoute' => ['_srApi', 'GET, POST'],
@@ -31,7 +31,7 @@ class SafeRouteWooCommerceWidgetApi extends SafeRouteWooCommerceBase
      * @param $data object
      * @return array
      */
-    private static function _setDeliveryApi($data)
+    private static function _setDeliveryApi($data): array
     {
         if (!session_id()) session_start();
 

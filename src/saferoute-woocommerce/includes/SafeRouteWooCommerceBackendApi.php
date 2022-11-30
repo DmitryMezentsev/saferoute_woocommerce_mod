@@ -15,7 +15,7 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
      *
      * @return array
      */
-    private static function _getApiRoutes()
+    private static function _getApiRoutes(): array
     {
         return [
             'order-status-update'      => ['_orderStatusUpdateApi'     , 'POST'],
@@ -30,7 +30,7 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
      * @param $token string Токен для проверки
      * @return bool
      */
-    private static function _checkToken($token)
+    private static function _checkToken(string $token): bool
     {
         return ($token && $token === get_option(self::SR_TOKEN_OPTION));
     }
@@ -135,7 +135,7 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
      * @param $data WP_REST_Request
      * @return array
      */
-    public static function _productsApi(WP_REST_Request $data)
+    public static function _productsApi(WP_REST_Request $data): array
     {
         // Для поиска по частичному совпадению названия товара
         add_filter('woocommerce_product_data_store_cpt_get_products_query', function ($query, $query_vars) {
