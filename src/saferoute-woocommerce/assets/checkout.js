@@ -130,9 +130,11 @@
 
     // Скроллит страницу до блока с виджетом
     function scrollToWidget () {
-      $('html, body').animate({
-        scrollTop: $('#sr_widget').offset().top - 120
-      }, 500);
+      if (!SR_WIDGET.DISABLE_AUTOSCROLL_TO_WIDGET) {
+        $('html, body').animate({
+          scrollTop: $('#sr_widget').offset().top - 120
+        }, 500);
+	  }
     }
 
 

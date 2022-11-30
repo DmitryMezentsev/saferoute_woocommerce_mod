@@ -184,6 +184,22 @@
                     >
                 </td>
             </tr>
+            <tr>
+                <th scope="row">
+                    <label for="<?=self::DISABLE_AUTOSCROLL_TO_WIDGET?>">
+                        <?php _e('Disable auto scroll to widget in checkout', self::TEXT_DOMAIN) ?>
+                    </label>
+                </th>
+                <td>
+                    <input name="<?=self::DISABLE_AUTOSCROLL_TO_WIDGET?>"
+                           id="<?=self::DISABLE_AUTOSCROLL_TO_WIDGET?>"
+                           value="1"
+                           type="checkbox"
+                           autocomplete="off"
+                        <?= get_option(self::DISABLE_AUTOSCROLL_TO_WIDGET) ? 'checked' : '' ?>
+                    >
+                </td>
+            </tr>
             </tbody>
         </table>
         <h2 class="title"><?php _e('Statuses matching', self::TEXT_DOMAIN)?></h2>

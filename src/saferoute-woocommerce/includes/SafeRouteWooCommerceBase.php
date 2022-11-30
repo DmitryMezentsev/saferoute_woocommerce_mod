@@ -40,6 +40,9 @@ class SafeRouteWooCommerceBase
     // Имя параметра, в котором хранятся настройки соответствия статусов в БД WordPress
     const STATUSES_MATCHING_OPTION = 'statuses_matching_option';
 
+    // Имя параметра 'Отключить автоматическое прокручивание до виджета в чекауте' в БД WordPress
+    const DISABLE_AUTOSCROLL_TO_WIDGET = 'disable_autoscroll_to_widget';
+
     // Имя параметра с данными заказа для создания его в SafeRoute
     const WIDGET_ORDER_DATA = 'sr_widget_order_data';
 
@@ -597,8 +600,8 @@ class SafeRouteWooCommerceBase
             ],
             'recipient' => [
                 'fullName'    => trim($order->shipping_first_name . ' ' . $order->shipping_last_name),
-                'phone'       => $order->billing_phone,
-                'email'       => $order->billing_email,
+                'phone'       => $order->billing_phone ? $order->billing_phone : $order->shipping_phone,
+                'email'       => $order->billing_email ? $order->billing_email : $order->shipping_email,
                 'legalEntity' => ['name' => $order->shipping_company],
             ],
             'applyWidgetSettings' => true,
@@ -633,7 +636,7 @@ class SafeRouteWooCommerceBase
         ]);
 
         $res_body = json_decode($res['body'], true);
-
+		
         // Если заказ был создан в ЛК
         if ($res['response']['code'] === 201)
         {

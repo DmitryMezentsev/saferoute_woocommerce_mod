@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SafeRoute WooCommerce\n"
-"POT-Creation-Date: 2022-02-14 09:38+0500\n"
-"PO-Revision-Date: 2022-02-14 09:39+0500\n"
+"POT-Creation-Date: 2022-06-02 11:04+0500\n"
+"PO-Revision-Date: 2022-06-02 11:05+0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -22,11 +22,11 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: includes/SafeRouteWooCommerce.php:160
+#: includes/SafeRouteWooCommerce.php:162
 msgid "Shipping type"
 msgstr "Способ доставки"
 
-#: includes/SafeRouteWooCommerce.php:161
+#: includes/SafeRouteWooCommerce.php:163
 msgid "Select and confirm shipping type."
 msgstr "Выберите и подтвердите параметры доставки."
 
@@ -66,7 +66,7 @@ msgid "SafeRoute"
 msgstr "SafeRoute"
 
 #: includes/SafeRouteWooCommerceAdmin.php:187
-#: includes/SafeRouteWooCommerceBase.php:305
+#: includes/SafeRouteWooCommerceBase.php:308
 msgid "Order tracking"
 msgstr "Трекинг заказа"
 
@@ -141,77 +141,77 @@ msgstr ""
 msgid "SafeRoute settings not set."
 msgstr "Настройки плагина SafeRoute не заданы."
 
-#: includes/SafeRouteWooCommerceBase.php:242
+#: includes/SafeRouteWooCommerceBase.php:245
 msgid "Pickup"
 msgstr "Доставка в пункт выдачи"
 
-#: includes/SafeRouteWooCommerceBase.php:243
+#: includes/SafeRouteWooCommerceBase.php:246
 msgid "Courier"
 msgstr "Курьерская доставка"
 
-#: includes/SafeRouteWooCommerceBase.php:244
+#: includes/SafeRouteWooCommerceBase.php:247
 msgid "Post"
 msgstr "Доставка почтой"
 
-#: includes/SafeRouteWooCommerceBase.php:309
+#: includes/SafeRouteWooCommerceBase.php:312
 msgid "Your order has been assigned a track number"
 msgstr "Вашему заказу присвоен трекинг-номер"
 
-#: includes/SafeRouteWooCommerceBase.php:311
-#: includes/SafeRouteWooCommerceBase.php:320
+#: includes/SafeRouteWooCommerceBase.php:314
+#: includes/SafeRouteWooCommerceBase.php:323
 msgid "Order"
 msgstr "Заказ"
 
-#: includes/SafeRouteWooCommerceBase.php:311
+#: includes/SafeRouteWooCommerceBase.php:314
 msgid "received a track number"
 msgstr "получил трекинг-номер"
 
-#: includes/SafeRouteWooCommerceBase.php:312
+#: includes/SafeRouteWooCommerceBase.php:315
 msgid "in the delivery service"
 msgstr "в службе доставки"
 
-#: includes/SafeRouteWooCommerceBase.php:313
+#: includes/SafeRouteWooCommerceBase.php:316
 msgid ""
 "In the near future, the order will be transferred to the delivery service."
 msgstr "В ближайшее время заказ будет передан в службу доставки."
 
-#: includes/SafeRouteWooCommerceBase.php:318
+#: includes/SafeRouteWooCommerceBase.php:321
 msgid "Your order has been sent"
 msgstr "Ваш заказ отправлен"
 
-#: includes/SafeRouteWooCommerceBase.php:320
+#: includes/SafeRouteWooCommerceBase.php:323
 msgid "has been transferred to the delivery service"
 msgstr "был передан в службу доставки"
 
-#: includes/SafeRouteWooCommerceBase.php:322
+#: includes/SafeRouteWooCommerceBase.php:325
 msgid "Expect delivery in"
 msgstr "Ожидайте доставку через"
 
-#: includes/SafeRouteWooCommerceBase.php:322
+#: includes/SafeRouteWooCommerceBase.php:325
 msgid "days"
 msgstr "дн"
 
-#: includes/SafeRouteWooCommerceBase.php:455
+#: includes/SafeRouteWooCommerceBase.php:467
 msgid "Order creation error"
 msgstr "Ошибка создания заказа в SafeRoute"
 
-#: includes/SafeRouteWooCommerceBase.php:458
+#: includes/SafeRouteWooCommerceBase.php:470
 msgid "Order confirmation error"
 msgstr "Ошибка подтверждения  заказа в SafeRoute"
 
-#: includes/SafeRouteWooCommerceBase.php:461
+#: includes/SafeRouteWooCommerceBase.php:473
 msgid "Order cancelling error"
 msgstr "Ошибка отмены заказа в SafeRoute"
 
-#: includes/SafeRouteWooCommerceBase.php:469
+#: includes/SafeRouteWooCommerceBase.php:481
 msgid "Retry"
 msgstr "Повтор"
 
-#: includes/SafeRouteWooCommerceBase.php:471
+#: includes/SafeRouteWooCommerceBase.php:483
 msgid "Hide"
 msgstr "Скрыть"
 
-#: includes/SafeRouteWooCommerceBase.php:489
+#: includes/SafeRouteWooCommerceBase.php:501
 msgid "Warning: delivery method not selected!"
 msgstr ""
 "Внимание: конкретный способ доставки не был выбран. Выберите способ доставки "
@@ -1281,23 +1281,27 @@ msgstr "Скрыть блок \"Детали оплаты\" в чекауте"
 msgid "Show details in delivery name"
 msgstr "Выводить в названии способа доставки детали по доставке"
 
-#: views/admin-settings-page.php:189
+#: views/admin-settings-page.php:190
+msgid "Disable auto scroll to widget in checkout"
+msgstr "Отключить в чекауте автоматическое прокручивание до виджета"
+
+#: views/admin-settings-page.php:205
 msgid "Statuses matching"
 msgstr "Соответствие статусов"
 
-#: views/admin-settings-page.php:207
+#: views/admin-settings-page.php:223
 msgid "Not set"
 msgstr "[Не выбрано]"
 
-#: views/admin-settings-page.php:225
+#: views/admin-settings-page.php:241
 msgid "Set auth data to setup statuses matching"
 msgstr "Задайте настройки авторизации, чтобы установить соответствие статусов."
 
-#: views/admin-settings-page.php:227
+#: views/admin-settings-page.php:243
 msgid "Invalid auth settings"
 msgstr "Заданы некорректные настройки авторизации."
 
-#: views/admin-settings-page.php:229
+#: views/admin-settings-page.php:245
 msgid "Error while getting the list of statuses from SafeRoute"
 msgstr "Ошибка при получении списка статусов от SafeRoute."
 
