@@ -3,7 +3,7 @@
 /**
  * API-скрипт виджетов SafeRoute для WordPress
  *
- * @version 2.0
+ * @version 2.1
  */
 class SafeRouteWidgetApi
 {
@@ -116,7 +116,7 @@ class SafeRouteWidgetApi
         if ($this->isHtmlRequest($url))
         {
             return wp_remote_get($url, [
-                'timeout' => 30,
+                'timeout'   => 30,
                 'sslverify' => false,
             ])['body'];
         }
@@ -125,7 +125,8 @@ class SafeRouteWidgetApi
         {
             $headers = [
                 'Authorization' => "Bearer $this->token",
-                'Shop-Id' => $this->shopId,
+                'Shop-Id'       => $this->shopId,
+                'From-Widget'   => 1,
             ];
 
             if (isset($this->data['ip']) && !$this->data['ip']) {
@@ -136,30 +137,29 @@ class SafeRouteWidgetApi
             if ($this->method === 'GET')
             {
                 $res = wp_remote_get($url . '?' . http_build_query($this->data), [
-                    'timeout' => 30,
-                    'headers' => $headers,
+                    'timeout'   => 30,
+                    'headers'   => $headers,
                     'sslverify' => false,
                 ]);
             }
             else
             {
                 $res = wp_remote_post($url, [
-                    'body' => $this->data,
-                    'timeout' => 30,
-                    'headers' => $headers,
+                    'body'      => $this->data,
+                    'timeout'   => 30,
+                    'headers'   => $headers,
                     'sslverify' => false,
                 ]);
             }
 
             $data = json_decode($res['body']);
 
-            if ($res['response']['code'] === 200)
-                return json_encode(['status' => 200, 'data' => $data]);
-
-            return json_encode([
-                'status' => $res['response']['code'],
-                'code' => isset($data->code) ? $data->code : null,
-            ]);
+            return ($res['response']['code'] === 200)
+                ? json_encode(['status' => 200, 'data' => $data])
+                : json_encode([
+                    'status' => $res['response']['code'],
+                    'code' => isset($data->code) ? $data->code : null,
+                ]);
         }
     }
 }
