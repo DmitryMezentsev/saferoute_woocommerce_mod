@@ -1,6 +1,6 @@
 === SafeRoute WooCommerce ===
 Contributors: dmitrymezentsev
-Tags: saferoute, shipping, woocommerce, shop, доставка, delivery, агрегатор, ecommerce, checkout, чекаут
+Tags: saferoute, shipping, woocommerce, доставка, delivery, агрегатор, ecommerce, cdek, сдэк, boxberry,
 Requires at least: 4.9
 Tested up to: 6.1.1
 Requires PHP: 7.0
