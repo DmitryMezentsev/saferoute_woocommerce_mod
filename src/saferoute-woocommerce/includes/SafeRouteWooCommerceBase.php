@@ -599,7 +599,7 @@ class SafeRouteWooCommerceBase
                 'street'  => $street,
                 'house'   => $house,
                 'bulk'    => '',
-                'flat'    => $order->shipping_address_2,
+                'flat'    => trim(preg_replace("/Кв\/офис/", '', $order->shipping_address_2)),
                 'zipCode' => $order->shipping_postcode,
             ],
             'recipient' => [
