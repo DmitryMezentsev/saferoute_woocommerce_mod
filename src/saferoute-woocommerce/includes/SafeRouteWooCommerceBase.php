@@ -540,6 +540,8 @@ class SafeRouteWooCommerceBase
         $price_declared_percent = get_option(self::PRICE_DECLARED_PERCENT_OPTION, self::PRICE_DECLARED_PERCENT_DEFAULT);
 
         $cod = self::checkCODInOrder($order_id);
+        // При доставке за границу не должно быть наложенного платежа
+        if ($widget_data['city']['countryIsoCode'] !== 'RU') $cod = false;
 
         // Ищем в адресе номер дома
         $house = [];
