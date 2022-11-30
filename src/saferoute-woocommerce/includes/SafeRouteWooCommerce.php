@@ -3,7 +3,6 @@
 require_once 'SafeRouteWooCommerceBase.php';
 
 require_once 'SafeRouteWooCommerceShippingMethod.php';
-require_once 'SafeRouteWooCommercePaymentMethod.php';
 
 require_once 'SafeRouteWooCommerceAdmin.php';
 require_once 'SafeRouteWooCommerceAdminApi.php';
@@ -20,11 +19,16 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
      */
     public static function _activationHook()
     {
-        add_option(self::SR_SHOP_ID_OPTION, '', '', 'no');
-        add_option(self::SR_TOKEN_OPTION, '', '', 'no');
-        add_option(self::ENABLE_SAFEROUTE_CABINET_WIDGET_OPTION, '', '', 'no');
-        add_option(self::HIDE_CHECKOUT_BILLING_BLOCK_OPTION, '', '', 'no');
-        add_option(self::SHOW_DETAILS_IN_DELIVERY_NAME_OPTION, 1, '', 'no');
+        add_option(self::SR_SHOP_ID_OPTION, '');
+        add_option(self::SR_TOKEN_OPTION, '');
+        add_option(self::HIDE_CHECKOUT_BILLING_BLOCK_OPTION, '');
+        add_option(self::SHOW_DETAILS_IN_DELIVERY_NAME_OPTION, 1);
+        add_option(self::ORDER_STATUS_FOR_SENDING_TO_SR_OPTION, self::ORDER_STATUS_FOR_SENDING_TO_SR_DEFAULT);
+        add_option(self::SEND_ORDERS_AS_CONFIRMED_OPTION, '');
+        add_option(self::PRICE_DECLARED_PERCENT_OPTION, self::PRICE_DECLARED_PERCENT_DEFAULT);
+        add_option(self::COD_PAY_METHOD_OPTION, '');
+        add_option(self::CARD_COD_PAY_METHOD_OPTION, '');
+        add_option(self::STATUSES_MATCHING_OPTION, '');
     }
 
     /**
@@ -34,9 +38,14 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
     {
         delete_option(self::SR_SHOP_ID_OPTION);
         delete_option(self::SR_TOKEN_OPTION);
-        delete_option(self::ENABLE_SAFEROUTE_CABINET_WIDGET_OPTION);
         delete_option(self::HIDE_CHECKOUT_BILLING_BLOCK_OPTION);
         delete_option(self::SHOW_DETAILS_IN_DELIVERY_NAME_OPTION);
+        delete_option(self::ORDER_STATUS_FOR_SENDING_TO_SR_OPTION);
+        delete_option(self::SEND_ORDERS_AS_CONFIRMED_OPTION);
+        delete_option(self::PRICE_DECLARED_PERCENT_OPTION);
+        delete_option(self::COD_PAY_METHOD_OPTION);
+        delete_option(self::CARD_COD_PAY_METHOD_OPTION);
+        delete_option(self::STATUSES_MATCHING_OPTION);
     }
 
 
@@ -54,7 +63,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
         $woocommerce->cart->calculate_totals();
 
         $widget_params = [
-            'LANG'      => get_locale(),
+            'LANG'      => self::getCurrentLang(),
             'BASE_URL'  => get_site_url(),
             'API_URL'   => get_site_url() . '/wp-json/' . SafeRouteWooCommerceWidgetApi::API_PATH . '/saferoute',
             'PRODUCTS'  => self::_getProducts(),
@@ -100,11 +109,11 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
             $products[] = [
                 'name'             => $woo_cart_item['data']->get_name(),
                 'vendorCode'       => $woo_cart_item['data']->get_sku(),
-                'barcode'          => self::_getAttrValue($woo_cart_item, self::PRODUCT_BARCODE_ATTR_NAME),
-                'tnved'            => self::_getAttrValue($woo_cart_item, self::PRODUCT_TNVED_ATTR_NAME),
-                'producingCountry' => self::_getAttrValue($woo_cart_item, self::PRODUCT_PRODUCING_COUNTRY_ATTR_NAME),
-                'brand'            => self::_getAttrValue($woo_cart_item, self::PRODUCT_BRAND_ATTR_NAME),
-                'nameEn'           => self::_getAttrValue($woo_cart_item, self::PRODUCT_NAME_EN_ATTR_NAME),
+                'barcode'          => get_post_meta($woo_cart_item['data']->get_id(), self::PRODUCT_BARCODE_META_KEY, true),
+                'tnved'            => get_post_meta($woo_cart_item['data']->get_id(), self::PRODUCT_TNVED_META_KEY, true),
+                'producingCountry' => get_post_meta($woo_cart_item['data']->get_id(), self::PRODUCT_PRODUCING_COUNTRY_META_KEY, true),
+                'brand'            => get_post_meta($woo_cart_item['data']->get_id(), self::PRODUCT_BRAND_META_KEY, true),
+                'nameEn'           => get_post_meta($woo_cart_item['data']->get_id(), self::PRODUCT_NAME_EN_META_KEY, true),
                 'vat'              => $vat,
                 'price'            => $regular_price,
                 'discount'         => $discount,
@@ -116,22 +125,6 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
         }
 
         return $products;
-    }
-
-    /**
-     * Получает значение указанного индивидуального атрибута товара
-     *
-     * @param $woo_cart_item array Товар из корзины WooCommerce
-     * @param $name string Имя атрибута
-     * @return string
-     */
-    private static function _getAttrValue($woo_cart_item, $name)
-    {
-        $attributes = $woo_cart_item['data']->get_attributes();
-
-        return (isset($attributes[$name]))
-            ? $attributes[$name]->get_options()[0]
-            : '';
     }
 
     /**
@@ -167,10 +160,10 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
             add_action('wp_loaded', function () {
                 // Подключение JS...
                 wp_enqueue_script('saferoute-widget-api', 'https://widgets.saferoute.ru/cart/api.js');
-                wp_enqueue_script('saferoute-widget-init', plugins_url('assets/sr-widget-init.js', dirname(__FILE__)), ['jquery']);
+                wp_enqueue_script('saferoute-widget-init', plugins_url('assets/checkout.js', dirname(__FILE__)), ['jquery']);
                 wp_add_inline_script('saferoute-widget-init', self::_getInlineJs(), 'before');
                 // ...и CSS
-                wp_enqueue_style('saferoute-widget-css', plugins_url('assets/common.css', dirname(__FILE__)));
+                wp_enqueue_style('saferoute-widget-css', plugins_url('assets/checkout.css', dirname(__FILE__)));
 
                 // Вывод HTML блока с виджетом
                 add_action('woocommerce_checkout_before_customer_details', function () {
@@ -268,17 +261,6 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
                     update_post_meta($order_id, self::IN_SAFEROUTE_CABINET_META_KEY, 1);
                 }
             }
-
-            // Если используется эквайринг виджета
-            if ($posted['payment_method'] === 'saferoute')
-            {
-                // Подтверждение завершения оформления заказа в CMS
-                if (SafeRouteWooCommerceBackendApi::confirmOrder($_COOKIE['SR_checkoutSessId']))
-                {
-                    // Установка для заказа статуса "Обработка"
-                    wp_update_post(['ID' => $order_id, 'post_status' => 'wc-processing']);
-                }
-            }
         }
     }
 
@@ -310,8 +292,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
 
         SafeRouteWooCommerceBackendApi::init();
 
-        // Добавление в систему способа доставки и способа оплаты SafeRoute
+        // Добавление в систему способа доставки SafeRoute
         addSafeRouteShippingMethod();
-        addSafeRoutePaymentMethod();
     }
 }

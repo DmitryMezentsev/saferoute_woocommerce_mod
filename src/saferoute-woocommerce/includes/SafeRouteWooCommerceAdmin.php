@@ -1,6 +1,7 @@
 <?php
 
 require_once 'SafeRouteWooCommerceBase.php';
+require_once 'SafeRouteWooCommerceCountries.php';
 
 /**
  * Класс, управляющий отображением плагина в админке
@@ -29,29 +30,30 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
     }
 
     /**
-     * Подключает к странице редактирования заказа ЛК SafeRoute
+     * Загружает список статусов заказа в SafeRoute
+     *
+     * @return array|false|null
      */
-    private static function _useCabinetForEdit()
+    private static function loadSRStatuses()
     {
-        add_action('current_screen', function () {
-            if (get_current_screen()->id === 'shop_order' && get_option(self::ENABLE_SAFEROUTE_CABINET_WIDGET_OPTION)) {
-                $order_sr_id = (isset($_GET['post'])) ? get_post_meta($_GET['post'], self::SAFEROUTE_ID_META_KEY, true) : '';
+        $token   = get_option(self::SR_TOKEN_OPTION);
+        $shop_id = get_option(self::SR_SHOP_ID_OPTION);
 
-                wp_enqueue_script('saferoute-cabinet-api', 'https://cabinet-next.saferoute.ru/api.js');
-                wp_enqueue_script('saferoute-admin', plugins_url('assets/admin.js', dirname(__FILE__)), ['jquery']);
-                wp_add_inline_script(
-                    'saferoute-admin',
-                    "const SR_TOKEN = '" . get_option(self::SR_TOKEN_OPTION) . "'; let SR_ORDER_ID = '" . $order_sr_id . "';",
-                    'before'
-                );
+        if (!$token || !$shop_id) return false;
 
-                wp_enqueue_style('saferoute-css', plugins_url('assets/common.css', dirname(__FILE__)));
+        $res = wp_remote_get(self::SAFEROUTE_API_URL . 'lists/order-statuses?lang=' . self::getCurrentLang(), [
+            'timeout' => 20,
+            'headers' => ['Authorization' => "Bearer $token", 'Shop-Id' => $shop_id],
+            'sslverify' => false,
+        ]);
+        $body = json_decode($res['body'], true);
 
-                wp_localize_script('saferoute-admin', 'myajax', ['url' => admin_url('admin-ajax.php')]);
-            }
-        });
+        // Ошибка авторизации
+        if ($res['response']['code'] === 401 || ($res['response']['code'] === 400 && $body['code'] === self::INVALID_SHOP_ID_ERROR_CODE))
+            return false;
+
+        return $res['response']['code'] === 200 ? $body : null;
     }
-
 
     /**
      * Добавляет уведомление в стэк уведомлений
@@ -71,7 +73,7 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
      */
     public static function _echoNotices()
     {
-        add_action('admin_init', function () {
+        add_action('admin_notices', function () {
             foreach(get_option(self::ADMIN_NOTICES_OPTION_NAME, []) as $text)
                 echo '<div class="notice notice-warning"><p>' . esc_html($text) . '</p></div>';
 
@@ -125,14 +127,30 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
         // Сохранение изменений
         if (isset($_POST[self::SR_TOKEN_OPTION]) && isset($_POST[self::SR_SHOP_ID_OPTION]) && wp_verify_nonce($_POST['_nonce'], 'sr_settings_save'))
         {
+            $price_declared_percent = $_POST[self::PRICE_DECLARED_PERCENT_OPTION];
+            if ($price_declared_percent < 0) $price_declared_percent = 0;
+            elseif ($price_declared_percent > 100) $price_declared_percent = 100;
+
+            // Настройки авторизации
             update_option(self::SR_TOKEN_OPTION, self::clearOptionValue($_POST[self::SR_TOKEN_OPTION]));
             update_option(self::SR_SHOP_ID_OPTION, self::clearOptionValue($_POST[self::SR_SHOP_ID_OPTION]));
-            update_option(self::ENABLE_SAFEROUTE_CABINET_WIDGET_OPTION, $_POST[self::ENABLE_SAFEROUTE_CABINET_WIDGET_OPTION]);
+            // Общие настройки
+            update_option(self::PRICE_DECLARED_PERCENT_OPTION, $price_declared_percent);
+            update_option(self::ORDER_STATUS_FOR_SENDING_TO_SR_OPTION, $_POST[self::ORDER_STATUS_FOR_SENDING_TO_SR_OPTION]);
+            update_option(self::SEND_ORDERS_AS_CONFIRMED_OPTION, $_POST[self::SEND_ORDERS_AS_CONFIRMED_OPTION]);
+            update_option(self::COD_PAY_METHOD_OPTION, $_POST[self::COD_PAY_METHOD_OPTION]);
+            update_option(self::CARD_COD_PAY_METHOD_OPTION, $_POST[self::CARD_COD_PAY_METHOD_OPTION]);
             update_option(self::HIDE_CHECKOUT_BILLING_BLOCK_OPTION, $_POST[self::HIDE_CHECKOUT_BILLING_BLOCK_OPTION]);
             update_option(self::SHOW_DETAILS_IN_DELIVERY_NAME_OPTION, $_POST[self::SHOW_DETAILS_IN_DELIVERY_NAME_OPTION]);
+            // Соответствие статусов
+            if (is_array($_POST[self::STATUSES_MATCHING_OPTION]))
+                update_option(self::STATUSES_MATCHING_OPTION, $_POST[self::STATUSES_MATCHING_OPTION]);
+
             // Перезагрузка страницы, чтобы исчезло уведомление об отсутствии настроек
             wp_redirect($_SERVER['REQUEST_URI']);
         }
+
+        wp_enqueue_script('saferoute-settings-page', plugins_url('assets/settings-page.js', dirname(__FILE__)), ['jquery']);
 
         // Подключение шаблона страницы
         require self::getPluginDir() . '/views/admin-settings-page.php';
@@ -215,6 +233,56 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
     }
 
     /**
+     * Добавляет в товар поля "Штрих-код", "ТН ВЭД", "Бренд", "Страна-производитель", "Название на английском"
+     */
+    public static function _addProductFields()
+    {
+        add_action('woocommerce_product_options_general_product_data', function () {
+            woocommerce_wp_text_input([
+                'id' => self::PRODUCT_BARCODE_META_KEY,
+                'label' => __('Barcode', self::TEXT_DOMAIN),
+                'custom_attributes' => ['autocomplete' => 'off'],
+            ]);
+            woocommerce_wp_select([
+                'id' => self::PRODUCT_PRODUCING_COUNTRY_META_KEY,
+                'label' => __('Producing country', self::TEXT_DOMAIN),
+                'custom_attributes' => ['autocomplete' => 'off'],
+                'options' => array_merge(
+                    ['' => __('Not selected', self::TEXT_DOMAIN)],
+                    SafeRouteWooCommerceCountries::get()
+                ),
+            ]);
+            woocommerce_wp_text_input([
+                'id' => self::PRODUCT_BRAND_META_KEY,
+                'label' => __('Brand', self::TEXT_DOMAIN),
+                'custom_attributes' => ['autocomplete' => 'off'],
+            ]);
+            woocommerce_wp_text_input([
+                'id' => self::PRODUCT_TNVED_META_KEY,
+                'label' => __('Product code', self::TEXT_DOMAIN),
+                'desc_tip' => true,
+                'description' => __('Required for SafeRoute international shipping', self::TEXT_DOMAIN),
+                'custom_attributes' => ['maxlength' => 20, 'autocomplete' => 'off'],
+            ]);
+            woocommerce_wp_text_input([
+                'id' => self::PRODUCT_NAME_EN_META_KEY,
+                'label' => __('English product title', self::TEXT_DOMAIN),
+                'desc_tip' => true,
+                'description' => __('Required for SafeRoute international shipping', self::TEXT_DOMAIN),
+                'custom_attributes' => ['autocomplete' => 'off'],
+            ]);
+        });
+
+        add_action('woocommerce_process_product_meta', function ($post_id) {
+            update_post_meta($post_id, self::PRODUCT_BARCODE_META_KEY, esc_attr($_POST[self::PRODUCT_BARCODE_META_KEY]));
+            update_post_meta($post_id, self::PRODUCT_TNVED_META_KEY, esc_attr($_POST[self::PRODUCT_TNVED_META_KEY]));
+            update_post_meta($post_id, self::PRODUCT_PRODUCING_COUNTRY_META_KEY, $_POST[self::PRODUCT_PRODUCING_COUNTRY_META_KEY]);
+            update_post_meta($post_id, self::PRODUCT_BRAND_META_KEY, esc_attr($_POST[self::PRODUCT_BRAND_META_KEY]));
+            update_post_meta($post_id, self::PRODUCT_NAME_EN_META_KEY, esc_attr($_POST[self::PRODUCT_NAME_EN_META_KEY]));
+        });
+    }
+
+    /**
      * @param $plugin_basename string
      */
     public static function init($plugin_basename)
@@ -227,6 +295,7 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
             add_filter('woocommerce_order_item_get_formatted_meta_data', [__CLASS__, '_formatOrderMetaData']);
             add_action('load-post.php', __CLASS__ . '::_addOrderMetaBox');
             self::_addDeliveryDetailsColumnInOrders();
+            self::_addProductFields();
         }
         else
         {
@@ -234,11 +303,14 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
             self::_pushNotice(__('WooCommerce is required for SafeRoute WooCommerce plugin.', self::TEXT_DOMAIN));
         }
 
-        self::_useCabinetForEdit();
-
         // Сообщение, что параметры SafeRoute (токен и ID магазина) не заданы в настройках плагина
         if (!self::checkSettings())
             self::_pushNotice(__('SafeRoute settings not set.', self::TEXT_DOMAIN));
+
+        // Подключение CSS к админке
+        add_action('wp_loaded', function () {
+            wp_enqueue_style('saferoute-widget-css', plugins_url('assets/admin.css', dirname(__FILE__)));
+        });
 
         self::_echoNotices();
     }

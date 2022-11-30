@@ -13,14 +13,29 @@ class SafeRouteWooCommerceBase
     // Имя параметра 'ID магазина SafeRoute' в БД WordPress
     const SR_SHOP_ID_OPTION = 'saferoute_shop_id';
 
-    // Имя параметра 'Включить редактирование заказа в SafeRoute прямо из админки WordPress' в БД WordPress
-    const ENABLE_SAFEROUTE_CABINET_WIDGET_OPTION = 'enable_saferoute_cabinet_widget';
+    // Имя параметра 'Статус заказа для передачи его в SafeRoute' в БД WordPress
+    const ORDER_STATUS_FOR_SENDING_TO_SR_OPTION = 'order_status_for_sending_to_sr';
 
-    // Имя параметра 'Скрыть блок "Детали оплаты" в чекауте'
+    // Имя параметра 'Передавать заказы в Личный кабинет как подтверждённые' в БД WordPress
+    const SEND_ORDERS_AS_CONFIRMED_OPTION = 'send_orders_as_confirmed';
+
+    // Имя параметра 'Процент оценочной стоимости' в БД WordPress
+    const PRICE_DECLARED_PERCENT_OPTION = 'price_declared_percent';
+
+    // Имя параметра 'Скрыть блок "Детали оплаты" в чекауте' в БД WordPress
     const HIDE_CHECKOUT_BILLING_BLOCK_OPTION = 'hide_checkout_billing_block';
 
-    // Имя параметра 'Выводить в названии способа доставки детали по доставке'
+    // Имя параметра 'Выводить в названии способа доставки детали по доставке' в БД WordPress
     const SHOW_DETAILS_IN_DELIVERY_NAME_OPTION = 'show_details_in_delivery_name';
+
+    // Имя параметра 'Способ оплаты с наложенным платежом' в БД WordPress
+    const COD_PAY_METHOD_OPTION = 'cod_pay_method_option';
+
+    // Имя параметра 'Способ оплаты с наложенным платежом картой' в БД WordPress
+    const CARD_COD_PAY_METHOD_OPTION = 'card_cod_pay_method_option';
+
+    // Имя параметра, в котором хранятся настройки соответствия статусов в БД WordPress
+    const STATUSES_MATCHING_OPTION = 'statuses_matching_option';
 
     // Имя мета-параметра SafeRoute ID заказа
     const SAFEROUTE_ID_META_KEY = '_order_saferoute_id';
@@ -35,25 +50,25 @@ class SafeRouteWooCommerceBase
     const IN_SAFEROUTE_CABINET_META_KEY = '_order_in_saferoute_cabinet';
 
     // Имя атрибута со штрих-кодом товара
-    const PRODUCT_BARCODE_ATTR_NAME = 'barcode';
+    const PRODUCT_BARCODE_META_KEY = 'sr_barcode';
 
     // Имя атрибута с кодом товара
-    const PRODUCT_TNVED_ATTR_NAME = 'tnved';
+    const PRODUCT_TNVED_META_KEY = 'sr_tnved';
 
     // Имя атрибута с кодом страны-производителя
-    const PRODUCT_PRODUCING_COUNTRY_ATTR_NAME = 'producing_country';
+    const PRODUCT_PRODUCING_COUNTRY_META_KEY = 'sr_producing_country';
 
     // Имя атрибута с названием бренда
-    const PRODUCT_BRAND_ATTR_NAME = 'brand';
+    const PRODUCT_BRAND_META_KEY = 'sr_brand';
 
     // Имя атрибута с названием товара на английском
-    const PRODUCT_NAME_EN_ATTR_NAME = 'name_en';
+    const PRODUCT_NAME_EN_META_KEY = 'sr_name_en';
 
     // Text Domain плагина
     const TEXT_DOMAIN = 'saferoute_woocommerce';
 
     // URL трекинга в SafeRoute
-    const SAFEROUTE_TRACKING_URL = 'https://saferoute.ru/#tracking/';
+    const SAFEROUTE_TRACKING_URL = 'https://saferoute.ru/tracking/';
 
     // URL API SafeRoute
     const SAFEROUTE_API_URL = 'https://api.saferoute.ru/v2/';
@@ -70,6 +85,15 @@ class SafeRouteWooCommerceBase
 
     // Код статуса "Принят компанией доставки"
     const SUBMITTED_TO_DELIVERY_SERVICE_STATUS_CODE = 41;
+
+    // Код ошибки "Магазин не найден" / "Некорректный ID магазина"
+    const INVALID_SHOP_ID_ERROR_CODE = 2001;
+
+    // Значение процента оценочной стоимости по умолчанию
+    const PRICE_DECLARED_PERCENT_DEFAULT = 100;
+
+    // Статус для передачи заказов в SafeRoute по умолчанию ("На удержании")
+    const ORDER_STATUS_FOR_SENDING_TO_SR_DEFAULT = 'wc-on-hold';
 
 
     /**
@@ -263,6 +287,30 @@ class SafeRouteWooCommerceBase
             return false;
         }
 
-        wp_mail($email, $title, $message, ['content-type: text/html']);
+        wc_mail($email, $title, $message, ['content-type: text/html']);
+    }
+
+    /**
+     * Возвращает текущий язык в формате API SafeRoute ('ru', 'en')
+     *
+     * @return string
+     */
+    public static function getCurrentLang()
+    {
+        return get_locale() === 'ru_RU' ? 'ru' : 'en';
+    }
+
+    /**
+     * Возвращает по коду статуса SafeRoute код соответствующего статуса WC
+     *
+     * @param $sr_status_code string|int Код статуса в SafeRoute
+     * @return string|null
+     */
+    public static function getMatchedWCStatus($sr_status_code)
+    {
+        $statuses_matching = get_option(self::STATUSES_MATCHING_OPTION, []);
+        if (!is_array($statuses_matching)) $statuses_matching = [];
+
+        return array_key_exists($sr_status_code, $statuses_matching) ? $statuses_matching[$sr_status_code] : null;
     }
 }

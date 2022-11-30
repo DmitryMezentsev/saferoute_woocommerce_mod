@@ -3,7 +3,7 @@
 /**
  * API-скрипт виджетов SafeRoute для WordPress
  *
- * @version 2.0
+ * @version 2.1
  */
 class SafeRouteWidgetApi
 {
@@ -125,7 +125,8 @@ class SafeRouteWidgetApi
         {
             $headers = [
                 'Authorization' => "Bearer $this->token",
-                'Shop-Id' => $this->shopId,
+                'Shop-Id'       => $this->shopId,
+                'From-Widget'   => 1,
             ];
 
             if (isset($this->data['ip']) && !$this->data['ip']) {

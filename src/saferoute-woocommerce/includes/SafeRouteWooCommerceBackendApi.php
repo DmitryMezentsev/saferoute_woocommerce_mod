@@ -253,27 +253,4 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
             ? json_decode($res['body'], true)
             : null;
     }
-
-    /**
-     * Отправляет запрос с подтверждением оформления заказа в CMS
-     *
-     * @param $checkout_sess_id string ID сессии чекаута
-     * @return bool
-     */
-    public static function confirmOrder($checkout_sess_id)
-    {
-        $api = self::SAFEROUTE_API_URL . 'widgets/confirm-order';
-
-        $res = wp_remote_post($api, [
-            'body' => ['checkoutSessId' => $checkout_sess_id],
-            'timeout' => 30,
-            'sslverify' => false,
-            'headers' => [
-                'Authorization' => 'Bearer ' . get_option(self::SR_TOKEN_OPTION),
-                'Shop-Id' => get_option(self::SR_SHOP_ID_OPTION),
-            ],
-        ]);
-
-        return ($res['response']['code'] === 200);
-    }
 }

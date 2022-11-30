@@ -1,0 +1,13 @@
+/**
+ * Стили таблицы сопоставления статусов на странице настроек плагина
+ */
+.wp-admin.settings_page_saferoute-settings #statuses-matching {
+  margin-top: 2em;
+}
+.wp-admin.settings_page_saferoute-settings #statuses-matching tbody tr > * {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.wp-admin.settings_page_saferoute-settings #statuses-matching tbody tr th {
+  width: 320px;
+}

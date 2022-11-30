@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: SafeRoute WooCommerce\n"
-"POT-Creation-Date: 2021-07-16 00:14+0500\n"
-"PO-Revision-Date: 2021-07-16 00:14+0500\n"
+"POT-Creation-Date: 2021-12-23 14:43+0500\n"
+"PO-Revision-Date: 2021-12-23 14:44+0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -22,141 +22,1185 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: includes/SafeRouteWooCommerce.php:183 includes/SafeRouteWooCommerce.php:219
+#: emails/track_number_updated.php:7
+#, php-format
+msgid "Hi %s,"
+msgstr ""
+
+#: emails/track_number_updated.php:8
+#, php-format
+msgid ""
+"Order #%s has been assigned tracking number %s in the delivery service "
+"&laquo;%s&raquo;."
+msgstr ""
+"Заказу #%s присвоен трекинг-номер %s в службе доставки &laquo;%s&raquo;."
+
+#: emails/track_number_updated.php:9 includes/SafeRouteWooCommerceBase.php:273
+msgid ""
+"In the near future, the order will be transferred to the delivery service."
+msgstr "В ближайшее время заказ будет передан в службу доставки."
+
+#: emails/track_number_updated.php:10
+msgid "You can track the movement of your order using"
+msgstr "Отслеживать перемещение заказа вы можете по"
+
+#: emails/track_number_updated.php:10
+msgid "this link"
+msgstr "этой ссылке"
+
+#: includes/SafeRouteWooCommerce.php:176 includes/SafeRouteWooCommerce.php:212
 msgid "Shipping type"
 msgstr "Способ доставки"
 
-#: includes/SafeRouteWooCommerce.php:220
+#: includes/SafeRouteWooCommerce.php:213
 msgid "Select and confirm shipping type."
 msgstr "Выберите и подтвердите параметры доставки."
 
-#: includes/SafeRouteWooCommerceAdmin.php:90
+#: includes/SafeRouteWooCommerceAdmin.php:92
 msgid "Settings"
 msgstr "Настройки"
 
-#: includes/SafeRouteWooCommerceAdmin.php:105
-#: includes/SafeRouteWooCommerceAdmin.php:200
+#: includes/SafeRouteWooCommerceAdmin.php:107
+#: includes/SafeRouteWooCommerceAdmin.php:218
 msgid "Type"
 msgstr "Тип"
 
-#: includes/SafeRouteWooCommerceAdmin.php:109
-#: includes/SafeRouteWooCommerceAdmin.php:202
+#: includes/SafeRouteWooCommerceAdmin.php:111
+#: includes/SafeRouteWooCommerceAdmin.php:220
 msgid "Time (days)"
 msgstr "Срок (дней)"
 
-#: includes/SafeRouteWooCommerceAdmin.php:112
-#: includes/SafeRouteWooCommerceAdmin.php:204
+#: includes/SafeRouteWooCommerceAdmin.php:114
+#: includes/SafeRouteWooCommerceAdmin.php:222
 msgid "Company"
 msgstr "Компания"
 
-#: includes/SafeRouteWooCommerceAdmin.php:146
+#: includes/SafeRouteWooCommerceAdmin.php:164
 #: includes/SafeRouteWooCommerceShippingMethod.php:33
 #: includes/SafeRouteWooCommerceShippingMethod.php:47
 msgid "SafeRoute"
 msgstr "SafeRoute"
 
-#: includes/SafeRouteWooCommerceAdmin.php:155
-#: includes/SafeRouteWooCommerceBase.php:241
+#: includes/SafeRouteWooCommerceAdmin.php:173
+#: includes/SafeRouteWooCommerceBase.php:265
 msgid "Order tracking"
 msgstr "Трекинг заказа"
 
-#: includes/SafeRouteWooCommerceAdmin.php:161
+#: includes/SafeRouteWooCommerceAdmin.php:179
 msgid "SafeRoute order tracking"
 msgstr "Трекинг заказа в SafeRoute"
 
-#: includes/SafeRouteWooCommerceAdmin.php:165
-#: includes/SafeRouteWooCommerceAdmin.php:167
-#: includes/SafeRouteWooCommerceAdmin.php:206
-#: includes/SafeRouteWooCommerceAdmin.php:208
+#: includes/SafeRouteWooCommerceAdmin.php:183
+#: includes/SafeRouteWooCommerceAdmin.php:185
+#: includes/SafeRouteWooCommerceAdmin.php:224
+#: includes/SafeRouteWooCommerceAdmin.php:226
 msgid "Delivery track-number"
 msgstr "Трек-номер ТК"
 
-#: includes/SafeRouteWooCommerceAdmin.php:185
+#: includes/SafeRouteWooCommerceAdmin.php:203
 msgid "Delivery details"
 msgstr "Детали доставки"
 
-#: includes/SafeRouteWooCommerceAdmin.php:234
+#: includes/SafeRouteWooCommerceAdmin.php:243
+msgid "Barcode"
+msgstr "Штрих-код"
+
+#: includes/SafeRouteWooCommerceAdmin.php:248
+msgid "Producing country"
+msgstr "Страна производства"
+
+#: includes/SafeRouteWooCommerceAdmin.php:251 views/admin-settings-page.php:120
+#: views/admin-settings-page.php:143
+msgid "Not selected"
+msgstr "[Не выбрано]"
+
+#: includes/SafeRouteWooCommerceAdmin.php:257
+msgid "Brand"
+msgstr "Бренд"
+
+#: includes/SafeRouteWooCommerceAdmin.php:262
+msgid "Product code"
+msgstr "Код товара"
+
+#: includes/SafeRouteWooCommerceAdmin.php:264
+#: includes/SafeRouteWooCommerceAdmin.php:271
+msgid "Required for SafeRoute international shipping"
+msgstr "Требуется для международной доставки SafeRoute"
+
+#: includes/SafeRouteWooCommerceAdmin.php:269
+msgid "English product title"
+msgstr "Название товара на английском языке"
+
+#: includes/SafeRouteWooCommerceAdmin.php:303
 msgid "WooCommerce is required for SafeRoute WooCommerce plugin."
 msgstr ""
 "Для работы плагина SafeRoute WooCommerce должен быть установлен и "
 "активирован сам WooCommerce."
 
-#: includes/SafeRouteWooCommerceAdmin.php:241
+#: includes/SafeRouteWooCommerceAdmin.php:308
 msgid "SafeRoute settings not set."
 msgstr "Настройки плагина SafeRoute не заданы."
 
-#: includes/SafeRouteWooCommerceBase.php:182
+#: includes/SafeRouteWooCommerceBase.php:206
 msgid "Pickup"
 msgstr "Доставка в пункт выдачи"
 
-#: includes/SafeRouteWooCommerceBase.php:183
+#: includes/SafeRouteWooCommerceBase.php:207
 msgid "Courier"
 msgstr "Курьерская доставка"
 
-#: includes/SafeRouteWooCommerceBase.php:184
+#: includes/SafeRouteWooCommerceBase.php:208
 msgid "Post"
 msgstr "Доставка почтой"
 
-#: includes/SafeRouteWooCommerceBase.php:245
+#: includes/SafeRouteWooCommerceBase.php:269
 msgid "Your order has been assigned a track number"
 msgstr "Вашему заказу присвоен трекинг-номер"
 
-#: includes/SafeRouteWooCommerceBase.php:247
-#: includes/SafeRouteWooCommerceBase.php:256
+#: includes/SafeRouteWooCommerceBase.php:271
+#: includes/SafeRouteWooCommerceBase.php:280
 msgid "Order"
 msgstr "Заказ"
 
-#: includes/SafeRouteWooCommerceBase.php:247
+#: includes/SafeRouteWooCommerceBase.php:271
 msgid "received a track number"
 msgstr "получил трекинг-номер"
 
-#: includes/SafeRouteWooCommerceBase.php:248
+#: includes/SafeRouteWooCommerceBase.php:272
 msgid "in the delivery service"
 msgstr "в службе доставки"
 
-#: includes/SafeRouteWooCommerceBase.php:249
-msgid ""
-"In the near future, the order will be transferred to the delivery service."
-msgstr "В ближайшее время заказ будет передан в службу доставки."
-
-#: includes/SafeRouteWooCommerceBase.php:254
+#: includes/SafeRouteWooCommerceBase.php:278
 msgid "Your order has been sent"
 msgstr "Ваш заказ отправлен"
 
-#: includes/SafeRouteWooCommerceBase.php:256
+#: includes/SafeRouteWooCommerceBase.php:280
 msgid "has been transferred to the delivery service"
 msgstr "был передан в службу доставки"
 
-#: includes/SafeRouteWooCommerceBase.php:258
+#: includes/SafeRouteWooCommerceBase.php:282
 msgid "Expect delivery in"
 msgstr "Ожидайте доставку через"
 
-#: includes/SafeRouteWooCommerceBase.php:258
+#: includes/SafeRouteWooCommerceBase.php:282
 msgid "days"
 msgstr "дн"
 
-#: includes/SafeRouteWooCommercePaymentMethod.php:27
-#: includes/SafeRouteWooCommercePaymentMethod.php:34
-#: includes/SafeRouteWooCommercePaymentMethod.php:35
-msgid "Payment via SafeRoute"
-msgstr "Оплата через SafeRoute"
+#: includes/SafeRouteWooCommerceCountries.php:17
+msgid "China"
+msgstr "Китай"
 
-#: includes/SafeRouteWooCommercePaymentMethod.php:28
-msgid "Payment via SafeRoute Widget"
-msgstr "Оплата через виджет SafeRoute"
+#: includes/SafeRouteWooCommerceCountries.php:18
+msgid "Russia"
+msgstr "Россия"
 
-#: includes/SafeRouteWooCommercePaymentMethod.php:48
-#: includes/SafeRouteWooCommerceShippingMethod.php:45
-msgid "Title"
-msgstr ""
+#: includes/SafeRouteWooCommerceCountries.php:19
+msgid "Belarus"
+msgstr "Беларусь"
+
+#: includes/SafeRouteWooCommerceCountries.php:20
+msgid "Ukraine"
+msgstr "Украина"
+
+#: includes/SafeRouteWooCommerceCountries.php:21
+msgid "Kazakhstan"
+msgstr "Казахстан"
+
+#: includes/SafeRouteWooCommerceCountries.php:22
+msgid "Malaysia"
+msgstr "Малайзия"
+
+#: includes/SafeRouteWooCommerceCountries.php:23
+msgid "North Korea"
+msgstr "Северная Корея"
+
+#: includes/SafeRouteWooCommerceCountries.php:24
+msgid "South Korea"
+msgstr "Южная Корея"
+
+#: includes/SafeRouteWooCommerceCountries.php:25
+msgid "Taiwan"
+msgstr "Тайвань"
+
+#: includes/SafeRouteWooCommerceCountries.php:26
+msgid "Switzerland"
+msgstr "Швейцария"
+
+#: includes/SafeRouteWooCommerceCountries.php:27
+msgid "United Kingdom"
+msgstr "Объединенное Королевство"
+
+#: includes/SafeRouteWooCommerceCountries.php:28
+msgid "USA"
+msgstr "США"
+
+#: includes/SafeRouteWooCommerceCountries.php:29
+msgid "Germany"
+msgstr "Германия"
+
+#: includes/SafeRouteWooCommerceCountries.php:30
+msgid "France"
+msgstr "Франция"
+
+#: includes/SafeRouteWooCommerceCountries.php:31
+msgid "Poland"
+msgstr "Польша"
+
+#: includes/SafeRouteWooCommerceCountries.php:32
+msgid "Afghanistan"
+msgstr "Афганистан"
+
+#: includes/SafeRouteWooCommerceCountries.php:33
+msgid "Albania"
+msgstr "Албания"
+
+#: includes/SafeRouteWooCommerceCountries.php:34
+msgid "Algeria"
+msgstr "Алжир"
+
+#: includes/SafeRouteWooCommerceCountries.php:35
+msgid "American Samoa"
+msgstr "Американское Самоа"
+
+#: includes/SafeRouteWooCommerceCountries.php:36
+msgid "Andorra"
+msgstr "Андорра"
+
+#: includes/SafeRouteWooCommerceCountries.php:37
+msgid "Angola"
+msgstr "Ангола"
+
+#: includes/SafeRouteWooCommerceCountries.php:38
+msgid "Anguilla"
+msgstr "Ангилья"
+
+#: includes/SafeRouteWooCommerceCountries.php:39
+msgid "Antarctica"
+msgstr "Антарктида"
+
+#: includes/SafeRouteWooCommerceCountries.php:40
+msgid "Antigua and Barbuda"
+msgstr "Антигуа и Барбуда"
+
+#: includes/SafeRouteWooCommerceCountries.php:41
+msgid "Argentina"
+msgstr "Аргентина"
+
+#: includes/SafeRouteWooCommerceCountries.php:42
+msgid "Armenia"
+msgstr "Армения"
+
+#: includes/SafeRouteWooCommerceCountries.php:43
+msgid "Aruba"
+msgstr "Аруба"
+
+#: includes/SafeRouteWooCommerceCountries.php:44
+msgid "Australia"
+msgstr "Австралия"
+
+#: includes/SafeRouteWooCommerceCountries.php:45
+msgid "Austria"
+msgstr "Австрия"
+
+#: includes/SafeRouteWooCommerceCountries.php:46
+msgid "Azerbaijan"
+msgstr "Азербайджан"
+
+#: includes/SafeRouteWooCommerceCountries.php:47
+msgid "Bahamas"
+msgstr "Багамы"
+
+#: includes/SafeRouteWooCommerceCountries.php:48
+msgid "Bahrain"
+msgstr "Бахрейн"
+
+#: includes/SafeRouteWooCommerceCountries.php:49
+msgid "Bangladesh"
+msgstr "Бангладеш"
+
+#: includes/SafeRouteWooCommerceCountries.php:50
+msgid "Barbados"
+msgstr "Барбадос"
+
+#: includes/SafeRouteWooCommerceCountries.php:51
+msgid "Belgium"
+msgstr "Бельгия"
+
+#: includes/SafeRouteWooCommerceCountries.php:52
+msgid "Belize"
+msgstr "Белиз"
+
+#: includes/SafeRouteWooCommerceCountries.php:53
+msgid "Benin"
+msgstr "Бенин"
+
+#: includes/SafeRouteWooCommerceCountries.php:54
+msgid "Bermuda"
+msgstr "Бермуды"
+
+#: includes/SafeRouteWooCommerceCountries.php:55
+msgid "Bhutan"
+msgstr "Бутан"
+
+#: includes/SafeRouteWooCommerceCountries.php:56
+msgid "Bolivia"
+msgstr "Боливия"
+
+#: includes/SafeRouteWooCommerceCountries.php:57
+msgid "Bosnia and Herzegovina"
+msgstr "Босния и Герцеговина"
+
+#: includes/SafeRouteWooCommerceCountries.php:58
+msgid "Botswana"
+msgstr "Ботсвана"
+
+#: includes/SafeRouteWooCommerceCountries.php:59
+msgid "Bouvet Island"
+msgstr "Остров Буве"
+
+#: includes/SafeRouteWooCommerceCountries.php:60
+msgid "Brazil"
+msgstr "Бразилия"
+
+#: includes/SafeRouteWooCommerceCountries.php:61
+msgid "British Indian Ocean Territory"
+msgstr "Британская территория Индийского океана"
+
+#: includes/SafeRouteWooCommerceCountries.php:62
+msgid "Brunei Darussalam"
+msgstr "Бруней-Даруссалам"
+
+#: includes/SafeRouteWooCommerceCountries.php:63
+msgid "Bulgaria"
+msgstr "Болгария"
+
+#: includes/SafeRouteWooCommerceCountries.php:64
+msgid "Burkina Faso"
+msgstr "Буркина-Фасо"
+
+#: includes/SafeRouteWooCommerceCountries.php:65
+msgid "Burundi"
+msgstr "Бурунди"
+
+#: includes/SafeRouteWooCommerceCountries.php:66
+msgid "Cambodia"
+msgstr "Камбоджа"
+
+#: includes/SafeRouteWooCommerceCountries.php:67
+msgid "Cameroon"
+msgstr "Камерун"
+
+#: includes/SafeRouteWooCommerceCountries.php:68
+msgid "Canada"
+msgstr "Канада"
+
+#: includes/SafeRouteWooCommerceCountries.php:69
+msgid "Cape Verde"
+msgstr "Кабо-Верде"
+
+#: includes/SafeRouteWooCommerceCountries.php:70
+msgid "Cayman Islands"
+msgstr "Каймановы острова"
+
+#: includes/SafeRouteWooCommerceCountries.php:71
+msgid "Central African Republic"
+msgstr "Центрально-Африканская Республика"
+
+#: includes/SafeRouteWooCommerceCountries.php:72
+msgid "Chad"
+msgstr "Чад"
+
+#: includes/SafeRouteWooCommerceCountries.php:73
+msgid "Chile"
+msgstr "Чили"
+
+#: includes/SafeRouteWooCommerceCountries.php:74
+msgid "Christmas Island"
+msgstr "Остров Рождества"
+
+#: includes/SafeRouteWooCommerceCountries.php:75
+msgid "Cocos (Keeling) Islands"
+msgstr "Кокосовые (Килинг) острова"
+
+#: includes/SafeRouteWooCommerceCountries.php:76
+msgid "Colombia"
+msgstr "Колумбия"
+
+#: includes/SafeRouteWooCommerceCountries.php:77
+msgid "Comoros"
+msgstr "Коморские острова"
+
+#: includes/SafeRouteWooCommerceCountries.php:78
+msgid "Congo"
+msgstr "Конго"
+
+#: includes/SafeRouteWooCommerceCountries.php:79
+msgid "Congo, the Democratic Republic of the"
+msgstr "Конго, Демократическая Республика"
+
+#: includes/SafeRouteWooCommerceCountries.php:80
+msgid "Cook Islands"
+msgstr "Острова Кука"
+
+#: includes/SafeRouteWooCommerceCountries.php:81
+msgid "Costa Rica"
+msgstr "Коста Рика"
+
+#: includes/SafeRouteWooCommerceCountries.php:82
+msgid "Cote D'Ivoire"
+msgstr "Берег Слоновой Кости"
+
+#: includes/SafeRouteWooCommerceCountries.php:83
+msgid "Croatia"
+msgstr "Хорватия"
+
+#: includes/SafeRouteWooCommerceCountries.php:84
+msgid "Cuba"
+msgstr "Куба"
+
+#: includes/SafeRouteWooCommerceCountries.php:85
+msgid "Cyprus"
+msgstr "Кипр"
+
+#: includes/SafeRouteWooCommerceCountries.php:86
+msgid "Czech Republic"
+msgstr "Чешская Республика"
+
+#: includes/SafeRouteWooCommerceCountries.php:87
+msgid "Denmark"
+msgstr "Дания"
+
+#: includes/SafeRouteWooCommerceCountries.php:88
+msgid "Djibouti"
+msgstr "Джибути"
+
+#: includes/SafeRouteWooCommerceCountries.php:89
+msgid "Dominica"
+msgstr "Доминика"
+
+#: includes/SafeRouteWooCommerceCountries.php:90
+msgid "Dominican Republic"
+msgstr "Доминиканская Республика"
+
+#: includes/SafeRouteWooCommerceCountries.php:91
+msgid "Ecuador"
+msgstr "Эквадор"
+
+#: includes/SafeRouteWooCommerceCountries.php:92
+msgid "Egypt"
+msgstr "Египет"
+
+#: includes/SafeRouteWooCommerceCountries.php:93
+msgid "El Salvador"
+msgstr "Сальвадор"
+
+#: includes/SafeRouteWooCommerceCountries.php:94
+msgid "Equatorial Guinea"
+msgstr "Экваториальная Гвинея"
+
+#: includes/SafeRouteWooCommerceCountries.php:95
+msgid "Eritrea"
+msgstr "Эритрея"
+
+#: includes/SafeRouteWooCommerceCountries.php:96
+msgid "Estonia"
+msgstr "Эстония"
+
+#: includes/SafeRouteWooCommerceCountries.php:97
+msgid "Ethiopia"
+msgstr "Эфиопия"
+
+#: includes/SafeRouteWooCommerceCountries.php:98
+msgid "Falkland Islands (Malvinas)"
+msgstr "Фолклендские (Мальвинские) острова"
+
+#: includes/SafeRouteWooCommerceCountries.php:99
+msgid "Faroe Islands"
+msgstr "Фарерские острова"
+
+#: includes/SafeRouteWooCommerceCountries.php:100
+msgid "Fiji"
+msgstr "Фиджи"
+
+#: includes/SafeRouteWooCommerceCountries.php:101
+msgid "Finland"
+msgstr "Финляндия"
+
+#: includes/SafeRouteWooCommerceCountries.php:102
+msgid "French Guiana"
+msgstr "Французская Гвиана"
+
+#: includes/SafeRouteWooCommerceCountries.php:103
+msgid "French Polynesia"
+msgstr "Французская Полинезия"
+
+#: includes/SafeRouteWooCommerceCountries.php:104
+msgid "French Southern Territories"
+msgstr "Южные Французские Территории"
+
+#: includes/SafeRouteWooCommerceCountries.php:105
+msgid "Gabon"
+msgstr "Габон"
+
+#: includes/SafeRouteWooCommerceCountries.php:106
+msgid "Gambia"
+msgstr "Гамбия"
+
+#: includes/SafeRouteWooCommerceCountries.php:107
+msgid "Georgia"
+msgstr "Грузия"
+
+#: includes/SafeRouteWooCommerceCountries.php:108
+msgid "Ghana"
+msgstr "Гана"
+
+#: includes/SafeRouteWooCommerceCountries.php:109
+msgid "Gibraltar"
+msgstr "Гибралтар"
+
+#: includes/SafeRouteWooCommerceCountries.php:110
+msgid "Greece"
+msgstr "Греция"
+
+#: includes/SafeRouteWooCommerceCountries.php:111
+msgid "Greenland"
+msgstr "Гренландия"
+
+#: includes/SafeRouteWooCommerceCountries.php:112
+msgid "Grenada"
+msgstr "Гренада"
+
+#: includes/SafeRouteWooCommerceCountries.php:113
+msgid "Guadeloupe"
+msgstr "Гваделупа"
+
+#: includes/SafeRouteWooCommerceCountries.php:114
+msgid "Guam"
+msgstr "Гуам"
+
+#: includes/SafeRouteWooCommerceCountries.php:115
+msgid "Guatemala"
+msgstr "Гватемала"
+
+#: includes/SafeRouteWooCommerceCountries.php:116
+msgid "Guinea"
+msgstr "Гвинея"
+
+#: includes/SafeRouteWooCommerceCountries.php:117
+msgid "Guinea-Bissau"
+msgstr "Гвинея-Бисау"
+
+#: includes/SafeRouteWooCommerceCountries.php:118
+msgid "Guyana"
+msgstr "Гайана"
+
+#: includes/SafeRouteWooCommerceCountries.php:119
+msgid "Haiti"
+msgstr "Гаити"
+
+#: includes/SafeRouteWooCommerceCountries.php:120
+msgid "Heard Island and McDonald Islands"
+msgstr "Остров Херд и острова Макдональд"
+
+#: includes/SafeRouteWooCommerceCountries.php:121
+msgid "Holy See (Vatican City State)"
+msgstr "Ватикан"
+
+#: includes/SafeRouteWooCommerceCountries.php:122
+msgid "Honduras"
+msgstr "Гондурас"
+
+#: includes/SafeRouteWooCommerceCountries.php:123
+msgid "Hong Kong"
+msgstr "Гонг-Конг"
+
+#: includes/SafeRouteWooCommerceCountries.php:124
+msgid "Hungary"
+msgstr "Венгрия"
+
+#: includes/SafeRouteWooCommerceCountries.php:125
+msgid "Iceland"
+msgstr "Исландия"
+
+#: includes/SafeRouteWooCommerceCountries.php:126
+msgid "India"
+msgstr "Индия"
+
+#: includes/SafeRouteWooCommerceCountries.php:127
+msgid "Indonesia"
+msgstr "Индонезия"
+
+#: includes/SafeRouteWooCommerceCountries.php:128
+msgid "Iran, Islamic Republic of"
+msgstr "Иран"
+
+#: includes/SafeRouteWooCommerceCountries.php:129
+msgid "Iraq"
+msgstr "Ирак"
+
+#: includes/SafeRouteWooCommerceCountries.php:130
+msgid "Ireland"
+msgstr "Ирландия"
+
+#: includes/SafeRouteWooCommerceCountries.php:131
+msgid "Israel"
+msgstr "Израиль"
+
+#: includes/SafeRouteWooCommerceCountries.php:132
+msgid "Italy"
+msgstr "Италия"
+
+#: includes/SafeRouteWooCommerceCountries.php:133
+msgid "Jamaica"
+msgstr "Ямайка"
+
+#: includes/SafeRouteWooCommerceCountries.php:134
+msgid "Japan"
+msgstr "Япония"
+
+#: includes/SafeRouteWooCommerceCountries.php:135
+msgid "Jordan"
+msgstr "Иордания"
+
+#: includes/SafeRouteWooCommerceCountries.php:136
+msgid "Kenya"
+msgstr "Кения"
+
+#: includes/SafeRouteWooCommerceCountries.php:137
+msgid "Kiribati"
+msgstr "Кирибати"
+
+#: includes/SafeRouteWooCommerceCountries.php:138
+msgid "Kuwait"
+msgstr "Кувейт"
+
+#: includes/SafeRouteWooCommerceCountries.php:139
+msgid "Kyrgyzstan"
+msgstr "Кыргызстан"
+
+#: includes/SafeRouteWooCommerceCountries.php:140
+msgid "Lao People's Democratic Republic"
+msgstr "Лаосская Народно-Демократическая Республика"
+
+#: includes/SafeRouteWooCommerceCountries.php:141
+msgid "Latvia"
+msgstr "Латвия"
+
+#: includes/SafeRouteWooCommerceCountries.php:142
+msgid "Lebanon"
+msgstr "Ливан"
+
+#: includes/SafeRouteWooCommerceCountries.php:143
+msgid "Lesotho"
+msgstr "Лесото"
+
+#: includes/SafeRouteWooCommerceCountries.php:144
+msgid "Liberia"
+msgstr "Либерия"
+
+#: includes/SafeRouteWooCommerceCountries.php:145
+msgid "Libya"
+msgstr "Ливия"
+
+#: includes/SafeRouteWooCommerceCountries.php:146
+msgid "Liechtenstein"
+msgstr "Лихтенштейн"
+
+#: includes/SafeRouteWooCommerceCountries.php:147
+msgid "Lithuania"
+msgstr "Литва"
+
+#: includes/SafeRouteWooCommerceCountries.php:148
+msgid "Luxembourg"
+msgstr "Люксембург"
+
+#: includes/SafeRouteWooCommerceCountries.php:149
+msgid "Macao"
+msgstr "Макао"
+
+#: includes/SafeRouteWooCommerceCountries.php:150
+msgid "Madagascar"
+msgstr "Мадагаскар"
+
+#: includes/SafeRouteWooCommerceCountries.php:151
+msgid "Malawi"
+msgstr "Малави"
+
+#: includes/SafeRouteWooCommerceCountries.php:152
+msgid "Maldives"
+msgstr "Мальдивы"
+
+#: includes/SafeRouteWooCommerceCountries.php:153
+msgid "Mali"
+msgstr "Мали"
+
+#: includes/SafeRouteWooCommerceCountries.php:154
+msgid "Malta"
+msgstr "Мальта"
+
+#: includes/SafeRouteWooCommerceCountries.php:155
+msgid "Marshall Islands"
+msgstr "Маршалловы острова"
+
+#: includes/SafeRouteWooCommerceCountries.php:156
+msgid "Martinique"
+msgstr "Мартиника"
+
+#: includes/SafeRouteWooCommerceCountries.php:157
+msgid "Mauritania"
+msgstr "Мавритания"
+
+#: includes/SafeRouteWooCommerceCountries.php:158
+msgid "Mauritius"
+msgstr "Маврикий"
+
+#: includes/SafeRouteWooCommerceCountries.php:159
+msgid "Mayotte"
+msgstr "Mayotte"
+
+#: includes/SafeRouteWooCommerceCountries.php:160
+msgid "Mexico"
+msgstr "Мексика"
+
+#: includes/SafeRouteWooCommerceCountries.php:161
+msgid "Micronesia, Federated States of"
+msgstr "Микронезия, Федеративные Штаты"
+
+#: includes/SafeRouteWooCommerceCountries.php:162
+msgid "Moldova, Republic of"
+msgstr "Молдова, Республика"
+
+#: includes/SafeRouteWooCommerceCountries.php:163
+msgid "Monaco"
+msgstr "Монако"
+
+#: includes/SafeRouteWooCommerceCountries.php:164
+msgid "Mongolia"
+msgstr "Монголия"
+
+#: includes/SafeRouteWooCommerceCountries.php:165
+msgid "Montserrat"
+msgstr "Монтсеррат"
+
+#: includes/SafeRouteWooCommerceCountries.php:166
+msgid "Morocco"
+msgstr "Марокко"
+
+#: includes/SafeRouteWooCommerceCountries.php:167
+msgid "Mozambique"
+msgstr "Мозамбик"
+
+#: includes/SafeRouteWooCommerceCountries.php:168
+msgid "Myanmar"
+msgstr "Мьянма"
+
+#: includes/SafeRouteWooCommerceCountries.php:169
+msgid "Namibia"
+msgstr "Намибия"
+
+#: includes/SafeRouteWooCommerceCountries.php:170
+msgid "Nauru"
+msgstr "Науру"
+
+#: includes/SafeRouteWooCommerceCountries.php:171
+msgid "Nepal"
+msgstr "Непал"
+
+#: includes/SafeRouteWooCommerceCountries.php:172
+msgid "Netherlands"
+msgstr "Нидерланды"
+
+#: includes/SafeRouteWooCommerceCountries.php:173
+msgid "New Caledonia"
+msgstr "Новая Каледония"
+
+#: includes/SafeRouteWooCommerceCountries.php:174
+msgid "New Zealand"
+msgstr "Новая Зеландия"
+
+#: includes/SafeRouteWooCommerceCountries.php:175
+msgid "Nicaragua"
+msgstr "Никарагуа"
+
+#: includes/SafeRouteWooCommerceCountries.php:176
+msgid "Niger"
+msgstr "Нигер"
+
+#: includes/SafeRouteWooCommerceCountries.php:177
+msgid "Nigeria"
+msgstr "Нигерия"
+
+#: includes/SafeRouteWooCommerceCountries.php:178
+msgid "Niue"
+msgstr "Ниуэ"
+
+#: includes/SafeRouteWooCommerceCountries.php:179
+msgid "Norfolk Island"
+msgstr "Остров Норфолк"
+
+#: includes/SafeRouteWooCommerceCountries.php:180
+msgid "North Macedonia, Republic of"
+msgstr "Северная Македония, Республика"
+
+#: includes/SafeRouteWooCommerceCountries.php:181
+msgid "Northern Mariana Islands"
+msgstr "Северные Марианские острова"
+
+#: includes/SafeRouteWooCommerceCountries.php:182
+msgid "Norway"
+msgstr "Норвегия"
+
+#: includes/SafeRouteWooCommerceCountries.php:183
+msgid "Oman"
+msgstr "Оман"
+
+#: includes/SafeRouteWooCommerceCountries.php:184
+msgid "Pakistan"
+msgstr "Пакистан"
+
+#: includes/SafeRouteWooCommerceCountries.php:185
+msgid "Palau"
+msgstr "Палау"
+
+#: includes/SafeRouteWooCommerceCountries.php:186
+msgid "Palestinian Territory, Occupied"
+msgstr "Палестинская территория"
+
+#: includes/SafeRouteWooCommerceCountries.php:187
+msgid "Panama"
+msgstr "Панама"
+
+#: includes/SafeRouteWooCommerceCountries.php:188
+msgid "Papua New Guinea"
+msgstr "Папуа - Новая Гвинея"
+
+#: includes/SafeRouteWooCommerceCountries.php:189
+msgid "Paraguay"
+msgstr "Парагвай"
+
+#: includes/SafeRouteWooCommerceCountries.php:190
+msgid "Peru"
+msgstr "Перу"
+
+#: includes/SafeRouteWooCommerceCountries.php:191
+msgid "Philippines"
+msgstr "Филиппины"
+
+#: includes/SafeRouteWooCommerceCountries.php:192
+msgid "Pitcairn"
+msgstr "Питкэрн"
+
+#: includes/SafeRouteWooCommerceCountries.php:193
+msgid "Portugal"
+msgstr "Португалия"
+
+#: includes/SafeRouteWooCommerceCountries.php:194
+msgid "Puerto Rico"
+msgstr "Пуэрто-Рико"
+
+#: includes/SafeRouteWooCommerceCountries.php:195
+msgid "Qatar"
+msgstr "Катар"
+
+#: includes/SafeRouteWooCommerceCountries.php:196
+msgid "Reunion"
+msgstr "Реюньон"
+
+#: includes/SafeRouteWooCommerceCountries.php:197
+msgid "Romania"
+msgstr "Румыния"
+
+#: includes/SafeRouteWooCommerceCountries.php:198
+msgid "Rwanda"
+msgstr "Руанда"
+
+#: includes/SafeRouteWooCommerceCountries.php:199
+msgid "Saint Helena"
+msgstr "Остров Святой Елены"
+
+#: includes/SafeRouteWooCommerceCountries.php:200
+msgid "Saint Kitts and Nevis"
+msgstr "Сент-Китс и Невис"
+
+#: includes/SafeRouteWooCommerceCountries.php:201
+msgid "Saint Lucia"
+msgstr "Санкт-Люсия"
+
+#: includes/SafeRouteWooCommerceCountries.php:202
+msgid "Saint Pierre and Miquelon"
+msgstr "Сен-Пьер и Микелон"
+
+#: includes/SafeRouteWooCommerceCountries.php:203
+msgid "Saint Vincent and the Grenadines"
+msgstr "Святой Винсент и Гренадины"
+
+#: includes/SafeRouteWooCommerceCountries.php:204
+msgid "Samoa"
+msgstr "Самоа"
+
+#: includes/SafeRouteWooCommerceCountries.php:205
+msgid "San Marino"
+msgstr "Сан-Марино"
+
+#: includes/SafeRouteWooCommerceCountries.php:206
+msgid "Sao Tome and Principe"
+msgstr "Сан-Томе и Принсипи"
+
+#: includes/SafeRouteWooCommerceCountries.php:207
+msgid "Saudi Arabia"
+msgstr "Саудовская Аравия"
+
+#: includes/SafeRouteWooCommerceCountries.php:208
+msgid "Senegal"
+msgstr "Сенегал"
+
+#: includes/SafeRouteWooCommerceCountries.php:209
+msgid "Seychelles"
+msgstr "Сейшельские острова"
+
+#: includes/SafeRouteWooCommerceCountries.php:210
+msgid "Sierra Leone"
+msgstr "Сьерра-Леоне"
+
+#: includes/SafeRouteWooCommerceCountries.php:211
+msgid "Singapore"
+msgstr "Сингапур"
+
+#: includes/SafeRouteWooCommerceCountries.php:212
+msgid "Slovakia"
+msgstr "Словакия"
+
+#: includes/SafeRouteWooCommerceCountries.php:213
+msgid "Slovenia"
+msgstr "Словения"
+
+#: includes/SafeRouteWooCommerceCountries.php:214
+msgid "Solomon Islands"
+msgstr "Соломоновы острова"
+
+#: includes/SafeRouteWooCommerceCountries.php:215
+msgid "Somalia"
+msgstr "Сомали"
+
+#: includes/SafeRouteWooCommerceCountries.php:216
+msgid "South Africa"
+msgstr "Южная Африка"
+
+#: includes/SafeRouteWooCommerceCountries.php:217
+msgid "South Georgia and the South Sandwich Islands"
+msgstr "Южная Георгия и Южные Сандвичевы острова"
+
+#: includes/SafeRouteWooCommerceCountries.php:218
+msgid "Spain"
+msgstr "Испания"
+
+#: includes/SafeRouteWooCommerceCountries.php:219
+msgid "Sri Lanka"
+msgstr "Шри-Ланка"
+
+#: includes/SafeRouteWooCommerceCountries.php:220
+msgid "Sudan"
+msgstr "Судан"
+
+#: includes/SafeRouteWooCommerceCountries.php:221
+msgid "Suriname"
+msgstr "Суринам"
+
+#: includes/SafeRouteWooCommerceCountries.php:222
+msgid "Svalbard and Jan Mayen"
+msgstr "Шпицберген и Ян Майен"
+
+#: includes/SafeRouteWooCommerceCountries.php:223
+msgid "Eswatini"
+msgstr "Эсватини"
+
+#: includes/SafeRouteWooCommerceCountries.php:224
+msgid "Sweden"
+msgstr "Швеция"
+
+#: includes/SafeRouteWooCommerceCountries.php:225
+msgid "Syrian Arab Republic"
+msgstr "Сирийская Арабская Республика"
+
+#: includes/SafeRouteWooCommerceCountries.php:226
+msgid "Tajikistan"
+msgstr "Таджикистан"
+
+#: includes/SafeRouteWooCommerceCountries.php:227
+msgid "Tanzania, United Republic of"
+msgstr "Танзания, Объединенная Республика"
+
+#: includes/SafeRouteWooCommerceCountries.php:228
+msgid "Thailand"
+msgstr "Тайланд"
+
+#: includes/SafeRouteWooCommerceCountries.php:229
+msgid "Timor-Leste"
+msgstr "Тимор-Лешти"
+
+#: includes/SafeRouteWooCommerceCountries.php:230
+msgid "Togo"
+msgstr "Того"
+
+#: includes/SafeRouteWooCommerceCountries.php:231
+msgid "Tokelau"
+msgstr "Токелау"
+
+#: includes/SafeRouteWooCommerceCountries.php:232
+msgid "Tonga"
+msgstr "Тонга"
+
+#: includes/SafeRouteWooCommerceCountries.php:233
+msgid "Trinidad and Tobago"
+msgstr "Тринидад и Тобаго"
+
+#: includes/SafeRouteWooCommerceCountries.php:234
+msgid "Tunisia"
+msgstr "Тунис"
+
+#: includes/SafeRouteWooCommerceCountries.php:235
+msgid "Turkey"
+msgstr "Турция"
+
+#: includes/SafeRouteWooCommerceCountries.php:236
+msgid "Turkmenistan"
+msgstr "Туркменистан"
+
+#: includes/SafeRouteWooCommerceCountries.php:237
+msgid "Turks and Caicos Islands"
+msgstr "Острова Теркс и Кайкос"
+
+#: includes/SafeRouteWooCommerceCountries.php:238
+msgid "Tuvalu"
+msgstr "Тувалу"
+
+#: includes/SafeRouteWooCommerceCountries.php:239
+msgid "Uganda"
+msgstr "Уганда"
+
+#: includes/SafeRouteWooCommerceCountries.php:240
+msgid "United Arab Emirates"
+msgstr "Объединенные Арабские Эмираты"
+
+#: includes/SafeRouteWooCommerceCountries.php:241
+msgid "United States Minor Outlying Islands"
+msgstr "Внешние малые острова США"
+
+#: includes/SafeRouteWooCommerceCountries.php:242
+msgid "Uruguay"
+msgstr "Уругвай"
+
+#: includes/SafeRouteWooCommerceCountries.php:243
+msgid "Uzbekistan"
+msgstr "Узбекистан"
+
+#: includes/SafeRouteWooCommerceCountries.php:244
+msgid "Vanuatu"
+msgstr "Вануату"
+
+#: includes/SafeRouteWooCommerceCountries.php:245
+msgid "Venezuela"
+msgstr "Венесуэла"
+
+#: includes/SafeRouteWooCommerceCountries.php:246
+msgid "Vietnam"
+msgstr "Вьетнам"
+
+#: includes/SafeRouteWooCommerceCountries.php:247
+msgid "Virgin Islands, British"
+msgstr "Виргинские острова, Британские"
+
+#: includes/SafeRouteWooCommerceCountries.php:248
+msgid "Virgin Islands, U.S."
+msgstr "Виргинские острова, США"
+
+#: includes/SafeRouteWooCommerceCountries.php:249
+msgid "Wallis and Futuna"
+msgstr "Уоллис и Футуна"
+
+#: includes/SafeRouteWooCommerceCountries.php:250
+msgid "Western Sahara"
+msgstr "Западная Сахара"
+
+#: includes/SafeRouteWooCommerceCountries.php:251
+msgid "Yemen"
+msgstr "Йемен"
+
+#: includes/SafeRouteWooCommerceCountries.php:252
+msgid "Zambia"
+msgstr "Замбия"
+
+#: includes/SafeRouteWooCommerceCountries.php:253
+msgid "Zimbabwe"
+msgstr "Зимбабве"
+
+#: includes/SafeRouteWooCommerceCountries.php:254
+msgid "Åland Islands"
+msgstr "Аландские острова"
+
+#: includes/SafeRouteWooCommerceCountries.php:255
+msgid "Bonaire, Sint Eustatius and Saba"
+msgstr "Бонэйр, Синт-Эстатиус и Саба"
+
+#: includes/SafeRouteWooCommerceCountries.php:256
+msgid "Curaçao"
+msgstr "Кюрасао"
+
+#: includes/SafeRouteWooCommerceCountries.php:257
+msgid "Guernsey"
+msgstr "Гернси"
+
+#: includes/SafeRouteWooCommerceCountries.php:258
+msgid "Isle of Man"
+msgstr "Остров Мэн"
+
+#: includes/SafeRouteWooCommerceCountries.php:259
+msgid "Jersey"
+msgstr "Джерси"
+
+#: includes/SafeRouteWooCommerceCountries.php:260
+msgid "Montenegro"
+msgstr "Черногория"
+
+#: includes/SafeRouteWooCommerceCountries.php:261
+msgid "Saint Barthélemy"
+msgstr "Сен-Бартелеми"
+
+#: includes/SafeRouteWooCommerceCountries.php:262
+msgid "Saint Martin (French part)"
+msgstr "Сен-Мартен (французская часть)"
+
+#: includes/SafeRouteWooCommerceCountries.php:263
+msgid "Serbia"
+msgstr "Сербия"
+
+#: includes/SafeRouteWooCommerceCountries.php:264
+msgid "Sint Maarten (Dutch part)"
+msgstr "Синт-Мартен (нидерландская часть)"
+
+#: includes/SafeRouteWooCommerceCountries.php:265
+msgid "South Sudan"
+msgstr "Южный Судан"
+
+#: includes/SafeRouteWooCommerceCountries.php:266
+msgid "Kosovo"
+msgstr "Косово"
 
 #: includes/SafeRouteWooCommerceShippingMethod.php:34
 msgid "SafeRoute Shipping Services Aggregator"
 msgstr "Агрегатор служб доставки SafeRoute"
 
+#: includes/SafeRouteWooCommerceShippingMethod.php:45
+msgid "Title"
+msgstr ""
+
 #: views/admin-settings-page.php:2
 msgid "SafeRoute integration settings"
 msgstr "Настройки интеграции с SafeRoute"
+
+#: views/admin-settings-page.php:4
+msgid "Authorization settings"
+msgstr "Настройки авторизации"
 
 #: views/admin-settings-page.php:10
 msgid "SafeRoute token"
@@ -167,24 +1211,60 @@ msgid "SafeRoute shop ID"
 msgstr "ID магазина"
 
 #: views/admin-settings-page.php:44
-msgid "Enable order editing in SafeRoute from your WordPress admin"
-msgstr "Активировать редактирование заказа в SafeRoute через админку WordPress"
-
-#: views/admin-settings-page.php:61
-msgid "Hide billing block in checkout"
-msgstr "Скрыть блок \"Детали оплаты\" в чекауте"
-
-#: views/admin-settings-page.php:78
-msgid "Show details in delivery name"
-msgstr "Выводить в названии способа доставки детали по доставке"
-
-#: views/admin-settings-page.php:95
 msgid ""
 "Token and shop ID can be found on in the SafeRoute cabinet. See installation "
 "instructions for details."
 msgstr ""
 "Токен и ID магазина вы можете найти в личном кабинете SafeRoute. Обратитесь "
 "к инструкции по установке для получения подробностей."
+
+#: views/admin-settings-page.php:46
+msgid "Common settings"
+msgstr "Общие настройки"
+
+#: views/admin-settings-page.php:52
+msgid "Order status for sending to SafeRoute"
+msgstr "Статус заказа для передачи его в SafeRoute"
+
+#: views/admin-settings-page.php:77
+msgid "Send orders to SafeRoute as confirmed"
+msgstr "Передавать заказы как подтверждённые"
+
+#: views/admin-settings-page.php:93
+msgid "Price declared percent"
+msgstr "Процент оценочной стоимости"
+
+#: views/admin-settings-page.php:111
+msgid "COD pay method"
+msgstr "Способ оплаты с наложенным платежом"
+
+#: views/admin-settings-page.php:134
+msgid "Card COD pay method"
+msgstr "Способ оплаты с наложенным платежом картой"
+
+#: views/admin-settings-page.php:157
+msgid "Hide billing block in checkout"
+msgstr "Скрыть блок \"Детали оплаты\" в чекауте"
+
+#: views/admin-settings-page.php:173
+msgid "Show details in delivery name"
+msgstr "Выводить в названии способа доставки детали по доставке"
+
+#: views/admin-settings-page.php:188
+msgid "Statuses matching"
+msgstr "Соответствие статусов"
+
+#: views/admin-settings-page.php:219
+msgid "Set auth data to setup statuses matching"
+msgstr "Задайте настройки авторизации, чтобы установить соответствие статусов."
+
+#: views/admin-settings-page.php:221
+msgid "Invalid auth settings"
+msgstr "Заданы некорректные настройки авторизации."
+
+#: views/admin-settings-page.php:223
+msgid "Error while getting the list of statuses from SafeRoute"
+msgstr "Ошибка при получении списка статусов от SafeRoute."
 
 #: views/checkout-widget-block.php:2
 msgid "Select Shipping Type"
@@ -206,8 +1286,21 @@ msgstr "Плагин виджета SafeRoute для WooCommerce"
 msgid "Dmitry Mezentsev"
 msgstr "Dmitry Mezentsev"
 
-#~ msgid "Open order in the SafeRoute Cabinet"
-#~ msgstr "Открыть заказ в личном кабинете SafeRoute"
+#, fuzzy
+#~| msgid ""
+#~| "In the near future, the order will be transferred to the delivery "
+#~| "service."
+#~ msgid ""
+#~ "In the near future, the order will be transferred to the delivery "
+#~ "service. "
+#~ msgstr "В ближайшее время заказ будет передан в службу доставки."
 
-#~ msgid "Order is not in the SafeRoute Cabinet"
-#~ msgstr "Заказ ещё не передан в личный кабинет SafeRoute"
+#~ msgid "Payment via SafeRoute"
+#~ msgstr "Оплата через SafeRoute"
+
+#~ msgid "Payment via SafeRoute Widget"
+#~ msgstr "Оплата через виджет SafeRoute"
+
+#~ msgid "Enable order editing in SafeRoute from your WordPress admin"
+#~ msgstr ""
+#~ "Активировать редактирование заказа в SafeRoute через админку WordPress"
