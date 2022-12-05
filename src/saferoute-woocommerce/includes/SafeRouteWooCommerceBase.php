@@ -119,6 +119,21 @@ class SafeRouteWooCommerceBase
 
 
     /**
+     * Получает габариты товара в см
+     *
+     * @param $product
+     * @return array
+     */
+    protected static function getProductDimensions($product): array
+    {
+        return [
+            'width'  => (float) wc_get_dimension((float) $product->get_width(), 'cm') ?: null,
+            'height' => (float) wc_get_dimension((float) $product->get_height(), 'cm') ?: null,
+            'length' => (float) wc_get_dimension((float) $product->get_length(), 'cm') ?: null,
+        ];
+    }
+
+    /**
      * Возвращает путь к директории плагина
      *
      * @return string
@@ -519,8 +534,10 @@ class SafeRouteWooCommerceBase
         $payment_method = (wc_get_order($order_id))->get_payment_method();
 
         return
-            $payment_method === get_option(self::COD_PAY_METHOD_OPTION) ||
-            $payment_method === get_option(self::CARD_COD_PAY_METHOD_OPTION);
+            $payment_method && (
+                $payment_method === get_option(self::COD_PAY_METHOD_OPTION) ||
+                $payment_method === get_option(self::CARD_COD_PAY_METHOD_OPTION)
+            );
     }
 
     /**
@@ -545,12 +562,23 @@ class SafeRouteWooCommerceBase
         // При доставке за границу не должно быть наложенного платежа
         if ($widget_data['city']['countryIsoCode'] !== 'RU') $cod = false;
 
-        // Ищем в адресе номер дома
-        $house = [];
-        preg_match('/\d+[a-zа-я]?$/iu', trim($order->shipping_address_1), $house);
-        $house = $house ? $house[0] : '';
-
-        $street = trim(mb_substr(trim($order->shipping_address_1), 0, mb_strlen($order->shipping_address_1) - mb_strlen($house)), ' ,.-;');
+        // Разбор адреса доставки
+        $address = preg_replace('/\s{2,}/', ' ', $order->shipping_address_1);
+        // Достаём корпус
+        preg_match('/\(к(орп)?\.?\s+([а-я\w\-]+)\)$/iu', $address, $bulk);
+        if ($bulk) $address = trim(str_replace($bulk[0], '', $address));
+        $bulk = $bulk ? $bulk[2] : null;
+        // Достаём дом
+        preg_match('/д\.?\s+([\w\-]+)/iu', $address, $house);
+        if ($house) {
+            // Вытаскиваем улицу
+            $street = trim(str_replace($house[0], '', $address), ' ,');
+            $house = $house[1];
+        } else {
+            $house = null;
+            $street = $address;
+        }
+        unset($address);
 
         $services = !empty($widget_data['_meta']['widgetSettings']['enabledServices'])
             ? array_filter($widget_data['_meta']['widgetSettings']['enabledServices'], function ($service) use ($widget_data) {
@@ -565,6 +593,7 @@ class SafeRouteWooCommerceBase
                 $id = $item->get_product_id();
                 $product = $item->get_product();
                 $price = $product->get_price();
+                $dimensions = self::getProductDimensions($product);
 
                 return [
                     'name'             => $item->get_name(),
@@ -581,12 +610,13 @@ class SafeRouteWooCommerceBase
                     'producingCountry' => get_post_meta($id, self::PRODUCT_PRODUCING_COUNTRY_META_KEY, true),
                     'barcode'          => get_post_meta($id, self::PRODUCT_BARCODE_META_KEY, true),
                     'dimensions'       => [
-                        'width'  => wc_get_dimension($product->get_width(), 'cm'),
-                        'height' => wc_get_dimension($product->get_height(), 'cm'),
-                        'length' => wc_get_dimension($product->get_length(), 'cm'),
+                        'width'  => $dimensions['width'],
+                        'height' => $dimensions['height'],
+                        'length' => $dimensions['length'],
                     ],
                 ];
             }, $order_items),
+            'discount' => $order->get_discount_total(),
             'dimensions' => ['places' => 1],
             'deliveryAddress' => [
                 'city' => [
@@ -598,9 +628,9 @@ class SafeRouteWooCommerceBase
                 ],
                 'street'  => $street,
                 'house'   => $house,
-                'bulk'    => '',
+                'bulk'    => $bulk,
                 'flat'    => trim(preg_replace("/Кв\/офис/", '', $order->shipping_address_2)),
-                'zipCode' => $order->shipping_postcode,
+                'zipCode' => $order->shipping_postcode != '000000' ? $order->shipping_postcode : null,
             ],
             'recipient' => [
                 'fullName'    => trim($order->shipping_first_name . ' ' . $order->shipping_last_name),
@@ -717,11 +747,12 @@ class SafeRouteWooCommerceBase
 
         $res = wp_remote_post(self::SAFEROUTE_API_URL . 'orders/cancel', [
             'body' => ['ids' => [$sr_order_id]],
-            'timeout' => 30,
+            'timeout' => 60,
             'sslverify' => false,
             'headers' => [
                 'Authorization' => 'Bearer ' . get_option(self::SR_TOKEN_OPTION),
                 'Shop-Id' => get_option(self::SR_SHOP_ID_OPTION),
+                'Silent' => 1, // Чтобы бэк не пытался отменить этот заказ в WC
             ],
         ]);
 
@@ -828,13 +859,11 @@ class SafeRouteWooCommerceBase
                 'count'      => $item->get_quantity(),
             ];
 
-            $width  = (float) wc_get_dimension($product->get_width(), 'cm');
-            $height = (float) wc_get_dimension($product->get_height(), 'cm');
-            $length = (float) wc_get_dimension($product->get_length(), 'cm');
+            $dimensions = self::getProductDimensions($product);
 
-            if ($width) $data['width'] = $width;
-            if ($height) $data['height'] = $height;
-            if ($length) $data['length'] = $length;
+            if ($dimensions['width']) $data['width'] = $dimensions['width'];
+            if ($dimensions['height']) $data['height'] = $dimensions['height'];
+            if ($dimensions['length']) $data['length'] = $dimensions['length'];
 
             return $data;
         }, $items);

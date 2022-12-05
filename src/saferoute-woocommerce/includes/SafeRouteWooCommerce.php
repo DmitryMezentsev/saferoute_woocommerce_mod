@@ -101,6 +101,8 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
             if($woo_cart_item['data']->is_virtual() || $woo_cart_item['data']->is_downloadable())
                 continue;
 
+            $dimensions = self::getProductDimensions($woo_cart_item['data']);
+
             $products[] = [
                 'name'       => $woo_cart_item['data']->get_name(),
                 'vendorCode' => $woo_cart_item['data']->get_sku(),
@@ -108,9 +110,9 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
                 'price'      => self::calcProductPriceAndDiscount($woo_cart_item['data'])['price'],
                 'discount'   => self::calcProductPriceAndDiscount($woo_cart_item['data'])['discount'],
                 'count'      => $woo_cart_item['quantity'],
-                'width'      => wc_get_dimension($woo_cart_item['data']->get_width(), 'cm'),
-                'height'     => wc_get_dimension($woo_cart_item['data']->get_height(), 'cm'),
-                'length'     => wc_get_dimension($woo_cart_item['data']->get_length(), 'cm'),
+                'width'      => $dimensions['width'],
+                'height'     => $dimensions['height'],
+                'length'     => $dimensions['length'],
             ];
         }
 
@@ -126,10 +128,11 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
             add_action('wp_loaded', function () {
                 // Подключение JS...
                 wp_enqueue_script('saferoute-widget-api', self::SAFEROUTE_WIDGET_API_PATH);
-                wp_enqueue_script('saferoute-widget-init', plugins_url('assets/checkout.js', dirname(__FILE__)), ['jquery']);
-                wp_add_inline_script('saferoute-widget-init', self::_getInlineJs(), 'before');
+                wp_enqueue_script('saferoute-helpers', plugins_url('assets/helpers.js', dirname(__FILE__)), ['jquery']);
+                wp_enqueue_script('saferoute-checkout', plugins_url('assets/checkout.js', dirname(__FILE__)), ['jquery']);
+                wp_add_inline_script('saferoute-checkout', self::_getInlineJs(), 'before');
                 // ...и CSS
-                wp_enqueue_style('saferoute-widget-css', plugins_url('assets/checkout.css', dirname(__FILE__)));
+                wp_enqueue_style('saferoute-css', plugins_url('assets/checkout.css', dirname(__FILE__)));
 
                 // Вывод HTML блока с виджетом
                 add_action('woocommerce_checkout_after_customer_details', function () {

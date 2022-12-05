@@ -159,6 +159,8 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
             $diff = abs($price_including_tax - $product->price);
             $vat = ($diff) ? round(100 / ($product->price / $diff)) : null;
 
+            $dimensions = self::getProductDimensions($product);
+
             return [
                 'id'         => $product->id,
                 'name'       => $product->name,
@@ -166,9 +168,9 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
                 'vat'        => $vat,
                 'price'      => (float) $product->price,
                 'weight'     => wc_get_weight($product->get_weight(), 'kg'),
-                'width'      => (float) wc_get_dimension($product->get_width(), 'cm') ?: null,
-                'height'     => (float) wc_get_dimension($product->get_height(), 'cm') ?: null,
-                'length'     => (float) wc_get_dimension($product->get_length(), 'cm') ?: null,
+                'width'      => $dimensions['width'],
+                'height'     => $dimensions['height'],
+                'length'     => $dimensions['length'],
             ];
         }, $products);
     }

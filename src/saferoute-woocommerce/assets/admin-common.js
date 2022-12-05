@@ -100,25 +100,20 @@
 
                 $('button.calculate-action').trigger('click');
 
-                // Установка в поля адреса доставки
+                // Установка в поля адреса доставки и комментария
                 $('#order_data .edit_address').trigger('click');
-                $('input#_shipping_city').val(data.city.name);
-                $('input#_shipping_state').val(data.city.region);
+                $('input#_shipping_city').val(data.city.name).prop('readonly', true);
                 $('textarea#excerpt').val(data.comment);
                 $('select#_shipping_country').val(data.city.countryIsoCode).trigger('change');
+                $('input#_shipping_state').val(data.city.region).prop('readonly', true);
                 if (data.delivery.point) {
-                  $('input#_shipping_address_1').val(data.delivery.point.address);
-                  $('input#_shipping_address_2').val('');
-                  $('input#_shipping_postcode').val(data.delivery.point.zipCode);
+                  $('input#_shipping_address_1').val(data.delivery.point.address).prop('readonly', true);
+                  $('input#_shipping_address_2').val('').prop('readonly', true);
+                  $('input#_shipping_postcode').val(data.delivery.point.zipCode).prop('readonly', true);
                 } else {
-                  $('input#_shipping_address_1').val(
-                    `${data.contacts.address.street || ''} ${data.contacts.address.building || ''} ${data.contacts.address.bulk || ''}`
-                      .trim()
-                  );
-                  $('input#_shipping_address_2').val(
-                    data.contacts.address.apartment ? `Кв/офис ${data.contacts.address.apartment}` : ''
-                  );
-                  $('input#_shipping_postcode').val(data.contacts.address.zipCode);
+                  $('input#_shipping_address_1').val(SRHelpers.buildAddress1(data.contacts.address)).prop('readonly', true);
+                  $('input#_shipping_address_2').val(SRHelpers.buildAddress2(data.contacts.address)).prop('readonly', true);
+                  $('input#_shipping_postcode').val(data.contacts.address.zipCode).prop('readonly', true);
                 }
               },
               error() {

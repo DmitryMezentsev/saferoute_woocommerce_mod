@@ -61,7 +61,7 @@
     // Переключает отображение полей адреса
     function toggleAddressFields (show) {
       const $fields = $(
-        '#shipping_company, #shipping_country, #shipping_address_1, #shipping_address_2, #shipping_city, #shipping_state, #shipping_postcode, #order_comments'
+        '#shipping_company, #shipping_country, #shipping_address_1, #shipping_address_2, #shipping_city, #shipping_state, #shipping_postcode'
       ).closest('.form-row');
 
       if (show) $fields.show();
@@ -167,17 +167,13 @@
             $('input[name=shipping_city]').val(data.city.name);
             $('input[name=shipping_state]').val(data.city.region);
             $('select[name=shipping_country]').val(data.city.countryIsoCode).trigger('change');
-            $('input[name=shipping_address_2]').val('');
 
             if (data.delivery.point) {
               $('input[name=shipping_address_1]').val(data.delivery.point.address);
               $('input[name=shipping_postcode]').val(data.delivery.point.zipCode || '000000');
             } else {
-              let address = `${data.contacts.address.street || ''} ${data.contacts.address.building || ''} ${data.contacts.address.bulk || ''}`
-                .trim();
-              if (data.contacts.address.apartment) address += `, ${data.contacts.address.apartment}`;
-
-              $('input[name=shipping_address_1]').val(address);
+              $('input[name=shipping_address_1]').val(SRHelpers.buildAddress1(data.contacts.address));
+              $('input[name=shipping_address_2]').val(SRHelpers.buildAddress2(data.contacts.address));
               $('input[name=shipping_postcode]').val(data.contacts.address.zipCode || '000000');
             }
 

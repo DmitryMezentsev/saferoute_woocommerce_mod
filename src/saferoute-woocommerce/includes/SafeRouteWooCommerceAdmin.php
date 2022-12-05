@@ -307,10 +307,12 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
         if ($res['response']['code'] === 200 && $res_body) {
             $price = $res_body['totalPrice'];
 
-            if ($order->payment_method === get_option(self::COD_PAY_METHOD_OPTION))
-                $price += $res_body['priceCommissionCod'];
-            elseif ($order->payment_method === get_option(self::CARD_COD_PAY_METHOD_OPTION))
-                $price += $res_body['priceCommissionCodCard'];
+            if ($order->payment_method) {
+                if ($order->payment_method === get_option(self::COD_PAY_METHOD_OPTION))
+                    $price += $res_body['priceCommissionCod'];
+                elseif ($order->payment_method === get_option(self::CARD_COD_PAY_METHOD_OPTION))
+                    $price += $res_body['priceCommissionCodCard'];
+            }
 
             $days = $res_body['deliveryDays']['min'];
             if ($days !== $res_body['deliveryDays']['max']) $days .= '-' . $res_body['deliveryDays']['max'];
@@ -459,6 +461,7 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
         add_action('wp_loaded', function () {
             wp_enqueue_script('saferoute-widget-api', self::SAFEROUTE_WIDGET_API_PATH);
             wp_enqueue_style('saferoute-widget-css', plugins_url('assets/admin.css', dirname(__FILE__)));
+            wp_enqueue_script('saferoute-helpers', plugins_url('assets/helpers.js', dirname(__FILE__)), ['jquery']);
             wp_enqueue_script('saferoute-common', plugins_url('assets/admin-common.js', dirname(__FILE__)), ['jquery']);
             wp_localize_script('saferoute-common', 'myajax', ['url' => admin_url('admin-ajax.php')]);
         });
