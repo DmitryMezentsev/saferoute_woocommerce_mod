@@ -557,6 +557,7 @@ class SafeRouteWooCommerceBase
         });
 
         $price_declared_percent = get_option(self::PRICE_DECLARED_PERCENT_OPTION, self::PRICE_DECLARED_PERCENT_DEFAULT);
+        if ($price_declared_percent === '') $price_declared_percent = self::PRICE_DECLARED_PERCENT_DEFAULT;
 
         $cod = self::checkCODInOrder($order_id);
         // При доставке за границу не должно быть наложенного платежа
