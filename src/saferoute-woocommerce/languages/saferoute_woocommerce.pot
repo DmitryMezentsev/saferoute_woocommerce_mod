@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: SafeRoute WooCommerce\n"
-"POT-Creation-Date: 2019-04-25 01:11+0500\n"
+"POT-Creation-Date: 2022-12-14 14:06+0500\n"
 "PO-Revision-Date: 2019-04-25 01:11+0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -16,83 +16,1294 @@ msgstr ""
 "X-Poedit-WPHeader: saferoute_woocommerce.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: includes/SafeRouteWooCommerce.php:115 includes/SafeRouteWooCommerce.php:125
+#: includes/SafeRouteWooCommerce.php:168
 msgid "Shipping type"
 msgstr ""
 
-#: includes/SafeRouteWooCommerce.php:126
+#: includes/SafeRouteWooCommerce.php:169
 msgid "Select and confirm shipping type."
 msgstr ""
 
-#: includes/SafeRouteWooCommerceAdmin.php:54
+#: includes/SafeRouteWooCommerceAdmin.php:92
 msgid "Settings"
 msgstr ""
 
-#: includes/SafeRouteWooCommerceAdmin.php:80
-#: includes/SafeRouteWooCommerceAdmin.php:89
+#: includes/SafeRouteWooCommerceAdmin.php:107
+#: includes/SafeRouteWooCommerceAdmin.php:360
+msgid "Type"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceAdmin.php:111
+#: includes/SafeRouteWooCommerceAdmin.php:362
+msgid "Time (days)"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceAdmin.php:114
+#: includes/SafeRouteWooCommerceAdmin.php:364
+msgid "Company"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceAdmin.php:117
+#: includes/SafeRouteWooCommerceAdmin.php:366
+msgid "Pickup point ID"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceAdmin.php:120
+#: includes/SafeRouteWooCommerceAdmin.php:368
+msgid "Pickup point address"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceAdmin.php:180
 #: includes/SafeRouteWooCommerceShippingMethod.php:33
 #: includes/SafeRouteWooCommerceShippingMethod.php:47
 msgid "SafeRoute"
 msgstr ""
 
-#: includes/SafeRouteWooCommerceAdmin.php:96
-msgid "Open order in the SafeRoute Cabinet"
+#: includes/SafeRouteWooCommerceAdmin.php:189
+#: includes/SafeRouteWooCommerceBase.php:329
+msgid "Order tracking"
 msgstr ""
 
-#: includes/SafeRouteWooCommerceAdmin.php:101
-msgid "Order is not in the SafeRoute Cabinet"
+#: includes/SafeRouteWooCommerceAdmin.php:197
+msgid "SafeRoute order tracking"
 msgstr ""
 
-#: includes/SafeRouteWooCommerceAdmin.php:123
+#: includes/SafeRouteWooCommerceAdmin.php:202
+#: includes/SafeRouteWooCommerceAdmin.php:204
+#: includes/SafeRouteWooCommerceAdmin.php:370
+#: includes/SafeRouteWooCommerceAdmin.php:372
+msgid "Delivery track-number"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceAdmin.php:206
+msgid "Unavailable"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceAdmin.php:229
+msgid "Change delivery"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceAdmin.php:233
+msgid "Select a delivery by clicking \"Change delivery\""
+msgstr ""
+
+#: includes/SafeRouteWooCommerceAdmin.php:236
+msgid "Order already send in SafeRoute, change delivery is impossible"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceAdmin.php:344
+msgid "Delivery details"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceAdmin.php:390
+msgid "Barcode"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceAdmin.php:395
+msgid "Producing country"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceAdmin.php:398
+#: views/admin-settings-page.php:121 views/admin-settings-page.php:144
+msgid "Not selected"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceAdmin.php:404
+msgid "Brand"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceAdmin.php:409
+msgid "Product code"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceAdmin.php:411
+#: includes/SafeRouteWooCommerceAdmin.php:418
+msgid "Required for SafeRoute international shipping"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceAdmin.php:416
+msgid "English product title"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceAdmin.php:454
 msgid "WooCommerce is required for SafeRoute WooCommerce plugin."
 msgstr ""
 
-#: includes/SafeRouteWooCommerceAdmin.php:128
-msgid "SafeRoute API-key not set."
+#: includes/SafeRouteWooCommerceAdmin.php:459
+msgid "SafeRoute settings not set."
 msgstr ""
 
-#: includes/SafeRouteWooCommercePaymentMethod.php:27
-#: includes/SafeRouteWooCommercePaymentMethod.php:34
-#: includes/SafeRouteWooCommercePaymentMethod.php:35
-msgid "Payment via SafeRoute"
+#: includes/SafeRouteWooCommerceBase.php:266
+msgid "Pickup"
 msgstr ""
 
-#: includes/SafeRouteWooCommercePaymentMethod.php:28
-msgid "Payment via SafeRoute Widget"
+#: includes/SafeRouteWooCommerceBase.php:267
+msgid "Courier"
 msgstr ""
 
-#: includes/SafeRouteWooCommercePaymentMethod.php:48
-#: includes/SafeRouteWooCommerceShippingMethod.php:45
-msgid "Title"
+#: includes/SafeRouteWooCommerceBase.php:268
+msgid "Post"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceBase.php:333
+msgid "Your order has been assigned a track number"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceBase.php:335
+#: includes/SafeRouteWooCommerceBase.php:344
+msgid "Order"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceBase.php:335
+msgid "received a track number"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceBase.php:336
+msgid "in the delivery service"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceBase.php:337
+msgid ""
+"In the near future, the order will be transferred to the delivery service."
+msgstr ""
+
+#: includes/SafeRouteWooCommerceBase.php:342
+msgid "Your order has been sent"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceBase.php:344
+msgid "has been transferred to the delivery service"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceBase.php:346
+msgid "Expect delivery in"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceBase.php:346
+msgid "days"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceBase.php:488
+msgid "Order creation error"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceBase.php:491
+msgid "Order confirmation error"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceBase.php:494
+msgid "Order cancelling error"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceBase.php:502
+msgid "Retry"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceBase.php:504
+msgid "Hide"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceBase.php:522
+msgid "Warning: delivery method not selected!"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:17
+msgid "China"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:18
+msgid "Russia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:19
+msgid "Belarus"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:20
+msgid "Ukraine"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:21
+msgid "Kazakhstan"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:22
+msgid "Malaysia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:23
+msgid "North Korea"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:24
+msgid "South Korea"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:25
+msgid "Taiwan"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:26
+msgid "Switzerland"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:27
+msgid "United Kingdom"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:28
+msgid "USA"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:29
+msgid "Germany"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:30
+msgid "France"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:31
+msgid "Poland"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:32
+msgid "Afghanistan"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:33
+msgid "Albania"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:34
+msgid "Algeria"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:35
+msgid "American Samoa"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:36
+msgid "Andorra"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:37
+msgid "Angola"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:38
+msgid "Anguilla"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:39
+msgid "Antarctica"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:40
+msgid "Antigua and Barbuda"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:41
+msgid "Argentina"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:42
+msgid "Armenia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:43
+msgid "Aruba"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:44
+msgid "Australia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:45
+msgid "Austria"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:46
+msgid "Azerbaijan"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:47
+msgid "Bahamas"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:48
+msgid "Bahrain"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:49
+msgid "Bangladesh"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:50
+msgid "Barbados"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:51
+msgid "Belgium"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:52
+msgid "Belize"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:53
+msgid "Benin"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:54
+msgid "Bermuda"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:55
+msgid "Bhutan"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:56
+msgid "Bolivia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:57
+msgid "Bosnia and Herzegovina"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:58
+msgid "Botswana"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:59
+msgid "Bouvet Island"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:60
+msgid "Brazil"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:61
+msgid "British Indian Ocean Territory"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:62
+msgid "Brunei Darussalam"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:63
+msgid "Bulgaria"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:64
+msgid "Burkina Faso"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:65
+msgid "Burundi"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:66
+msgid "Cambodia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:67
+msgid "Cameroon"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:68
+msgid "Canada"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:69
+msgid "Cape Verde"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:70
+msgid "Cayman Islands"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:71
+msgid "Central African Republic"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:72
+msgid "Chad"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:73
+msgid "Chile"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:74
+msgid "Christmas Island"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:75
+msgid "Cocos (Keeling) Islands"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:76
+msgid "Colombia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:77
+msgid "Comoros"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:78
+msgid "Congo"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:79
+msgid "Congo, the Democratic Republic of the"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:80
+msgid "Cook Islands"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:81
+msgid "Costa Rica"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:82
+msgid "Cote D'Ivoire"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:83
+msgid "Croatia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:84
+msgid "Cuba"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:85
+msgid "Cyprus"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:86
+msgid "Czech Republic"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:87
+msgid "Denmark"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:88
+msgid "Djibouti"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:89
+msgid "Dominica"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:90
+msgid "Dominican Republic"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:91
+msgid "Ecuador"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:92
+msgid "Egypt"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:93
+msgid "El Salvador"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:94
+msgid "Equatorial Guinea"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:95
+msgid "Eritrea"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:96
+msgid "Estonia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:97
+msgid "Ethiopia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:98
+msgid "Falkland Islands (Malvinas)"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:99
+msgid "Faroe Islands"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:100
+msgid "Fiji"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:101
+msgid "Finland"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:102
+msgid "French Guiana"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:103
+msgid "French Polynesia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:104
+msgid "French Southern Territories"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:105
+msgid "Gabon"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:106
+msgid "Gambia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:107
+msgid "Georgia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:108
+msgid "Ghana"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:109
+msgid "Gibraltar"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:110
+msgid "Greece"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:111
+msgid "Greenland"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:112
+msgid "Grenada"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:113
+msgid "Guadeloupe"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:114
+msgid "Guam"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:115
+msgid "Guatemala"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:116
+msgid "Guinea"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:117
+msgid "Guinea-Bissau"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:118
+msgid "Guyana"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:119
+msgid "Haiti"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:120
+msgid "Heard Island and McDonald Islands"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:121
+msgid "Holy See (Vatican City State)"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:122
+msgid "Honduras"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:123
+msgid "Hong Kong"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:124
+msgid "Hungary"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:125
+msgid "Iceland"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:126
+msgid "India"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:127
+msgid "Indonesia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:128
+msgid "Iran, Islamic Republic of"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:129
+msgid "Iraq"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:130
+msgid "Ireland"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:131
+msgid "Israel"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:132
+msgid "Italy"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:133
+msgid "Jamaica"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:134
+msgid "Japan"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:135
+msgid "Jordan"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:136
+msgid "Kenya"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:137
+msgid "Kiribati"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:138
+msgid "Kuwait"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:139
+msgid "Kyrgyzstan"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:140
+msgid "Lao People's Democratic Republic"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:141
+msgid "Latvia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:142
+msgid "Lebanon"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:143
+msgid "Lesotho"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:144
+msgid "Liberia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:145
+msgid "Libya"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:146
+msgid "Liechtenstein"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:147
+msgid "Lithuania"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:148
+msgid "Luxembourg"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:149
+msgid "Macao"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:150
+msgid "Madagascar"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:151
+msgid "Malawi"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:152
+msgid "Maldives"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:153
+msgid "Mali"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:154
+msgid "Malta"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:155
+msgid "Marshall Islands"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:156
+msgid "Martinique"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:157
+msgid "Mauritania"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:158
+msgid "Mauritius"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:159
+msgid "Mayotte"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:160
+msgid "Mexico"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:161
+msgid "Micronesia, Federated States of"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:162
+msgid "Moldova, Republic of"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:163
+msgid "Monaco"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:164
+msgid "Mongolia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:165
+msgid "Montserrat"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:166
+msgid "Morocco"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:167
+msgid "Mozambique"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:168
+msgid "Myanmar"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:169
+msgid "Namibia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:170
+msgid "Nauru"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:171
+msgid "Nepal"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:172
+msgid "Netherlands"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:173
+msgid "New Caledonia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:174
+msgid "New Zealand"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:175
+msgid "Nicaragua"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:176
+msgid "Niger"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:177
+msgid "Nigeria"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:178
+msgid "Niue"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:179
+msgid "Norfolk Island"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:180
+msgid "North Macedonia, Republic of"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:181
+msgid "Northern Mariana Islands"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:182
+msgid "Norway"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:183
+msgid "Oman"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:184
+msgid "Pakistan"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:185
+msgid "Palau"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:186
+msgid "Palestinian Territory, Occupied"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:187
+msgid "Panama"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:188
+msgid "Papua New Guinea"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:189
+msgid "Paraguay"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:190
+msgid "Peru"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:191
+msgid "Philippines"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:192
+msgid "Pitcairn"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:193
+msgid "Portugal"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:194
+msgid "Puerto Rico"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:195
+msgid "Qatar"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:196
+msgid "Reunion"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:197
+msgid "Romania"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:198
+msgid "Rwanda"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:199
+msgid "Saint Helena"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:200
+msgid "Saint Kitts and Nevis"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:201
+msgid "Saint Lucia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:202
+msgid "Saint Pierre and Miquelon"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:203
+msgid "Saint Vincent and the Grenadines"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:204
+msgid "Samoa"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:205
+msgid "San Marino"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:206
+msgid "Sao Tome and Principe"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:207
+msgid "Saudi Arabia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:208
+msgid "Senegal"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:209
+msgid "Seychelles"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:210
+msgid "Sierra Leone"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:211
+msgid "Singapore"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:212
+msgid "Slovakia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:213
+msgid "Slovenia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:214
+msgid "Solomon Islands"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:215
+msgid "Somalia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:216
+msgid "South Africa"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:217
+msgid "South Georgia and the South Sandwich Islands"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:218
+msgid "Spain"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:219
+msgid "Sri Lanka"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:220
+msgid "Sudan"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:221
+msgid "Suriname"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:222
+msgid "Svalbard and Jan Mayen"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:223
+msgid "Eswatini"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:224
+msgid "Sweden"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:225
+msgid "Syrian Arab Republic"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:226
+msgid "Tajikistan"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:227
+msgid "Tanzania, United Republic of"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:228
+msgid "Thailand"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:229
+msgid "Timor-Leste"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:230
+msgid "Togo"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:231
+msgid "Tokelau"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:232
+msgid "Tonga"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:233
+msgid "Trinidad and Tobago"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:234
+msgid "Tunisia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:235
+msgid "Turkey"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:236
+msgid "Turkmenistan"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:237
+msgid "Turks and Caicos Islands"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:238
+msgid "Tuvalu"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:239
+msgid "Uganda"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:240
+msgid "United Arab Emirates"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:241
+msgid "United States Minor Outlying Islands"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:242
+msgid "Uruguay"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:243
+msgid "Uzbekistan"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:244
+msgid "Vanuatu"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:245
+msgid "Venezuela"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:246
+msgid "Vietnam"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:247
+msgid "Virgin Islands, British"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:248
+msgid "Virgin Islands, U.S."
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:249
+msgid "Wallis and Futuna"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:250
+msgid "Western Sahara"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:251
+msgid "Yemen"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:252
+msgid "Zambia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:253
+msgid "Zimbabwe"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:254
+msgid "Åland Islands"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:255
+msgid "Bonaire, Sint Eustatius and Saba"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:256
+msgid "Curaçao"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:257
+msgid "Guernsey"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:258
+msgid "Isle of Man"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:259
+msgid "Jersey"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:260
+msgid "Montenegro"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:261
+msgid "Saint Barthélemy"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:262
+msgid "Saint Martin (French part)"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:263
+msgid "Serbia"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:264
+msgid "Sint Maarten (Dutch part)"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:265
+msgid "South Sudan"
+msgstr ""
+
+#: includes/SafeRouteWooCommerceCountries.php:266
+msgid "Kosovo"
 msgstr ""
 
 #: includes/SafeRouteWooCommerceShippingMethod.php:34
 msgid "SafeRoute Shipping Services Aggregator"
 msgstr ""
 
+#: includes/SafeRouteWooCommerceShippingMethod.php:45
+msgid "Title"
+msgstr ""
+
 #: views/admin-settings-page.php:2
 msgid "SafeRoute integration settings"
 msgstr ""
 
+#: views/admin-settings-page.php:4
+msgid "Authorization settings"
+msgstr ""
+
 #: views/admin-settings-page.php:10
-msgid "API-key"
+msgid "SafeRoute token"
 msgstr ""
 
 #: views/admin-settings-page.php:27
-msgid "API-key can be found on the shop page in SafeRoute cabinet."
+msgid "SafeRoute shop ID"
+msgstr ""
+
+#: views/admin-settings-page.php:44
+msgid ""
+"Token and shop ID can be found on in the SafeRoute cabinet. See "
+"installation instructions for details."
+msgstr ""
+
+#: views/admin-settings-page.php:46
+msgid "Common settings"
+msgstr ""
+
+#: views/admin-settings-page.php:52
+msgid "Order status for sending to SafeRoute"
+msgstr ""
+
+#: views/admin-settings-page.php:78
+msgid "Send orders to SafeRoute as confirmed"
+msgstr ""
+
+#: views/admin-settings-page.php:94
+msgid "Price declared percent"
+msgstr ""
+
+#: views/admin-settings-page.php:112
+msgid "COD pay method"
+msgstr ""
+
+#: views/admin-settings-page.php:135
+msgid "Card COD pay method"
+msgstr ""
+
+#: views/admin-settings-page.php:158
+msgid "Hide billing block in checkout"
+msgstr ""
+
+#: views/admin-settings-page.php:174
+msgid "Show details in delivery name"
+msgstr ""
+
+#: views/admin-settings-page.php:190
+msgid "Disable auto scroll to widget in checkout"
+msgstr ""
+
+#: views/admin-settings-page.php:206
+msgid "Widget placement in the checkout page"
+msgstr ""
+
+#: views/admin-settings-page.php:238
+msgid "Statuses matching"
+msgstr ""
+
+#: views/admin-settings-page.php:256
+msgid "Not set"
+msgstr ""
+
+#: views/admin-settings-page.php:274
+msgid "Set auth data to setup statuses matching"
+msgstr ""
+
+#: views/admin-settings-page.php:276
+msgid "Invalid auth settings"
+msgstr ""
+
+#: views/admin-settings-page.php:278
+msgid "Error while getting the list of statuses from SafeRoute"
 msgstr ""
 
 #: views/checkout-widget-block.php:2
 msgid "Select Shipping Type"
-msgstr ""
-
-#: views/checkout-widget-block.php:5
-msgid "Copy widget data into billing details"
 msgstr ""
 
 #. Plugin Name of the plugin/theme

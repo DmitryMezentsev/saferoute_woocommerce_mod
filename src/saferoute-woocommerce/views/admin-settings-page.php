@@ -200,6 +200,37 @@
                     >
                 </td>
             </tr>
+            <tr>
+                <th scope="row">
+                    <label for="<?=self::WIDGET_PLACEMENT_IN_CHECKOUT?>">
+                        <?php _e('Widget placement in the checkout page', self::TEXT_DOMAIN) ?>
+                    </label>
+                </th>
+                <td>
+                    <select id="<?=self::WIDGET_PLACEMENT_IN_CHECKOUT?>"
+                            name="<?=self::WIDGET_PLACEMENT_IN_CHECKOUT?>"
+                            autocomplete="off">
+                        <?php foreach ([
+                            'woocommerce_checkout_before_customer_details',
+                            'woocommerce_checkout_after_customer_details',
+                            'woocommerce_before_checkout_billing_form',
+                            'woocommerce_after_checkout_billing_form',
+                            'woocommerce_before_checkout_shipping_form',
+                            'woocommerce_after_checkout_shipping_form',
+                            'woocommerce_after_order_notes',
+                            'woocommerce_checkout_before_order_review_heading',
+                            'woocommerce_review_order_before_payment',
+                            'woocommerce_review_order_before_shipping',
+                            'woocommerce_review_order_after_shipping',
+                        ] as $placement): ?>
+                            <option value="<?=$placement?>"
+                                <?= get_option(self::WIDGET_PLACEMENT_IN_CHECKOUT, self::WIDGET_PLACEMENT_IN_CHECKOUT_DEFAULT) === $placement ? 'selected' : '' ?>>
+                                <?= preg_replace('/^woocommerce_/', '', $placement) ?>
+                            </option>
+                        <?php endforeach ?>
+                    </select>
+                </td>
+            </tr>
             </tbody>
         </table>
         <h2 class="title"><?php _e('Statuses matching', self::TEXT_DOMAIN)?></h2>

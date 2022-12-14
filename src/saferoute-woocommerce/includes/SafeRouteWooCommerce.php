@@ -30,6 +30,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
         add_option(self::CARD_COD_PAY_METHOD_OPTION, '');
         add_option(self::STATUSES_MATCHING_OPTION, []);
         add_option(self::DISABLE_AUTOSCROLL_TO_WIDGET, 0);
+        add_option(self::WIDGET_PLACEMENT_IN_CHECKOUT, self::WIDGET_PLACEMENT_IN_CHECKOUT_DEFAULT);
     }
 
     /**
@@ -48,6 +49,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
         delete_option(self::CARD_COD_PAY_METHOD_OPTION);
         delete_option(self::STATUSES_MATCHING_OPTION);
         delete_option(self::DISABLE_AUTOSCROLL_TO_WIDGET);
+        delete_option(self::WIDGET_PLACEMENT_IN_CHECKOUT);
     }
 
 
@@ -135,7 +137,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
                 wp_enqueue_style('saferoute-css', plugins_url('assets/checkout.css', dirname(__FILE__)));
 
                 // Вывод HTML блока с виджетом
-                add_action('woocommerce_checkout_after_customer_details', function () {
+                add_action(get_option(self::WIDGET_PLACEMENT_IN_CHECKOUT, self::WIDGET_PLACEMENT_IN_CHECKOUT_DEFAULT), function () {
                     require self::getPluginDir() . '/views/checkout-widget-block.php';
                 });
 

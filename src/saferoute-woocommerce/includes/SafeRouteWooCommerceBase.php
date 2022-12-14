@@ -43,6 +43,9 @@ class SafeRouteWooCommerceBase
     // Имя параметра 'Отключить автоматическое прокручивание до виджета в чекауте' в БД WordPress
     const DISABLE_AUTOSCROLL_TO_WIDGET = 'disable_autoscroll_to_widget';
 
+    // Имя параметра 'Место вывода виджета на странице чекаута' в БД WordPress
+    const WIDGET_PLACEMENT_IN_CHECKOUT = 'widget_placement_in_checkout';
+
     // Имя параметра с данными заказа для создания его в SafeRoute
     const WIDGET_ORDER_DATA = 'sr_widget_order_data';
 
@@ -105,6 +108,9 @@ class SafeRouteWooCommerceBase
 
     // Значение процента оценочной стоимости по умолчанию
     const PRICE_DECLARED_PERCENT_DEFAULT = 100;
+
+    // Расположение виджета в чекауте по умолчанию
+    const WIDGET_PLACEMENT_IN_CHECKOUT_DEFAULT = 'woocommerce_checkout_after_customer_details';
 
     // Статус для передачи заказов в SafeRoute по умолчанию ("На удержании")
     const ORDER_STATUS_FOR_SENDING_TO_SR_DEFAULT = 'wc-on-hold';
