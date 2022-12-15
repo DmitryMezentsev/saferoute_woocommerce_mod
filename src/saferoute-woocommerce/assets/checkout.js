@@ -61,7 +61,7 @@
     // Переключает отображение полей адреса
     function toggleAddressFields (show) {
       const $fields = $(
-        '#shipping_company, #shipping_country, #shipping_address_1, #shipping_address_2, #shipping_city, #shipping_state, #shipping_postcode'
+        '#shipping_country, #shipping_address_1, #shipping_address_2, #shipping_city, #shipping_state, #shipping_postcode'
       ).closest('.form-row');
 
       if (show) $fields.show();
