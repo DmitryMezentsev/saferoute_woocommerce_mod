@@ -687,8 +687,8 @@ class SafeRouteWooCommerceBase
             update_post_meta($order_id, self::ERROR_CODE_META_KEY, null);
             update_post_meta($order_id, self::ERROR_MESSAGE_META_KEY, null);
 
-            // Если заказы нужно передавать как подтверждённые
-            if (get_option(self::SEND_ORDERS_AS_CONFIRMED_OPTION))
+            // Если заказы нужно передавать как подтверждённые и доставка не является экспресс-доставкой
+            if (get_option(self::SEND_ORDERS_AS_CONFIRMED_OPTION) && !$widget_data['delivery']['isExpress'])
             {
                 return self::confirmOrderInSafeRoute($order_id);
             }
