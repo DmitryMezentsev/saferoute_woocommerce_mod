@@ -2,7 +2,7 @@
 Contributors: dmitrymezentsev
 Tags: saferoute, shipping, woocommerce, доставка, delivery, агрегатор, ecommerce, cdek, сдэк, boxberry,
 Requires at least: 4.9
-Tested up to: 6.1.1
+Tested up to: 6.2.2
 Requires PHP: 7.0
 Stable tag: trunk
 License: GPLv2 or later
@@ -51,6 +51,8 @@ SafeRoute включает в себя более 10 служб доставки
 
 == Changelog ==
 
+= 3.2.3 =
+* fix
 = 3.2.2 =
 * Заказы с экспресс-доставкой больше не передаются как подтверждённые
 = 3.2.1 =
@@ -150,6 +152,8 @@ SafeRoute включает в себя более 10 служб доставки
 
 == Upgrade Notice ==
 
+= 3.2.3 =
+* fix
 = 3.2.2 =
 * Заказы с экспресс-доставкой больше не передаются как подтверждённые
 = 3.2.1 =

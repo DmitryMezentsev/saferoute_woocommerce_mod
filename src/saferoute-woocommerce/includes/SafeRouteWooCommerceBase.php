@@ -119,9 +119,9 @@ class SafeRouteWooCommerceBase
     const ORDER_CANCELLED_STATUS = 'wc-cancelled';
 
     // Возможные ошибки
-    const ORDER_CREATION_ERROR_CODE        = 1;
-    const ORDER_CONFIRMATION_ERROR_CODE    = 2;
-    const ORDER_CANCELLING_ERROR_CODE      = 3;
+    const ORDER_CREATION_ERROR_CODE     = 1;
+    const ORDER_CONFIRMATION_ERROR_CODE = 2;
+    const ORDER_CANCELLING_ERROR_CODE   = 3;
 
 
     /**
@@ -146,7 +146,7 @@ class SafeRouteWooCommerceBase
      */
     public static function getPluginDir(): string
     {
-        return dirname(dirname(__FILE__));
+        return dirname(__FILE__, 2);
     }
 
     /**
@@ -612,7 +612,7 @@ class SafeRouteWooCommerceBase
                     'prePay'           => $cod ? 0 : $price,
                     'tnved'            => get_post_meta($id, self::PRODUCT_TNVED_META_KEY, true),
                     'count'            => $item->get_quantity(),
-                    'weight'           => wc_get_weight($product->get_weight(), 'kg'),
+                    'weight'           => wc_get_weight($product->get_weight(), 'kg') ?: null,
                     'brand'            => get_post_meta($id, self::PRODUCT_BRAND_META_KEY, true),
                     'producingCountry' => get_post_meta($id, self::PRODUCT_PRODUCING_COUNTRY_META_KEY, true),
                     'barcode'          => get_post_meta($id, self::PRODUCT_BARCODE_META_KEY, true),
@@ -677,7 +677,7 @@ class SafeRouteWooCommerceBase
         ]);
 
         $res_body = json_decode($res['body'], true);
-		
+
         // Если заказ был создан в ЛК
         if ($res['response']['code'] === 201)
         {

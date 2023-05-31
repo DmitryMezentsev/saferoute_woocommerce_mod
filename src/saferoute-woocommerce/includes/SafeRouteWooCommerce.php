@@ -72,7 +72,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
             'API_URL'                      => self::getWidgetApiScriptPath(),
             'PRODUCTS'                     => self::_getProducts(),
             'COUNTRIES'                    => self::_getSRDeliveryCountries(),
-            'WEIGHT'                       => wc_get_weight($woocommerce->cart->get_cart_contents_weight(), 'kg'),
+            'WEIGHT'                       => wc_get_weight($woocommerce->cart->get_cart_contents_weight(), 'kg') ?: null,
             'DISCOUNT'                     => $woocommerce->cart->get_discount_total(),
             'CURRENCY'                     => self::getWCCurrency(),
             'PAY_METHOD_WITH_COD'          => get_option(self::COD_PAY_METHOD_OPTION, ''),
