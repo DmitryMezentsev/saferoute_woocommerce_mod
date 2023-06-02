@@ -132,9 +132,9 @@
     function scrollToWidget () {
       if (!SR_WIDGET.DISABLE_AUTOSCROLL_TO_WIDGET) {
         $('html, body').animate({
-          scrollTop: $('#sr_widget').offset().top - 120
+          scrollTop: $('#sr_widget iframe').offset().top - 80
         }, 500);
-	  }
+	    }
     }
 
 
@@ -163,7 +163,15 @@
           this._.on('select', (data) => {
             widget.data = data;
 
-            $('textarea[name=order_comments]').val(data.comment);
+            const widgetComment = (data.comment || '').trim();
+            if (widgetComment) {
+              const orderComment = ($('textarea[name=order_comments]').val() || '').replace(/\(для курьера:[^)]*\)/ig, '').trim();
+
+              $('textarea[name=order_comments]').val(
+                orderComment ? `${orderComment} (для курьера: ${widgetComment})` : widgetComment
+              );
+            }
+
             $('input[name=shipping_city]').val(data.city.name);
             $('input[name=shipping_state]').val(data.city.region);
             $('select[name=shipping_country]').val(data.city.countryIsoCode).trigger('change');

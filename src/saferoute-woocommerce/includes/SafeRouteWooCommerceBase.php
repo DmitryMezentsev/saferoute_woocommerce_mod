@@ -413,7 +413,7 @@ class SafeRouteWooCommerceBase
      * @param $product
      * @return array
      */
-    public static function calcProductPriceAndDiscount($product)
+    public static function calcProductPriceAndDiscount($product): array
     {
         // Начальная цена
         $regular_price = (float) $product->get_regular_price();
@@ -516,7 +516,9 @@ class SafeRouteWooCommerceBase
             $sr_id = get_post_meta($order_id, self::SAFEROUTE_ID_META_KEY, true);
 
             // Выбрана доставка SafeRoute, но конкретная доставка в виджете выбрана не была, и заказ в ЛК не был создан
-            if ($order->has_shipping_method(self::ID) && !$widget_order_data && !$sr_id)
+            if ($order->has_shipping_method(self::ID) && !$widget_order_data && !$sr_id
+                // А также заказ не является отменённым
+                && $order->post_status !== self::ORDER_CANCELLED_STATUS)
             {
                 $html  = '<div class="sr-error">';
                 $html .= '<b>' . __('Warning: delivery method not selected!', self::TEXT_DOMAIN) . '</b>';
@@ -759,7 +761,6 @@ class SafeRouteWooCommerceBase
             'headers' => [
                 'Authorization' => 'Bearer ' . get_option(self::SR_TOKEN_OPTION),
                 'Shop-Id' => get_option(self::SR_SHOP_ID_OPTION),
-                'Silent' => 1, // Чтобы бэк не пытался отменить этот заказ в WC
             ],
         ]);
 
@@ -857,22 +858,19 @@ class SafeRouteWooCommerceBase
             // Пропуск виртуальных и скачиваемых товаров, т.к. доставка для них не нужна
             if($product->is_virtual() || $product->is_downloadable()) return null;
 
-            $data = [
+            $dimensions = self::getProductDimensions($product);
+
+            return [
                 'name'       => $product->get_name(),
                 'vendorCode' => $product->get_sku(),
                 'vat'        => self::calcProductVAT($item),
                 'price'      => self::calcProductPriceAndDiscount($product)['price'],
                 'discount'   => self::calcProductPriceAndDiscount($product)['discount'],
                 'count'      => $item->get_quantity(),
+                'width'      => $dimensions['width'],
+                'height'     => $dimensions['height'],
+                'length'     => $dimensions['length'],
             ];
-
-            $dimensions = self::getProductDimensions($product);
-
-            if ($dimensions['width']) $data['width'] = $dimensions['width'];
-            if ($dimensions['height']) $data['height'] = $dimensions['height'];
-            if ($dimensions['length']) $data['length'] = $dimensions['length'];
-
-            return $data;
         }, $items);
 
         return array_values(array_filter($products, function ($product)

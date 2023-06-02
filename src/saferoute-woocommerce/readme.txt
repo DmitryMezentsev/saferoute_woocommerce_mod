@@ -3,7 +3,7 @@ Contributors: dmitrymezentsev
 Tags: saferoute, shipping, woocommerce, доставка, delivery, агрегатор, ecommerce, cdek, сдэк, boxberry,
 Requires at least: 4.9
 Tested up to: 6.2.2
-Requires PHP: 7.0
+Requires PHP: 7.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -51,6 +51,8 @@ SafeRoute включает в себя более 10 служб доставки
 
 == Changelog ==
 
+= 3.2.4 =
+* Исправления ошибок
 = 3.2.3 =
 * fix
 = 3.2.2 =
@@ -152,6 +154,8 @@ SafeRoute включает в себя более 10 служб доставки
 
 == Upgrade Notice ==
 
+= 3.2.4 =
+* Исправления ошибок
 = 3.2.3 =
 * fix
 = 3.2.2 =

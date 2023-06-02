@@ -7,6 +7,9 @@ require_once 'SafeRouteWooCommerceBase.php';
  */
 class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
 {
+    private const CANCELLED_BY_SR_BACK_WC_META_KEY = 'cancelled-by-sr-back';
+
+
     const API_PATH = 'saferoute-api';
 
 
@@ -27,10 +30,10 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
     /**
      * Проверяет, совпадает ли переданный токен c токеном, указанным в настройках плагина
      *
-     * @param $token string Токен для проверки
+     * @param $token string|null Токен для проверки
      * @return bool
      */
-    private static function _checkToken(string $token): bool
+    private static function _checkToken(mixed $token): bool
     {
         return ($token && $token === get_option(self::SR_TOKEN_OPTION));
     }
@@ -85,7 +88,11 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
                 $wc_order = new WC_Order($id);
                 $status_wc = self::getMatchedWCStatus($data['statusSR']);
 
-                if ($status_wc) $wc_order->update_status($status_wc);
+                if ($status_wc) {
+                    if ($status_wc === self::ORDER_CANCELLED_STATUS && !$wc_order->get_meta(self::CANCELLED_BY_SR_BACK_WC_META_KEY))
+                        $wc_order->add_meta_data(self::CANCELLED_BY_SR_BACK_WC_META_KEY, 1);
+                    $wc_order->update_status($status_wc);
+                }
 
                 // Отправка уведомления покупателю, когда заказ передан в службу доставки
                 if ((int) $data['statusSR'] === self::SUBMITTED_TO_DELIVERY_SERVICE_STATUS_CODE)
@@ -202,8 +209,12 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
             // Если заказ имеет SafeRoute ID и он либо был отменён в WooCommerce, либо ему присвоена другая доставка, не SafeRoute
             elseif ($order_sr_id && ($post->post_status === self::ORDER_CANCELLED_STATUS || !$order->has_shipping_method(self::ID)))
             {
-                // Отмена заказа в SafeRoute
-                self::cancelOrderInSafeRoute($post_id);
+                // Если заказ не был отменён с бэка SR, отправляем запрос на отмену заказа в SR
+                if (!$order->get_meta(self::CANCELLED_BY_SR_BACK_WC_META_KEY))
+                    self::cancelOrderInSafeRoute($post_id);
+                // Если отмену заказа вызвал бэк SR, просто удаляем данные по заказу
+                else
+                    self::removeSafeRouteData($post_id);
             }
         }
     }

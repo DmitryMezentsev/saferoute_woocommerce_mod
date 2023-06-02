@@ -221,6 +221,9 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
         {
             $order = wc_get_order(isset($_POST['order_id']) ? $_POST['order_id'] : false);
 
+            // Если заказ отменён, ничего не выводим
+            if (get_post($order->get_id())->post_status === self::ORDER_CANCELLED_STATUS) return;
+
             $order_in_sr = get_post_meta($order->get_id(), self::SAFEROUTE_ID_META_KEY, true);
             $widget_order_data = get_post_meta($order->get_id(), self::WIDGET_ORDER_DATA, true);
 
