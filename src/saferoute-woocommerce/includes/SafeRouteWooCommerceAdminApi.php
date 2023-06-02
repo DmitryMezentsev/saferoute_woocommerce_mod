@@ -20,14 +20,19 @@ class SafeRouteWooCommerceAdminApi extends SafeRouteWooCommerceBase
 
             if ($error_code === self::ORDER_CREATION_ERROR_CODE)
             {
+                $current_error_code = (int) get_post_meta($id, self::ERROR_CODE_META_KEY, true);
+                $current_error_message = get_post_meta($id, self::ERROR_MESSAGE_META_KEY, true);
+
                 if (self::createOrderInSafeRoute($id))
                 {
                     $status = 'success';
                 }
                 else
                 {
-                    $current_error = (int) get_post_meta($id, self::ERROR_CODE_META_KEY, true);
-                    $status = $current_error === self::ORDER_CONFIRMATION_ERROR_CODE ? 'next_error' : 'error';
+                    $status = (
+                        $current_error_code !== (int) get_post_meta($id, self::ERROR_CODE_META_KEY, true) ||
+                        $current_error_message !== get_post_meta($id, self::ERROR_MESSAGE_META_KEY, true)
+                    ) ? 'next_error' : 'error';
                 }
             }
             elseif ($error_code === self::ORDER_CONFIRMATION_ERROR_CODE)
