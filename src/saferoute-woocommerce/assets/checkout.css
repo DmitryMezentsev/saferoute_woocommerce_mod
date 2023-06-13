@@ -23,7 +23,7 @@
 .saferoute_widget_block { margin-bottom: 1.6em; }
 .saferoute_widget_block label { display: inline-block; }
 
-.saferoute_delivery_info .info-wrap span {
+.saferoute_delivery_info .info_wrap span {
   font-weight: bold;
 }
 

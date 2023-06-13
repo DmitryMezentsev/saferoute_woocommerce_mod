@@ -106,8 +106,8 @@
 
       $('.saferoute_delivery_info').show().html(
         '<h3>' + t[SR_WIDGET.LANG].delivery + '</h3>' +
-        '<div class="info-wrap">' + data._meta.commonDeliveryDataHTML + '</div>' +
-        '<a class="saferoute_change_delivery">' + t[SR_WIDGET.LANG].changeDelivery + '</div>'
+        '<div class="info_wrap">' + data._meta.commonDeliveryDataHTML + '</div>' +
+        '<a class="saferoute_change_delivery">' + t[SR_WIDGET.LANG].changeDelivery + '</a>'
       );
     }
 
