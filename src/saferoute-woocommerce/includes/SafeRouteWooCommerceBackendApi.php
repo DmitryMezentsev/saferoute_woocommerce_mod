@@ -33,7 +33,7 @@ class SafeRouteWooCommerceBackendApi extends SafeRouteWooCommerceBase
      * @param $token string|null Токен для проверки
      * @return bool
      */
-    private static function _checkToken(mixed $token): bool
+    private static function _checkToken($token): bool
     {
         return ($token && $token === get_option(self::SR_TOKEN_OPTION));
     }
