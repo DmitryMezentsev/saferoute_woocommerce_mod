@@ -309,7 +309,23 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
         $res_body = json_decode($res['body'], true);
 
         if ($res['response']['code'] === 200 && $res_body) {
-            $price = $res_body['totalPrice'];
+            // Для самовывоза достаём стоимость доставки из ПВЗ
+            if ((int) $widget_order_data['delivery']['type'] === self::DELIVERY_TYPE_PICKUP) {
+                $point = array_filter($res_body['points'], function($point) use ($widget_order_data) {
+                    return $point['id'] === (int) $widget_order_data['delivery']['point']['id'];
+                });
+
+                // Если такой точки ПВЗ в результатах не найдено, сбрасываем доставку
+                if (empty($point)) {
+                    self::removeSafeRouteData($id);
+                    return;
+                }
+
+                $price = array_values($point)[0]['totalPrice'];
+            // Для остальных вариантов доставки стоимость находится в данных компании
+            } else {
+                $price = $res_body['totalPrice'];
+            }
 
             if ($order->payment_method) {
                 if ($order->payment_method === get_option(self::COD_PAY_METHOD_OPTION))
