@@ -100,10 +100,19 @@
 
                 $('button.calculate-action').trigger('click');
 
-                // Установка в поля адреса доставки и комментария
+                // Установка в поле комментария
+                const widgetComment = (data.comment || '').trim();
+                if (widgetComment) {
+                  const orderComment = ($('textarea#excerpt').val() || '').replace(/\(для курьера:[^)]*\)/ig, '').trim();
+
+                  $('textarea#excerpt').val(
+                    orderComment ? `${orderComment} (для курьера: ${widgetComment})` : `Для курьера: ${widgetComment}`
+                  );
+                }
+
+                // Установка в поля адреса доставки
                 $('#order_data .edit_address').trigger('click');
                 $('input#_shipping_city').val(data.city.name).prop('readonly', true);
-                $('textarea#excerpt').val(data.comment);
                 $('select#_shipping_country').val(data.city.countryIsoCode).trigger('change');
                 $('input#_shipping_state').val(data.city.region).prop('readonly', true);
                 if (data.delivery.point) {
