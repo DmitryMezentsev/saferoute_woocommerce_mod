@@ -3,7 +3,7 @@
 /**
  * API-скрипт виджетов SafeRoute для WordPress
  *
- * @version 2.1
+ * @version 2.2
  */
 class SafeRouteWidgetApi
 {
@@ -112,6 +112,8 @@ class SafeRouteWidgetApi
      */
     public function submit(string $url)
     {
+        if (!preg_match('/\w+\.saferoute\.ru$/', parse_url($url,  PHP_URL_HOST))) return '';
+
         // Загрузка кода виджета
         if ($this->isHtmlRequest($url))
         {
