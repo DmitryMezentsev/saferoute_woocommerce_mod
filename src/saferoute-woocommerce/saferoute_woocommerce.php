@@ -2,7 +2,7 @@
 /**
  * Plugin name: SafeRoute WooCommerce
  * Description: SafeRoute Widget for WooCommerce
- * Version: 3.2.10
+ * Version: 3.2.11
  * Author: Dmitry Mezentsev
  * Text Domain: saferoute_woocommerce
  * Domain Path: /languages/

@@ -85,6 +85,7 @@
             regionName: $('[name=_shipping_city]').val(),
             overrideSettings: {
               styles: '',
+              storeWidgetData: false,
             },
           });
 
