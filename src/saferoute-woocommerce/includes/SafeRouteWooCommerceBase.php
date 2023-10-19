@@ -549,6 +549,27 @@ class SafeRouteWooCommerceBase
     }
 
     /**
+     * Считает "С клиента за доставку"
+     *
+     * @param $order_id int ID заказа
+     * @return float
+     */
+    public static function getClientPrice($order_id): float
+    {
+        $widget_data = get_post_meta($order_id, self::WIDGET_ORDER_DATA, true);
+        $payment_method = (wc_get_order($order_id))->get_payment_method();
+
+        if ($payment_method) {
+            if ($payment_method === get_option(self::COD_PAY_METHOD_OPTION))
+                return $widget_data['delivery']['totalPrice'] + $widget_data['delivery']['priceCommissionCod'];
+            elseif ($payment_method === get_option(self::CARD_COD_PAY_METHOD_OPTION))
+                return $widget_data['delivery']['totalPrice'] + $widget_data['delivery']['priceCommissionCodCard'];
+        }
+
+        return 0;
+    }
+
+    /**
      * Создаёт заказ на сервере SafeRoute
      *
      * @param $order_id int ID заказа в WP
@@ -659,7 +680,7 @@ class SafeRouteWooCommerceBase
                     return ['id' => $service];
                 }, $services),
             ],
-            'clientPrice'        => $cod ? $widget_data['delivery']['totalPrice'] : 0,
+            'clientPrice'        => self::getClientPrice($order_id),
             'clientPrePay'       => $cod ? 0 : $widget_data['delivery']['totalPrice'],
             'clientDeliveryDate' => $widget_data['deliveryDate']['date'],
             'clientCourierTime'  => !empty($widget_data['deliveryDate']['time']['id'])
