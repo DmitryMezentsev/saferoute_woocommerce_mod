@@ -202,6 +202,22 @@
             </tr>
             <tr>
                 <th scope="row">
+                    <label for="<?=self::DISABLE_WIDGET_MULTI_REQUESTS?>">
+                        <?php _e('Disable parallel loading of delivery data', self::TEXT_DOMAIN) ?>
+                    </label>
+                </th>
+                <td>
+                    <input name="<?=self::DISABLE_WIDGET_MULTI_REQUESTS?>"
+                           id="<?=self::DISABLE_WIDGET_MULTI_REQUESTS?>"
+                           value="1"
+                           type="checkbox"
+                           autocomplete="off"
+                        <?= get_option(self::DISABLE_WIDGET_MULTI_REQUESTS) ? 'checked' : '' ?>
+                    >
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
                     <label for="<?=self::WIDGET_PLACEMENT_IN_CHECKOUT?>">
                         <?php _e('Widget placement in the checkout page', self::TEXT_DOMAIN) ?>
                     </label>

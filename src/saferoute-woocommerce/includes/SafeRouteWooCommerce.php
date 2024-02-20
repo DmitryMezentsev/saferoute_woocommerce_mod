@@ -30,6 +30,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
         add_option(self::CARD_COD_PAY_METHOD_OPTION, '');
         add_option(self::STATUSES_MATCHING_OPTION, []);
         add_option(self::DISABLE_AUTOSCROLL_TO_WIDGET, 0);
+        add_option(self::DISABLE_WIDGET_MULTI_REQUESTS, 0);
         add_option(self::WIDGET_PLACEMENT_IN_CHECKOUT, self::WIDGET_PLACEMENT_IN_CHECKOUT_DEFAULT);
     }
 
@@ -49,6 +50,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
         delete_option(self::CARD_COD_PAY_METHOD_OPTION);
         delete_option(self::STATUSES_MATCHING_OPTION);
         delete_option(self::DISABLE_AUTOSCROLL_TO_WIDGET);
+        delete_option(self::DISABLE_WIDGET_MULTI_REQUESTS);
         delete_option(self::WIDGET_PLACEMENT_IN_CHECKOUT);
     }
 
@@ -67,17 +69,18 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
         $woocommerce->cart->calculate_totals();
 
         $widget_params = [
-            'LANG'                         => self::getCurrentLang(),
-            'BASE_URL'                     => get_site_url(),
-            'API_URL'                      => self::getWidgetApiScriptPath(),
-            'PRODUCTS'                     => self::_getProducts(),
-            'COUNTRIES'                    => self::_getSRDeliveryCountries(),
-            'WEIGHT'                       => wc_get_weight($woocommerce->cart->get_cart_contents_weight(), 'kg') ?: null,
-            'DISCOUNT'                     => $woocommerce->cart->get_discount_total(),
-            'CURRENCY'                     => self::getWCCurrency(),
-            'PAY_METHOD_WITH_COD'          => get_option(self::COD_PAY_METHOD_OPTION, ''),
-            'PAY_METHOD_WITH_COD_CARD'     => get_option(self::CARD_COD_PAY_METHOD_OPTION, ''),
-            'DISABLE_AUTOSCROLL_TO_WIDGET' => get_option(self::DISABLE_AUTOSCROLL_TO_WIDGET, 0),
+            'LANG'                          => self::getCurrentLang(),
+            'BASE_URL'                      => get_site_url(),
+            'API_URL'                       => self::getWidgetApiScriptPath(),
+            'PRODUCTS'                      => self::_getProducts(),
+            'COUNTRIES'                     => self::_getSRDeliveryCountries(),
+            'WEIGHT'                        => wc_get_weight($woocommerce->cart->get_cart_contents_weight(), 'kg') ?: null,
+            'DISCOUNT'                      => $woocommerce->cart->get_discount_total(),
+            'CURRENCY'                      => self::getWCCurrency(),
+            'PAY_METHOD_WITH_COD'           => get_option(self::COD_PAY_METHOD_OPTION, ''),
+            'PAY_METHOD_WITH_COD_CARD'      => get_option(self::CARD_COD_PAY_METHOD_OPTION, ''),
+            'DISABLE_AUTOSCROLL_TO_WIDGET'  => get_option(self::DISABLE_AUTOSCROLL_TO_WIDGET, 0),
+            'DISABLE_WIDGET_MULTI_REQUESTS' => get_option(self::DISABLE_WIDGET_MULTI_REQUESTS, 0),
         ];
 
         $js  = 'var SR_WIDGET = ' . json_encode($widget_params, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) . ';';

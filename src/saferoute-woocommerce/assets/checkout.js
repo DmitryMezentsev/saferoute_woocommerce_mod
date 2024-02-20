@@ -155,6 +155,7 @@
             weight: SR_WIDGET.WEIGHT,
             discount: SR_WIDGET.DISCOUNT,
             onlyCountries: SR_WIDGET.COUNTRIES,
+            disableMultiRequests: !!SR_WIDGET.DISABLE_WIDGET_MULTI_REQUESTS,
             regionName: $('input[name=shipping_city]').val(),
           });
 

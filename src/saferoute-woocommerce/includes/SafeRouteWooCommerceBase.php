@@ -43,6 +43,9 @@ class SafeRouteWooCommerceBase
     // Имя параметра 'Отключить автоматическое прокручивание до виджета в чекауте' в БД WordPress
     const DISABLE_AUTOSCROLL_TO_WIDGET = 'disable_autoscroll_to_widget';
 
+    // Имя параметра 'Отключить распараллеливание загрузки данных о доставках в виджете' в БД WordPress
+    const DISABLE_WIDGET_MULTI_REQUESTS = 'disable_widget_multi_requests';
+
     // Имя параметра 'Место вывода виджета на странице чекаута' в БД WordPress
     const WIDGET_PLACEMENT_IN_CHECKOUT = 'widget_placement_in_checkout';
 
@@ -934,7 +937,10 @@ class SafeRouteWooCommerceBase
         {
             $product = $product_item->get_product();
 
-            if ($product) $total_weight += floatval($product->get_weight() * $product_item->get_quantity());
+            if ($product) {
+                $weight = $product->get_weight();
+                if ($weight) $total_weight += floatval($weight * $product_item->get_quantity());
+            }
         }
 
         return wc_get_weight($total_weight, 'kg');
