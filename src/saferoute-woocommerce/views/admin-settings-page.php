@@ -186,45 +186,61 @@
             </tr>
             <tr>
                 <th scope="row">
-                    <label for="<?=self::DISABLE_AUTOSCROLL_TO_WIDGET?>">
+                    <label for="<?=self::DISABLE_AUTOSCROLL_TO_WIDGET_OPTION?>">
                         <?php _e('Disable auto scroll to widget in checkout', self::TEXT_DOMAIN) ?>
                     </label>
                 </th>
                 <td>
-                    <input name="<?=self::DISABLE_AUTOSCROLL_TO_WIDGET?>"
-                           id="<?=self::DISABLE_AUTOSCROLL_TO_WIDGET?>"
+                    <input name="<?=self::DISABLE_AUTOSCROLL_TO_WIDGET_OPTION?>"
+                           id="<?=self::DISABLE_AUTOSCROLL_TO_WIDGET_OPTION?>"
                            value="1"
                            type="checkbox"
                            autocomplete="off"
-                        <?= get_option(self::DISABLE_AUTOSCROLL_TO_WIDGET) ? 'checked' : '' ?>
+                        <?= get_option(self::DISABLE_AUTOSCROLL_TO_WIDGET_OPTION) ? 'checked' : '' ?>
                     >
                 </td>
             </tr>
             <tr>
                 <th scope="row">
-                    <label for="<?=self::DISABLE_WIDGET_MULTI_REQUESTS?>">
+                    <label for="<?=self::DISABLE_WIDGET_MULTI_REQUESTS_OPTION?>">
                         <?php _e('Disable parallel loading of delivery data', self::TEXT_DOMAIN) ?>
                     </label>
                 </th>
                 <td>
-                    <input name="<?=self::DISABLE_WIDGET_MULTI_REQUESTS?>"
-                           id="<?=self::DISABLE_WIDGET_MULTI_REQUESTS?>"
+                    <input name="<?=self::DISABLE_WIDGET_MULTI_REQUESTS_OPTION?>"
+                           id="<?=self::DISABLE_WIDGET_MULTI_REQUESTS_OPTION?>"
                            value="1"
                            type="checkbox"
                            autocomplete="off"
-                        <?= get_option(self::DISABLE_WIDGET_MULTI_REQUESTS) ? 'checked' : '' ?>
+                        <?= get_option(self::DISABLE_WIDGET_MULTI_REQUESTS_OPTION) ? 'checked' : '' ?>
                     >
                 </td>
             </tr>
             <tr>
                 <th scope="row">
-                    <label for="<?=self::WIDGET_PLACEMENT_IN_CHECKOUT?>">
+                    <label for="<?=self::DISABLE_CUSTOMERS_EMAILS_OPTION?>">
+                        <?php _e('Disable sending E-mails to customers', self::TEXT_DOMAIN) ?>
+                    </label>
+                </th>
+                <td>
+                    <input name="<?=self::DISABLE_CUSTOMERS_EMAILS_OPTION?>"
+                           id="<?=self::DISABLE_CUSTOMERS_EMAILS_OPTION?>"
+                           value="1"
+                           type="checkbox"
+                           autocomplete="off"
+                        <?= get_option(self::DISABLE_CUSTOMERS_EMAILS_OPTION) ? 'checked' : '' ?>
+                    >
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
+                    <label for="<?=self::WIDGET_PLACEMENT_IN_CHECKOUT_OPTION?>">
                         <?php _e('Widget placement in the checkout page', self::TEXT_DOMAIN) ?>
                     </label>
                 </th>
                 <td>
-                    <select id="<?=self::WIDGET_PLACEMENT_IN_CHECKOUT?>"
-                            name="<?=self::WIDGET_PLACEMENT_IN_CHECKOUT?>"
+                    <select id="<?=self::WIDGET_PLACEMENT_IN_CHECKOUT_OPTION?>"
+                            name="<?=self::WIDGET_PLACEMENT_IN_CHECKOUT_OPTION?>"
                             autocomplete="off">
                         <?php foreach ([
                             'woocommerce_checkout_before_customer_details',
@@ -240,7 +256,7 @@
                             'woocommerce_review_order_after_shipping',
                         ] as $placement): ?>
                             <option value="<?=$placement?>"
-                                <?= get_option(self::WIDGET_PLACEMENT_IN_CHECKOUT, self::WIDGET_PLACEMENT_IN_CHECKOUT_DEFAULT) === $placement ? 'selected' : '' ?>>
+                                <?= get_option(self::WIDGET_PLACEMENT_IN_CHECKOUT_OPTION, self::WIDGET_PLACEMENT_IN_CHECKOUT_DEFAULT) === $placement ? 'selected' : '' ?>>
                                 <?= preg_replace('/^woocommerce_/', '', $placement) ?>
                             </option>
                         <?php endforeach ?>

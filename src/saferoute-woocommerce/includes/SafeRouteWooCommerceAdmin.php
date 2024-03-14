@@ -156,9 +156,10 @@ class SafeRouteWooCommerceAdmin extends SafeRouteWooCommerceBase
             update_option(self::CARD_COD_PAY_METHOD_OPTION, $_POST[self::CARD_COD_PAY_METHOD_OPTION]);
             update_option(self::HIDE_CHECKOUT_BILLING_BLOCK_OPTION, $_POST[self::HIDE_CHECKOUT_BILLING_BLOCK_OPTION]);
             update_option(self::SHOW_DETAILS_IN_DELIVERY_NAME_OPTION, $_POST[self::SHOW_DETAILS_IN_DELIVERY_NAME_OPTION]);
-            update_option(self::DISABLE_AUTOSCROLL_TO_WIDGET, $_POST[self::DISABLE_AUTOSCROLL_TO_WIDGET]);
-            update_option(self::DISABLE_WIDGET_MULTI_REQUESTS, $_POST[self::DISABLE_WIDGET_MULTI_REQUESTS]);
-            update_option(self::WIDGET_PLACEMENT_IN_CHECKOUT, $_POST[self::WIDGET_PLACEMENT_IN_CHECKOUT]);
+            update_option(self::DISABLE_AUTOSCROLL_TO_WIDGET_OPTION, $_POST[self::DISABLE_AUTOSCROLL_TO_WIDGET_OPTION]);
+            update_option(self::DISABLE_WIDGET_MULTI_REQUESTS_OPTION, $_POST[self::DISABLE_WIDGET_MULTI_REQUESTS_OPTION]);
+            update_option(self::DISABLE_CUSTOMERS_EMAILS_OPTION, $_POST[self::DISABLE_CUSTOMERS_EMAILS_OPTION]);
+            update_option(self::WIDGET_PLACEMENT_IN_CHECKOUT_OPTION, $_POST[self::WIDGET_PLACEMENT_IN_CHECKOUT_OPTION]);
             // Соответствие статусов
             if (is_array($_POST[self::STATUSES_MATCHING_OPTION]))
                 update_option(self::STATUSES_MATCHING_OPTION, $_POST[self::STATUSES_MATCHING_OPTION]);

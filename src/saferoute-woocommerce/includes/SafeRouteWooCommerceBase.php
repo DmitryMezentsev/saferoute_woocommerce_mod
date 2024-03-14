@@ -41,13 +41,16 @@ class SafeRouteWooCommerceBase
     const STATUSES_MATCHING_OPTION = 'statuses_matching_option';
 
     // Имя параметра 'Отключить автоматическое прокручивание до виджета в чекауте' в БД WordPress
-    const DISABLE_AUTOSCROLL_TO_WIDGET = 'disable_autoscroll_to_widget';
+    const DISABLE_AUTOSCROLL_TO_WIDGET_OPTION = 'disable_autoscroll_to_widget';
 
     // Имя параметра 'Отключить распараллеливание загрузки данных о доставках в виджете' в БД WordPress
-    const DISABLE_WIDGET_MULTI_REQUESTS = 'disable_widget_multi_requests';
+    const DISABLE_WIDGET_MULTI_REQUESTS_OPTION = 'disable_widget_multi_requests';
+
+    // Имя параметра 'Отключить отправку E-mail клиентам' в БД WordPress
+    const DISABLE_CUSTOMERS_EMAILS_OPTION = 'disable_customers_emails';
 
     // Имя параметра 'Место вывода виджета на странице чекаута' в БД WordPress
-    const WIDGET_PLACEMENT_IN_CHECKOUT = 'widget_placement_in_checkout';
+    const WIDGET_PLACEMENT_IN_CHECKOUT_OPTION = 'widget_placement_in_checkout';
 
     // Имя параметра с данными заказа для создания его в SafeRoute
     const WIDGET_ORDER_DATA = 'sr_widget_order_data';
@@ -317,6 +320,8 @@ class SafeRouteWooCommerceBase
      */
     public static function sendCustomerEmailNotification($id, $event)
     {
+        if (get_option(self::DISABLE_CUSTOMERS_EMAILS_OPTION)) return;
+
         $order = new WC_Order($id);
         if (!$order) return false;
 

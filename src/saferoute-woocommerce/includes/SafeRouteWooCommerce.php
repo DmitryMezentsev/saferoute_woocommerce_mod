@@ -29,9 +29,10 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
         add_option(self::COD_PAY_METHOD_OPTION, '');
         add_option(self::CARD_COD_PAY_METHOD_OPTION, '');
         add_option(self::STATUSES_MATCHING_OPTION, []);
-        add_option(self::DISABLE_AUTOSCROLL_TO_WIDGET, 0);
-        add_option(self::DISABLE_WIDGET_MULTI_REQUESTS, 0);
-        add_option(self::WIDGET_PLACEMENT_IN_CHECKOUT, self::WIDGET_PLACEMENT_IN_CHECKOUT_DEFAULT);
+        add_option(self::DISABLE_AUTOSCROLL_TO_WIDGET_OPTION, 0);
+        add_option(self::DISABLE_WIDGET_MULTI_REQUESTS_OPTION, 0);
+        add_option(self::DISABLE_CUSTOMERS_EMAILS_OPTION, 0);
+        add_option(self::WIDGET_PLACEMENT_IN_CHECKOUT_OPTION, self::WIDGET_PLACEMENT_IN_CHECKOUT_DEFAULT);
     }
 
     /**
@@ -49,9 +50,10 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
         delete_option(self::COD_PAY_METHOD_OPTION);
         delete_option(self::CARD_COD_PAY_METHOD_OPTION);
         delete_option(self::STATUSES_MATCHING_OPTION);
-        delete_option(self::DISABLE_AUTOSCROLL_TO_WIDGET);
-        delete_option(self::DISABLE_WIDGET_MULTI_REQUESTS);
-        delete_option(self::WIDGET_PLACEMENT_IN_CHECKOUT);
+        delete_option(self::DISABLE_AUTOSCROLL_TO_WIDGET_OPTION);
+        delete_option(self::DISABLE_WIDGET_MULTI_REQUESTS_OPTION);
+        delete_option(self::DISABLE_CUSTOMERS_EMAILS_OPTION);
+        delete_option(self::WIDGET_PLACEMENT_IN_CHECKOUT_OPTION);
     }
 
 
@@ -79,8 +81,8 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
             'CURRENCY'                      => self::getWCCurrency(),
             'PAY_METHOD_WITH_COD'           => get_option(self::COD_PAY_METHOD_OPTION, ''),
             'PAY_METHOD_WITH_COD_CARD'      => get_option(self::CARD_COD_PAY_METHOD_OPTION, ''),
-            'DISABLE_AUTOSCROLL_TO_WIDGET'  => get_option(self::DISABLE_AUTOSCROLL_TO_WIDGET, 0),
-            'DISABLE_WIDGET_MULTI_REQUESTS' => get_option(self::DISABLE_WIDGET_MULTI_REQUESTS, 0),
+            'DISABLE_AUTOSCROLL_TO_WIDGET'  => get_option(self::DISABLE_AUTOSCROLL_TO_WIDGET_OPTION, 0),
+            'DISABLE_WIDGET_MULTI_REQUESTS' => get_option(self::DISABLE_WIDGET_MULTI_REQUESTS_OPTION, 0),
         ];
 
         $js  = 'var SR_WIDGET = ' . json_encode($widget_params, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) . ';';
@@ -140,7 +142,7 @@ final class SafeRouteWooCommerce extends SafeRouteWooCommerceBase
                 wp_enqueue_style('saferoute-css', plugins_url('assets/checkout.css', dirname(__FILE__)));
 
                 // Вывод HTML блока с виджетом
-                add_action(get_option(self::WIDGET_PLACEMENT_IN_CHECKOUT, self::WIDGET_PLACEMENT_IN_CHECKOUT_DEFAULT), function () {
+                add_action(get_option(self::WIDGET_PLACEMENT_IN_CHECKOUT_OPTION, self::WIDGET_PLACEMENT_IN_CHECKOUT_DEFAULT), function () {
                     require self::getPluginDir() . '/views/checkout-widget-block.php';
                 });
 
