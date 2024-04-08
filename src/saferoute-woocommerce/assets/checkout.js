@@ -16,11 +16,11 @@
       if (widget.data) {
         const cashPaymentAvailable = widget.data.delivery.point
           ? widget.data.delivery.point.cashPaymentAvailable
-          : widget.data.delivery.CODAvailable;
+          : widget.data.delivery.cashPaymentAvailable;
 
         const cardPaymentAvailable = widget.data.delivery.point
           ? widget.data.delivery.point.cardPaymentAvailable
-          : widget.data.delivery.CODAvailable;
+          : widget.data.delivery.cardPaymentAvailable;
 
         if ($paymentMethodWithCODCard.length) {
           if (!cashPaymentAvailable) $paymentMethodWithCOD.hide();
